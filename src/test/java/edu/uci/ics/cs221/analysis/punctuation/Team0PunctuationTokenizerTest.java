@@ -10,6 +10,10 @@ import static org.junit.Assert.assertEquals;
 
 public class Team0PunctuationTokenizerTest {
 
+    /**
+     * Tests if the tokenizer handles different white spaces correctly by having characters
+     * such as \t, \n in the input text.
+     */
     @Test
     public void test1() {
         String text = "test    different\twhitespace\ncharacters\r\n";
@@ -19,10 +23,14 @@ public class Team0PunctuationTokenizerTest {
         assertEquals(expected, tokenizer.tokenize(text));
     }
 
+    /**
+     * Tests if the tokenizer splits the text by punctuation marks and removes them correctly.
+     * Moreover, punctuation marks that is not in the list should not be considered, such as it'll
+     */
     @Test
     public void test2() {
-        String text = "test, punctuations'll be removed. correctly?";
-        List<String> expected = Arrays.asList("test", "punctuations'll", "removed", "correctly");
+        String text = "test. it'll remove,them correctly?";
+        List<String> expected = Arrays.asList("test", "it'll", "remove", "them", "correctly");
         PunctuationTokenizer tokenizer = new PunctuationTokenizer();
 
         assertEquals(expected, tokenizer.tokenize(text));
