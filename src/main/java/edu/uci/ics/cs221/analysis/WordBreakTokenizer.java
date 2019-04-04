@@ -39,7 +39,7 @@ public class WordBreakTokenizer implements Tokenizer {
             // load the dictionary corpus
             URL dictResource = WordBreakTokenizer.class.getClassLoader().getResource("cs221_frequency_dictionary_en.txt");
             List<String> dictLines = Files.readAllLines(Paths.get(dictResource.toURI()));
-
+            System.out.println("dictLines size" + dictLines.size());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

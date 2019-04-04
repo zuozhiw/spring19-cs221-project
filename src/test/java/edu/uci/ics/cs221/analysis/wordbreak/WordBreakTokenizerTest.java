@@ -13,7 +13,9 @@ public class WordBreakTokenizerTest {
     @Test
     public void test1() {
         String text = "catdog";
+
         List<String> expected = Arrays.asList("cat", "dog");
+
         WordBreakTokenizer tokenizer = new WordBreakTokenizer();
 
         assertEquals(expected, tokenizer.tokenize(text));
