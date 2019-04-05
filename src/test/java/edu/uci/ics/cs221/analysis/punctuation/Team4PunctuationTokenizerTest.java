@@ -15,7 +15,7 @@ public class Team4PunctuationTokenizerTest {
     }
 
     /**
-     * test1 tests if it can deal with empty string
+     * test1 tests if the tokenizer can deal with empty string
      */
     @Test
     public void test1() {
@@ -31,7 +31,7 @@ public class Team4PunctuationTokenizerTest {
     }
 
     /**
-     * It: can tokenize normal string with white spaces
+     * test2 tests if the tokenizer can tokenize normal string with white spaces
      */
     @Test
     public void test2() {
@@ -45,7 +45,7 @@ public class Team4PunctuationTokenizerTest {
     }
 
     /**
-     * test2 tests if it can deal with any punctuations and regard other special characters as normal tokens
+     * test3 tests if the tokenizer can deal with any punctuations and regard other special characters as normal tokens
      */
     @Test
     public void test3() {
@@ -60,7 +60,7 @@ public class Team4PunctuationTokenizerTest {
     }
 
     /**
-     * test4 tests if it could tokenize the string with multiple adjacent white spaces
+     * test4 tests if the tokenizer could tokenize the string with multiple adjacent white spaces
      * and with spaces before or after the sentence.
      */
     @Test
