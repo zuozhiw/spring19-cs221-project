@@ -8,7 +8,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class WordBreakTokenizerTest {
+public class Team10WordBreakTokenizerTest {
 
     @Test
     public void test1() {
