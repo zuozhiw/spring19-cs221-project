@@ -11,20 +11,19 @@ public class Testcase {
 
     @Test
     public void test1() {
-        String text = "He didn't pass The Exam.";
+        String text = "He did not pass The Exam, did he?";
         List<String> expected = Arrays.asList("pass", "exam");
         PunctuationTokenizer tokenizer = new PunctuationTokenizer();
 
-        assertEquals("test ' split, ignoring stop words and uppercase to lowercase transfer",
+        assertEquals("test ,? split, ignoring stop words and uppercase to lowercase transfer",
                 expected, tokenizer.tokenize(text));
     }
     @Test
     public void test2() {
-        String text = "Did she go to movie theatre with her co-Worker yesterday?";
-        List<String> expected = Arrays.asList("go", "movie","theatre","co","worker","yesterday");
+        String text = "Thanks God! I found my wallet there.";
+        List<String> expected = Arrays.asList("thanks", "god","found","wallet");
         PunctuationTokenizer tokenizer = new PunctuationTokenizer();
-
-        assertEquals("test ' - split, ignoring stop words and uppercase to lowercase transfer",
+        assertEquals("test ! . split, ignoring stop words and uppercase to lowercase transfer",
                 expected, tokenizer.tokenize(text));
     }
 
