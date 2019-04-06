@@ -24,7 +24,7 @@ public class Team9WordBreakTokenizerTest {
     @Test
     public void test2() {
         String text = "ILIKEINFORMATIONRETRIEVAL";
-        List<String> expected = Arrays.asList("i like information retrieval");
+        List<String> expected = Arrays.asList("i", "like", "information", "retrieval");
         WordBreakTokenizer tokenizer = new WordBreakTokenizer();
 
         assertEquals(expected, tokenizer.tokenize(text));
@@ -37,7 +37,7 @@ public class Team9WordBreakTokenizerTest {
     @Test
     public void test3() {
         String text = "thereareelevenpineapples";
-        List<String> expected = Arrays.asList("there are eleven pineapples");
+        List<String> expected = Arrays.asList("there", "are", "eleven", "pineapples");
         WordBreakTokenizer tokenizer = new WordBreakTokenizer();
 
         assertEquals(expected, tokenizer.tokenize(text));
