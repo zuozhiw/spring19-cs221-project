@@ -1,4 +1,4 @@
-package edu.uci.ics.cs221.Team5PunctuationTokenizerTest;
+package edu.uci.ics.cs221.analysis.punctuation;
 
 import edu.uci.ics.cs221.analysis.PunctuationTokenizer;
 import org.junit.Test;
@@ -8,11 +8,11 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class Testcase {
+public class Team5PunctuationTokenizerTest {
 
     @Test
     public void test1() {
-        String text = "He did not pass The Exam, did he?";
+        String text = "He did not pass The Exam, did he?\n\r\t";
         List<String> expected = Arrays.asList("pass", "exam");
         PunctuationTokenizer tokenizer = new PunctuationTokenizer();
 
@@ -43,7 +43,6 @@ public class Testcase {
         String text = "         ";
         List<String> expected = Arrays.asList();
         PunctuationTokenizer tokenizer = new PunctuationTokenizer();
-        System.out.println(tokenizer.tokenize(text));
         assertEquals("test more  one spaces",
                 expected, tokenizer.tokenize(text));
     }
@@ -52,7 +51,6 @@ public class Testcase {
         String text = "    tomorrow";
         List<String> expected = Arrays.asList("tomorrow");
         PunctuationTokenizer tokenizer = new PunctuationTokenizer();
-        System.out.println(tokenizer.tokenize(text));
         assertEquals("test more than one spaces between words",
                 expected, tokenizer.tokenize(text));
     }
@@ -61,13 +59,12 @@ public class Testcase {
         String text = "!,";
         List<String> expected = Arrays.asList();
         PunctuationTokenizer tokenizer = new PunctuationTokenizer();
-        System.out.println(tokenizer.tokenize(text));
         assertEquals("test only punctuations",
                 expected, tokenizer.tokenize(text));
     }
 
     @Test
-    public void test15() {
+    public void test7() {
         String text = "Dog like Cat";
         List<String> expected = Arrays.asList("dog", "like", "cat");
         PunctuationTokenizer tokenizer = new PunctuationTokenizer();
@@ -77,7 +74,7 @@ public class Testcase {
     }
 
     @Test
-    public void test16() {
+    public void test8() {
         String text =
                 "herselF, me Own. ourS; tHiS? her thEirs were onLY; THese. Hidden oUrselVeS again, agaInsT hAs An? " +
                         "our have, he. oN. bEing aM CAn WiTh; So THRough? Them tHoSe. few. itS! Below! was? once Do Is! By of eACh. " +
@@ -93,5 +90,14 @@ public class Testcase {
                 expected, tokenizer.tokenize(text));
     }
 
+    @Test
+    public void test9() {
+        String text = "I don't like your! You are a fast man!";
+        List<String> expected = Arrays.asList("don't", "like","fast","man");
+        PunctuationTokenizer tokenizer = new PunctuationTokenizer();
+
+        assertEquals("test not punctuations that should not be removed.",
+                expected, tokenizer.tokenize(text));
+    }
 
 }
