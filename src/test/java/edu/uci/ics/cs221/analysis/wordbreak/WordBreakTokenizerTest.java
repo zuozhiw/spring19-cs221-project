@@ -42,11 +42,12 @@ class Team17TaskNameTest {
      * The test2() has only the stopwords.
      * Hence the output must be an empty array and should not throw any exception as the string can broken into
      * words that exist in the dictionary.
+     * Additionally, this testcase also tests the program to handle a really long string.
      * */
 
     @Test
     public void test2() {
-        String text = "imemymyselfwe";
+        String text = "imemymyselfweouroursourselvesyouyouryoursyourselfyourselveshehimhishimselfsheherhersherselfititsitselftheythemtheirtheirsthemselveswhatwhichwhowhomthisthatthesethoseamisarewaswerebebeenbeinghavehashadhavingdodoesdiddoing";
         List<String> expected = Arrays.asList();
         WordBreakTokenizer tokenizer = new WordBreakTokenizer();
 
