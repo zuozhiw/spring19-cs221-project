@@ -49,6 +49,24 @@ public class Team22PorterStemmerTest {
 
     }
 
+    public void test3() {
+
+        // This test case test whether stemmer could stem words end with "ance", "ate", "y", "val" and "ism".
+
+
+        String original = "the allowance of collaboration between media and tech company help activate the revival of journalism";
+
+        String expected = "the allow of collabor between media and tech compani help activ the reviv of journal";
+
+        PorterStemmer porterStemmer = new PorterStemmer();
+        assertEquals(expected, testStem(porterStemmer, original));
+
+
+    }
+
+
+
+
 
 
 }
