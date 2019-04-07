@@ -171,7 +171,7 @@ public class Team1PunctuationTokenizerTest {
      * satisfies all requirements tested above.
      *
      * Test text:       {@code " Do UCI CS221:\tInformation Retrieval, project 1 by yourself.\n"}
-     * Expected tokens: {@code ["ucics221informationretrieval"]}
+     * Expected tokens: {@code ["uci", "cs221:", "information", "retrieval", "project", "1"]}
      */
     @Test
     public void integrationTest() {
