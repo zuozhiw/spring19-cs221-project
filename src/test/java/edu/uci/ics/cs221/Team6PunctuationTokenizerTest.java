@@ -7,6 +7,27 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/*
+- What's your team number?
+Team 6
+
+- What is the functionality being tested?
+Punctuation Tokenizer
+
+- Describe your tests briefly:
+Test Case 1 is to test if the tokenizer handles different white spaces correctly by having characters of \t,
+\n and white spaces in the input text.
+Test Case 2 is to test if the tokenizer can handles splits the text by given punctuations marks and removes them correctly.
+The punctuations include ",", ".", ";", "?" and "!". Moreover, punctuation marks that are not on the list should not be
+considered, such as i'am and four-year-old.
+Test Case 3 is to test if the tokenizer can convert all tokens into lower case.
+Test Case 4 is to test if the tokenizer can filter out the stop words.
+
+- Does each test case have comments/documentation?
+Yes
+
+
+ */
 
 public class Team6PunctuationTokenizerTest {
 
