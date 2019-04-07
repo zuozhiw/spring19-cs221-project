@@ -21,3 +21,37 @@ public class WordBreakTokenizerTest {
     }
 
 }
+
+class Team17TaskNameTest {
+    /*
+     * The test1() is to check that the "san francisco" is tokenized as one single token instead of two separate tokens.
+     * If there are two separate tokens "san" and "francisco" then the meaning of the input string changes drastically.
+     * Additionally, the upper case characters must be converted to lower case and the whitespaces must be ignored.
+     * */
+    @Test
+    public void test1() {
+        String text = "  IlOveSAnFrancIsCo";
+        List<String> expected = Arrays.asList("love", "san francisco");
+        WordBreakTokenizer tokenizer = new WordBreakTokenizer();
+
+        assertEquals(expected, tokenizer.tokenize(text));
+
+    }
+
+    /*
+     * The test2() has only the stopwords.
+     * Hence the output must be an empty array and should not throw any exception as the string can broken into
+     * words that exist in the dictionary.
+     * */
+
+    @Test
+    public void test2() {
+        String text = "imemymyselfwe";
+        List<String> expected = Arrays.asList();
+        WordBreakTokenizer tokenizer = new WordBreakTokenizer();
+
+        assertEquals(expected, tokenizer.tokenize(text));
+
+    }
+}
+
