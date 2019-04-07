@@ -34,6 +34,7 @@ public class Team22PorterStemmerTest {
 
 
     }
+    @Test
     public void test2() {
 
         // This test case test whether stemmer could stem words end with "fully", "ator", "ment", "ness" and "ing".
@@ -48,7 +49,7 @@ public class Team22PorterStemmerTest {
 
 
     }
-
+    @Test
     public void test3() {
 
         // This test case test whether stemmer could stem words end with "ance", "ate", "y", "val" and "ism".
