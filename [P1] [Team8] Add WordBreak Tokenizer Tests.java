@@ -44,8 +44,6 @@ public class Team8WordBreakTokenizerTest {
     	WordBreakTokenizer tokenizer = new WordBreakTokenizer();
         tokenizer.tokenize(text);
 
-        //assertThrows(IllegalArgumentException.class, () -> tokenizer.tokenize(text));
-
     }
 
 }
