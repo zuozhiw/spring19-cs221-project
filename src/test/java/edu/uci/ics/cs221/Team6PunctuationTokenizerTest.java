@@ -82,13 +82,13 @@ public class Team6PunctuationTokenizerTest {
          */
 //        System.out.println("test case 4\n");
 
-        String text = "I cannot decide which car I like best: " +
+        String text = "I cannot decide which car I like best " +
                 "the Ferrari, with its quick acceleration and " +
                 "sporty look; the midsize Ford Taurus, with " +
                 "its comfortable seats and ease of handling; " +
                 "or the compact Geo, with its economical fuel consumption.";
         List<String> expected = Arrays.asList("cannot", "decide", "car", "like", "best",
-                "Ferrari", "quick", "acceleration", "sporty", "look", "midsize", "ford",
+                "ferrari", "quick", "acceleration", "sporty", "look", "midsize", "ford",
                 "taurus", "comfortable", "seats", "ease", "handling", "compact", "geo", "economical",
                 "fuel", "consumption");
         PunctuationTokenizer tokenizer = new PunctuationTokenizer();
