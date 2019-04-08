@@ -1,3 +1,5 @@
+package edu.uci.ics.cs221;
+
 import edu.uci.ics.cs221.analysis.PorterStemmer;
 import edu.uci.ics.cs221.analysis.Stemmer;
 import org.junit.Test;
@@ -17,8 +19,8 @@ public class Team18PorterStemmerTest {
     // test1 tests if plural, adjective form of nouns, passive, present-indefinite and past-tense form of verbs will be stemmed to their root form
     @Test
     public void test1() {
-        String original = "I worked hard recently because I am trying to get satisfactory grades for my finals.";
-        String expected = "I work hard recent becaus I am tri to get satisfactori grade for my final .";
+        String original = "clothes satisfactory wearing worn wore";
+        String expected = "cloth satisfactori wear worn wore";
 
         PorterStemmer porterStemmer = new PorterStemmer();
         assertEquals(expected, testStem(porterStemmer, original));
