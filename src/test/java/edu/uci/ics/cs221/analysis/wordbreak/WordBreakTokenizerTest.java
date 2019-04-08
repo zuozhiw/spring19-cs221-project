@@ -26,12 +26,12 @@ class Team17TaskNameTest {
     /*
      * The test1() is to check that the "san francisco" is tokenized as one single token instead of two separate tokens.
      * If there are two separate tokens "san" and "francisco" then the meaning of the input string changes drastically.
-     * Additionally, the upper case characters must be converted to lower case and the whitespaces must be ignored.
+     * Additionally, the upper case characters must be converted to lower case.
      * */
     @Test
     public void test1() {
-        String text = "  IlOveSAnFrancIsCo";
-        List<String> expected = Arrays.asList("love", "san francisco");
+        String text = "IlOveSAnFrancIsCo";
+        List<String> expected = Arrays.asList("love", "san", "francisco");
         WordBreakTokenizer tokenizer = new WordBreakTokenizer();
 
         assertEquals(expected, tokenizer.tokenize(text));
