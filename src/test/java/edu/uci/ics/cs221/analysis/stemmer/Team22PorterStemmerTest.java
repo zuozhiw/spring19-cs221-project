@@ -42,7 +42,7 @@ public class Team22PorterStemmerTest {
 
         String original = "hopefully the refrigerator start working again in that chen li made some adjustment with carefulness";
 
-        String expected = "hope the refriger start work again in that chen li made some adjust with care";
+        String expected = "hopefulli the refriger start work again in that chen li made some adjust with care";
 
         PorterStemmer porterStemmer = new PorterStemmer();
         assertEquals(expected, testStem(porterStemmer, original));
