@@ -67,7 +67,6 @@ class Team17TaskNameTest {
         WordBreakTokenizer tokenizer = new WordBreakTokenizer();
 
         assertEquals(expected, tokenizer.tokenize(text));
-
     }
 
 
@@ -76,14 +75,11 @@ class Team17TaskNameTest {
      * Hence the wordbreak tokenizer must throw an exception
      * */
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void test4() {
         String text = "mother-in-law";
-        List<String> expected = Arrays.asList();
         WordBreakTokenizer tokenizer = new WordBreakTokenizer();
-
-        assertEquals(expected, tokenizer.tokenize(text)); //must expect an exception
-
+        tokenizer.tokenize(text);
     }
 
     /*
