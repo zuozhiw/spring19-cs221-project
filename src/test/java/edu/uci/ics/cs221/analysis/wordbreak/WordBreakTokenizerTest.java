@@ -86,6 +86,21 @@ class Team17TaskNameTest {
 
     }
 
+    /*
+     * The test5() has two possible set of tokens
+     * But the wordbreak tokenizer must come up with the most optimal one that is ["hello", "range"] instead of ["hell", "orange"]
+     * */
+
+    @Test
+    public void test5() {
+        String text = "hellorange";
+        List<String> expected = Arrays.asList("hello","range");
+        WordBreakTokenizer tokenizer = new WordBreakTokenizer();
+
+        assertEquals(expected, tokenizer.tokenize(text)); //must expect an exception
+
+    }
+
 
 }
 
