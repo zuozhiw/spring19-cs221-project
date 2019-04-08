@@ -54,5 +54,38 @@ class Team17TaskNameTest {
         assertEquals(expected, tokenizer.tokenize(text));
 
     }
+
+    /*
+     * The test3() has an empty string
+     * Hence the wordbreak tokenizer must return empty set of tokens
+     * */
+
+    @Test
+    public void test3() {
+        String text = "";
+        List<String> expected = Arrays.asList();
+        WordBreakTokenizer tokenizer = new WordBreakTokenizer();
+
+        assertEquals(expected, tokenizer.tokenize(text));
+
+    }
+
+
+    /*
+     * The test4() has string with punctuations
+     * Hence the wordbreak tokenizer must throw an exception
+     * */
+
+    @Test
+    public void test4() {
+        String text = "mother-in-law";
+        List<String> expected = Arrays.asList();
+        WordBreakTokenizer tokenizer = new WordBreakTokenizer();
+
+        assertEquals(expected, tokenizer.tokenize(text)); //must expect an exception
+
+    }
+
+
 }
 
