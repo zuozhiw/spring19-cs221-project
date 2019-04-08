@@ -7,7 +7,7 @@ import java.util.Arrays;
 import static java.util.stream.Collectors.joining;
 import static org.junit.Assert.assertEquals;
 
-public class Team18PorterStemmer {
+public class Team18PorterStemmerTest {
     public static String testStem(Stemmer stemmer, String sentence) {
         return Arrays.stream(sentence.split("\\s+"))
                 .map(token -> stemmer.stem(token))
@@ -35,8 +35,7 @@ public class Team18PorterStemmer {
         assertEquals(expected, testStem(porterStemmer, original));
     }
 
-    // test3 tests if a word is composed of two distinct words, the root form will be the adding up of the roots of the two element words or not.
-    // However, the answer is no.
+    //
     @Test
     public void test3() {
         String original = "how ever however";
