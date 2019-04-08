@@ -9,9 +9,6 @@ import java.util.Arrays;
 import static java.util.stream.Collectors.joining;
 import static org.junit.Assert.assertEquals;
 
-/**
- *
- */
 public class Team23PorterStemmerTest {
 
     public static String testStem(Stemmer stemmer, String sentence) {
@@ -21,7 +18,7 @@ public class Team23PorterStemmerTest {
     }
 
     /**
-     * This test case covers the words which are modified (or should not be falsely modified) by step 1a, 1b,
+     * This test case covers the words which should be modified (or should not be falsely modified) by step 1a, 1b,
      * 1b-cleanup, 1c of Porter Stemmer
      *
      * Covers words ending with - `sses`, `ies`, `s`, (m>0)`eed`, (*v*)`ed`, (*v*)`ing`, (*v*) y
@@ -53,7 +50,7 @@ public class Team23PorterStemmerTest {
     }
 
     /**
-     * This test case covers the words which are modified (or should not be falsely modified) by step 2
+     * This test case covers the words which should be modified (or should not be falsely modified) by step 2
      * of Porter Stemmer
      *
      * covers words with (m>0) `ational`, (m>0) `tional`, (m>0) `enci`, (m>0) `anci`, (m>0) `izer`, (m>0) `abli`,
@@ -80,7 +77,7 @@ public class Team23PorterStemmerTest {
     }
 
     /**
-     * This test case covers the words which are modified (or should not be falsely modified) by step 3
+     * This test case covers the words which should be modified (or should not be falsely modified) by step 3
      * of Porter Stemmer
      *
      * covers words with (m>0) `icate`, (m>0) `ative`, (m>0) `alize`, (m>0) `iciti`, (m>0) `ical`, (m>0) `ful` and
@@ -98,7 +95,7 @@ public class Team23PorterStemmerTest {
     }
 
     /**
-     * This test case covers the words which are modified (or should not be falsely modified) by step 4
+     * This test case covers the words which should be modified (or should not be falsely modified) by step 4
      * of Porter Stemmer
      *
      * covers words with (m>1) `al`, (m>1) `ance`, (m>1) `ence`, (m>1) `er`, (m>1) `ic`, (m>1) `able`, (m>1) `ible`,
@@ -117,7 +114,7 @@ public class Team23PorterStemmerTest {
     }
 
     /**
-     * This test case covers the words which are modified (or should not be falsely modified) by step 5
+     * This test case covers the words which should be modified (or should not be falsely modified) by step 5a, 5b
      * of Porter Stemmer
      *
      * covers words with (m>1) e, (m=1 and not *o) e, (m > 1 and *d and *L)
