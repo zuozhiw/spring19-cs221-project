@@ -36,7 +36,7 @@ public class Team21PorterStemmerTest {
          */
 
         String original = "organization organizer international responsibility fitness";
-        String expected = "organ organ inter respons fit";
+        String expected = "organ organ intern respons fit";
 
         PorterStemmer porterStemmer = new PorterStemmer();
         assertEquals(expected, testStem(porterStemmer, original));
