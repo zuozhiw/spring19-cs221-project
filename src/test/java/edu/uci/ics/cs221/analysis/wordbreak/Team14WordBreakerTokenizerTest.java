@@ -35,7 +35,7 @@ public class Team14WordBreakerTokenizerTest {
     @Test
     public void test2() {
         String text = "WEhaveaCOOLTaskinFrontOfUSANDwEShouldbehavingAgoodTIme";
-        List<String> expected = Arrays.asList("cool","task","front","us","good","time");
+        List<String> expected = Arrays.asList("cool","task","front","us","behaving","good","time");
         WordBreakTokenizer tokenizer = new WordBreakTokenizer();
 
         assertEquals(expected, tokenizer.tokenize(text));
