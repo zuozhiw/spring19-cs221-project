@@ -23,7 +23,7 @@ public class Team21PorterStemmerTest {
          */
 
         String original = "ties dogs caress need agreed disabled fitting making missing meeting meetings";
-        String expected = "ti dog caress need agree disable fit make miss meet meet";
+        String expected = "ti dog caress need agre disabl fit make miss meet meet";
 
         PorterStemmer porterStemmer = new PorterStemmer();
         assertEquals(expected, testStem(porterStemmer, original));
@@ -36,7 +36,7 @@ public class Team21PorterStemmerTest {
          */
 
         String original = "organization organizer international responsibility fitness";
-        String expected = "organ organ internat respons fit";
+        String expected = "organ organ intern respons fit";
 
         PorterStemmer porterStemmer = new PorterStemmer();
         assertEquals(expected, testStem(porterStemmer, original));
