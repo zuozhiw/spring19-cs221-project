@@ -37,7 +37,7 @@ public class Team8WordBreakTokenizerTest {
 
 
     //check if the program can throw an exception when the string is unbreakable
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = RuntimeException.class)
     public void test3(){
     	String text = "$reLLL(  ghn)iog*";
         //throw exception
