@@ -42,4 +42,20 @@ public class Team14WordBreakerTokenizerTest {
 
     }
 
+    @Test(expected = RuntimeException.class)
+    public void test3() {
+        String text = "WhatHappensWhenWeaddAperiod.";
+        WordBreakTokenizer tokenizer = new WordBreakTokenizer();
+        tokenizer.tokenize(text);
+
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void test4() {
+        String text = "This is too check if an exception is thrown when there are spaces";
+        WordBreakTokenizer tokenizer = new WordBreakTokenizer();
+        tokenizer.tokenize(text);
+
+    }
+
 }
