@@ -17,12 +17,11 @@ public class WordBreakTokenizerTest {
         WordBreakTokenizer tokenizer = new WordBreakTokenizer();
 
         assertEquals(expected, tokenizer.tokenize(text));
-
     }
 
 }
 
-class Team17TaskNameTest {
+class Team17WordBreakTokenizerTest {
     /*
      * The test1() is to check that the "san francisco" is tokenized as one single token instead of two separate tokens.
      * If there are two separate tokens "san" and "francisco" then the meaning of the input string changes drastically.
