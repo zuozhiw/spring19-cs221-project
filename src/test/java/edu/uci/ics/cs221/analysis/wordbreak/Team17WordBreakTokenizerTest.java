@@ -8,20 +8,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class WordBreakTokenizerTest {
-
-    @Test
-    public void test1() {
-        String text = "catdog";
-        List<String> expected = Arrays.asList("cat", "dog");
-        WordBreakTokenizer tokenizer = new WordBreakTokenizer();
-
-        assertEquals(expected, tokenizer.tokenize(text));
-    }
-
-}
-
-class Team17WordBreakTokenizerTest {
+public class Team17WordBreakTokenizerTest {
     /*
      * The test1() is to check that the "san francisco" is tokenized as one single token instead of two separate tokens.
      * If there are two separate tokens "san" and "francisco" then the meaning of the input string changes drastically.
@@ -95,7 +82,5 @@ class Team17WordBreakTokenizerTest {
         assertEquals(expected, tokenizer.tokenize(text)); //must expect an exception
 
     }
-
-
 }
 
