@@ -61,7 +61,7 @@ public class Team17WordBreakTokenizerTest {
      * Hence the wordbreak tokenizer must throw an exception
      * */
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = RuntimeException.class)
     public void test4() {
         String text = "mother-in-law";
         WordBreakTokenizer tokenizer = new WordBreakTokenizer();
