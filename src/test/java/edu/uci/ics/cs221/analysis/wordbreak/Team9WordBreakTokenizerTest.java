@@ -45,7 +45,7 @@ public class Team9WordBreakTokenizerTest {
 
     // Test4: invalid input, expect an exception.
     // exception type depends on the implementation.
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = RuntimeException.class)
     public void test4() {
         String text = "abc123";
         WordBreakTokenizer tokenizer = new WordBreakTokenizer();
