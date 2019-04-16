@@ -1,9 +1,13 @@
 package edu.uci.ics.cs221.analysis;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Project 1, task 2: Implement a Dynamic-Programming based Word-Break Tokenizer.
@@ -33,20 +37,78 @@ import java.util.List;
  *
  */
 public class WordBreakTokenizer implements Tokenizer {
+    Map<String, String> dict;
 
     public WordBreakTokenizer() {
         try {
             // load the dictionary corpus
             URL dictResource = WordBreakTokenizer.class.getClassLoader().getResource("cs221_frequency_dictionary_en.txt");
             List<String> dictLines = Files.readAllLines(Paths.get(dictResource.toURI()));
-
+            this.dict = new HashMap<String, String>();
+            for(String word : dictLines){
+                this.dict.put(word.split(" ")[0], word.split(" ")[1]);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     public List<String> tokenize(String text) {
-        throw new UnsupportedOperationException("Porter Stemmer Unimplemented");
+        text = text.toLowerCase();
+        int len = text.length();
+
+        // break the string based on dynamic programming
+        List<String> list = new ArrayList<String>();
+        Map<Integer,List<String>> substr = new HashMap<Integer, List<String>>();
+        list.add("");
+        substr.put(len,list);
+        for(int start= len-1; start >= 0; start--){
+            List<String> temp = new ArrayList<String>();
+            for(int end=start+1; end<=len;end++){
+                if(this.dict.containsKey(text.substring(start,end))){
+                    for(String word : substr.get(end)){
+                        temp.add(text.substring(start,end)+(word.isEmpty() ? "" : " ")+word);
+                    }
+                }
+            }
+            substr.put(start, temp);
+        }
+
+        // to sum up frequencies of all words in dictionary
+        BigDecimal freqSum = new BigDecimal("0");
+        for(String word : this.dict.keySet()){
+            freqSum = freqSum.add(new BigDecimal(this.dict.get(word)));
+        }
+
+        list = substr.get(0);
+        if(list.isEmpty()){
+            throw new UnsupportedOperationException("There's no possible way to break the string.");
+        }
+        String match = ""; Double maxFreq = 0.0;
+        for(int i = 0; i<list.size(); i++){
+            String[] arr = list.get(i).split(" ");
+            BigDecimal currFreq = new BigDecimal("0");
+            for(String word : arr){
+                currFreq = currFreq.add(new BigDecimal(this.dict.get(word)));
+            }
+            Double freq = Math.log(currFreq.divide(freqSum, 32, BigDecimal.ROUND_UP).doubleValue());
+//            System.out.println(freq+":"+list.get(i));
+            if(maxFreq == 0.0 || maxFreq < freq){
+                maxFreq = freq;
+                match = list.get(i);
+            }
+        }
+//        System.out.println(maxFreq);
+        List<String> tokerizer = new ArrayList<String>();
+        String[] array = match.split(" ");
+        for(String word : array){
+            tokerizer.add(word);
+        }
+//        System.out.print(tokerizer);
+        StopWords stopWordSet = new StopWords();
+        tokerizer.removeAll(stopWordSet.stopWords);
+        System.out.print(tokerizer);
+        return tokerizer;
     }
 
 }

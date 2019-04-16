@@ -5,8 +5,9 @@ public class Main {
         /*
         Task 1
          */
-//        PunctuationTokenizer punctuatetokenizer = new PunctuationTokenizer();
-//        punctuatetokenizer.tokenize("I am Happy Today! What about you, your friends Yidan?");
-
+        PunctuationTokenizer punctuatetokenizer = new PunctuationTokenizer();
+        punctuatetokenizer.tokenize("I am Happy Today! What about you, your friends Yidan?");
+        WordBreakTokenizer wordbreaktokenizer = new WordBreakTokenizer();
+        wordbreaktokenizer.tokenize("acatsandadog");
     }
 }
