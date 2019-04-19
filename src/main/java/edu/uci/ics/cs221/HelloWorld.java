@@ -19,12 +19,11 @@ import java.util.stream.Collectors;
 import static edu.uci.ics.cs221.storage.MapdbDocStore.createOrOpen;
 
 /**
- * s
  * This is a Hello World program of our CS221 Peterman Search Engine.
  * It shows how to use the skeleton API of the search engine:
- * 1. use the provided DocumentStore to add and save documents
- * 2. use the provided FullScanSearcher and NaiveAnalyzer to do a search
- * ss
+ *  1. use the provided DocumentStore to add and save documents
+ *  2. use the provided FullScanSearcher and NaiveAnalyzer to do a search
+ *
  * Over this quarter, you will be implementing various analyzers, indexes, query types, and ranking
  * to make the search engine more efficient, powerful, and user-friendly :)
  */
