@@ -5,47 +5,18 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-/**
- * Project 1, task 2: Implement a Dynamic-Programming based Word-Break Tokenizer.
- *
- * Word-break is a problem where given a dictionary and a string (text with all white spaces removed),
- * determine how to break the string into sequence of words.
- * For example:
- * input string "catanddog" is broken to tokens ["cat", "and", "dog"]
- *
- * We provide an English dictionary corpus with frequency information in "resources/cs221_frequency_dictionary_en.txt".
- * Use frequency statistics to choose the optimal way when there are many alternatives to break a string.
- * For example,
- * input string is "ai",
- * dictionary and probability is: "a": 0.1, "i": 0.1, and "ai": "0.05".
- *
- * Alternative 1: ["a", "i"], with probability p("a") * p("i") = 0.01
- * Alternative 2: ["ai"], with probability p("ai") = 0.05
- * Finally, ["ai"] is chosen as result because it has higher probability.
- *
- * Requirements:
- *  - Use Dynamic Programming for efficiency purposes.
- *  - Use the the given dictionary corpus and frequency statistics to determine optimal alternative.
- *      The probability is calculated as the product of each token's probability, assuming the tokens are independent.
- *  - A match in dictionary is case insensitive. Output tokens should all be in lower case.
- *  - Stop words should be removed.
- *  - If there's no possible way to break the string, throw an exception.
- *
- */
-public class WordBreakTokenizer implements Tokenizer {
+public class JapaneseWordBreakTokenizer implements Tokenizer {
     Map<String, String> dict;
 
-    public WordBreakTokenizer() {
+    public JapaneseWordBreakTokenizer() {
         try {
-            // load the dictionary corpus
-            URL dictResource = WordBreakTokenizer.class.getClassLoader().getResource("cs221_frequency_dictionary_en.txt");
+            // load the dictionary corpus, dictionary source: https://namakajiri.net/data/wikipedia-20150422-lemmas.tsv
+            URL dictResource = WordBreakTokenizer.class.getClassLoader().getResource("wikipedia-20150422-lemmas.tsv");
             List<String> dictLines = Files.readAllLines(Paths.get(dictResource.toURI()));
             this.dict = new HashMap<>();
             for(String word : dictLines){
-                if (word.startsWith("\uFEFF")) {
-                    word = word.substring(1);
-                }
-                this.dict.put(word.split(" ")[0], word.split(" ")[1]);
+                word = word.trim();
+                this.dict.put(word.split("\\s+")[2], word.split("\\s+")[1]);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -140,5 +111,4 @@ public class WordBreakTokenizer implements Tokenizer {
         }
         return match;
     }
-
 }

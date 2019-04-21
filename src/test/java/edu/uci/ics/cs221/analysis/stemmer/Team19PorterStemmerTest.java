@@ -10,6 +10,7 @@ import static java.util.stream.Collectors.joining;
 import static org.junit.Assert.assertEquals;
 
 public class Team19PorterStemmerTest {
+
     public static String testStem(Stemmer stemmer, String sentence) {
         return Arrays.stream(sentence.split("\\s+"))
                 .map(token -> stemmer.stem(token))
@@ -48,4 +49,5 @@ public class Team19PorterStemmerTest {
         PorterStemmer porterStemmer = new PorterStemmer();
         assertEquals(expected, testStem(porterStemmer, original));
     }
+
 }

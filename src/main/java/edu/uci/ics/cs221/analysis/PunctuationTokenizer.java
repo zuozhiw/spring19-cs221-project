@@ -25,25 +25,34 @@ public class PunctuationTokenizer implements Tokenizer {
 
     public List<String> tokenize(String text) {
         text = text.toLowerCase();
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
+
+        // replace all punctuations in text with space
         for(String pun : punctuations){
             pun =  "[" + pun + "]";
             text = text.replaceAll(pun," ");
         }
 
+        // remove spaces in front and tail of text
+        text = text.trim();
+
+        // split text with one space or multiple spaces
         String[] words = text.split("\\s+");
 
+        // convert array into list
         for(int n = 0; n < words.length; n++){
-            list.add(words[n]);
+            if(!words[n].isEmpty()){
+                list.add(words[n]);
+            }
         }
 
+        // remove all stop words from list
         StopWords stopWordSet = new StopWords();
         list.removeAll(stopWordSet.stopWords);
 
-        System.out.println(list);
+//        System.out.println(list);
         return list;
 
-        //throw new UnsupportedOperationException("Punctuation Tokenizer Unimplemented");
     }
 
 }
