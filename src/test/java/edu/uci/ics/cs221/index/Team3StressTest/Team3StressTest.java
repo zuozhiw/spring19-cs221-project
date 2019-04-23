@@ -2,7 +2,6 @@ package edu.uci.ics.cs221.index.Team3StressTest;
 
 import edu.uci.ics.cs221.analysis.*;
 import edu.uci.ics.cs221.index.inverted.InvertedIndexManager;
-import edu.uci.ics.cs221.index.inverted.InvertedIndexSegmentForTest;
 import edu.uci.ics.cs221.storage.Document;
 import org.junit.After;
 import org.junit.Test;
@@ -23,7 +22,7 @@ public class Team3StressTest {
     Team3StressTest() {
         invertedIndexManager1 = InvertedIndexManager.createOrOpen("./index/Team3StressTest/", analyzer1);
         try {
-            URL dictResource = InvertedIndexManager.class.getClassLoader().getResource("text.txt"); //
+            URL dictResource = InvertedIndexManager.class.getClassLoader().getResource("index/text.txt"); //
             allDocuments = Files.readAllLines(Paths.get(dictResource.toURI()));
 
         } catch (Exception e) {
