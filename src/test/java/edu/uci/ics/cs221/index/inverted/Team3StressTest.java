@@ -1,10 +1,7 @@
-package edu.uci.ics.cs221.index.Team3StressTest;
+package edu.uci.ics.cs221.index.inverted;
 
 import edu.uci.ics.cs221.analysis.*;
-import edu.uci.ics.cs221.index.inverted.InvertedIndexManager;
-import edu.uci.ics.cs221.index.inverted.InvertedIndexSegmentForTest;
 import edu.uci.ics.cs221.storage.Document;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -149,7 +146,7 @@ public class Team3StressTest {
     @AfterClass
     public void afterClass(){
         //delete files
-        String path = "./index/Team3StressTest/";
+        String path = "./index/inverted/";
         File file = new File(path);
         if(!file.isDirectory()){
             System.out.println("File name is not a directory");
