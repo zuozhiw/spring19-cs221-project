@@ -5,6 +5,7 @@ import edu.uci.ics.cs221.analysis.ComposableAnalyzer;
 import edu.uci.ics.cs221.analysis.PorterStemmer;
 import edu.uci.ics.cs221.analysis.WordBreakTokenizer;
 import edu.uci.ics.cs221.storage.Document;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,11 +18,14 @@ import static org.junit.Assert.*;
 public class Team5OrSearchTest {
     private InvertedIndexManager invertlist;
     private ArrayList<Document> docs;
+    private String tmpFileDir;
+
 
     @Before
     public void setUp() throws Exception {
         Analyzer analyzer = new ComposableAnalyzer(new WordBreakTokenizer(), new PorterStemmer());
-        invertlist = InvertedIndexManager.createOrOpen("src/test/java/edu/uci/ics/cs221/index/Team5OrSearchTest", analyzer);
+        tmpFileDir = "src/test/java/edu/uci/ics/cs221/index/Team5OrSearchTest";
+        invertlist = InvertedIndexManager.createOrOpen(tmpFileDir, analyzer);
         docs = new ArrayList<>();
         docs.add(new Document("cat dot toy"));
         docs.add(new Document("cat Dot"));
@@ -47,4 +51,9 @@ public class Team5OrSearchTest {
     //todo test if the query find all matched docs
     //todo delete tmp file after test
 
+
+    @After
+    public void tearDown() throws Exception {
+
+    }
 }
