@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 public class Team3StressTest {
@@ -67,7 +68,7 @@ public class Team3StressTest {
             if(!expected.get(i).equals(result1.next())) allRight = false;
             i++;
         }
-        assertEquals(true,allRight);
+        assertTrue(allRight);
     }
 
     @Test
@@ -100,13 +101,13 @@ public class Team3StressTest {
             if(!expected.get(i).equals(result1.next())) allRight = false;
             i++;
         }
-        assertEquals(true,allRight);
+        assertTrue(allRight);
     }
 
     @Test
     public void test3(){
         Iterator<Document> result1 = invertedIndexManager1.searchAndQuery(Arrays.asList("DVD","CD"));
-        assertEquals(false,result1.hasNext());
+        assertTrue(!result1.hasNext());
     }
 
     @Test
@@ -143,7 +144,7 @@ public class Team3StressTest {
             if(!expected.get(i).equals(result1.next())) allRight = false;
             i++;
         }
-        assertEquals(true,allRight);
+        assertTrue(allRight);
     }
     @AfterClass
     public void afterClass(){
