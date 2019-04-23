@@ -2,8 +2,11 @@ package edu.uci.ics.cs221.index.Team3StressTest;
 
 import edu.uci.ics.cs221.analysis.*;
 import edu.uci.ics.cs221.index.inverted.InvertedIndexManager;
+import edu.uci.ics.cs221.index.inverted.InvertedIndexSegmentForTest;
 import edu.uci.ics.cs221.storage.Document;
 import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.File;
@@ -15,14 +18,17 @@ import java.util.*;
 import static org.junit.Assert.assertEquals;
 
 public class Team3StressTest {
-    Analyzer analyzer1 = new ComposableAnalyzer(new PunctuationTokenizer(),new PorterStemmer());
+
+    Analyzer analyzer1;
     List<String> allDocuments;
     InvertedIndexManager invertedIndexManager1;
 
-    Team3StressTest() {
+    @BeforeClass
+    public void beforeClass(){
+        analyzer1 = new ComposableAnalyzer(new PunctuationTokenizer(),new PorterStemmer());
         invertedIndexManager1 = InvertedIndexManager.createOrOpen("./index/Team3StressTest/", analyzer1);
         try {
-            URL dictResource = InvertedIndexManager.class.getClassLoader().getResource("index/text.txt"); //
+            URL dictResource = InvertedIndexManager.class.getClassLoader().getResource("text.txt"); //
             allDocuments = Files.readAllLines(Paths.get(dictResource.toURI()));
 
         } catch (Exception e) {
@@ -139,8 +145,8 @@ public class Team3StressTest {
         }
         assertEquals(true,allRight);
     }
-    @After
-    public void after(){
+    @AfterClass
+    public void afterClass(){
         //delete files
         String path = "./index/Team3StressTest/";
         File file = new File(path);
