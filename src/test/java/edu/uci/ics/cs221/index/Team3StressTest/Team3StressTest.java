@@ -7,6 +7,7 @@ import edu.uci.ics.cs221.storage.Document;
 import org.junit.After;
 import org.junit.Test;
 
+import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -142,5 +143,24 @@ public class Team3StressTest {
     @After
     public void after(){
         //delete files
+        String path = "./index/Team3StressTest/";
+        File file = new File(path);
+        if(!file.isDirectory()){
+            System.out.println("File name is not a directory");
+            return;
+        }
+        String[] tempList = file.list();
+        File temp = null;
+        for (int i = 0; i < tempList.length; i++) {
+            if (path.endsWith(File.separator)) {
+                temp = new File(path + tempList[i]);
+            } else {
+                temp = new File(path + File.separator + tempList[i]);
+            }
+            if (temp.isFile()) {
+                temp.delete();
+            }
+        }
+
     }
 }
