@@ -57,6 +57,42 @@ public class Team20FlushTest {
         assertEquals(0, ii.getNumSegments());
 
     }
+    @Test
+    public void test3(){
+
+        /* check if two segments have been created after two calls to flush */
+
+        Document d1 = new Document("cat dog");
+        Document d2 = new Document("cat elephant");
+        Map<String, List<Integer>> expectedPostingList1 = new HashMap<>();
+        Map<String, List<Integer>> expectedPostingList2 = new HashMap<>();
+        expectedPostingList1.put("cat", Arrays.asList(0));
+        expectedPostingList1.put("dog", Arrays.asList(0)) ;
+        expectedPostingList2.put("cat", Arrays.asList(0));
+        expectedPostingList2.put("elephant", Arrays.asList(0)) ;
+        Map<Integer, Document> expectedDocuments1 = new HashMap<>();
+        Map<Integer, Document> expectedDocuments2 = new HashMap<>();
+        expectedDocuments1.put(0, d1);
+        expectedDocuments2.put(0, d2);
+        NaiveAnalyzer analyzer = new NaiveAnalyzer();
+        InvertedIndexManager ii = InvertedIndexManager.createOrOpen("index/Team20FlushTest/", analyzer) ;
+        ii.DEFAULT_FLUSH_THRESHOLD = 5;
+        ii.addDocument(d1);
+        ii.flush();
+        ii.addDocument(d2);
+        ii.flush();
+        assertEquals(2, ii.getNumSegments());
+        InvertedIndexSegmentForTest segment0;
+        InvertedIndexSegmentForTest segment1;
+        segment0 = ii.getIndexSegment(0);
+        assertEquals(expectedPostingList1, segment0.getInvertedLists());
+        assertEquals(expectedDocuments1, segment0.getDocuments());
+        segment1 = ii.getIndexSegment(1);
+        assertEquals(expectedPostingList2, segment1.getInvertedLists());
+        assertEquals(expectedDocuments2, segment1.getDocuments());
+    }
+
+
 
     @AfterClass
     public static void deleteFiles() {
