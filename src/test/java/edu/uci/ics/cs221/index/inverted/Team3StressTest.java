@@ -146,7 +146,7 @@ public class Team3StressTest {
     @AfterClass
     public void afterClass(){
         //delete files
-        String path = "./index/inverted/";
+        String path = "./index/Team3StressTest/";
         File file = new File(path);
         if(!file.isDirectory()){
             System.out.println("File name is not a directory");
