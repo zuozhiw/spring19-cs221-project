@@ -34,7 +34,6 @@ public class MapdbDocStoreTest {
         documentStore.addDocument(2, new Document("test2"));
         documentStore.addDocument(3, new Document("test3"));
         documentStore.close();
-
         assertTrue(Files.size(Paths.get(file)) > 0);
     }
 
