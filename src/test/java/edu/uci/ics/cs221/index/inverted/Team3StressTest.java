@@ -6,7 +6,9 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -23,19 +25,24 @@ public class Team3StressTest {
 
     @BeforeClass
     public void beforeClass(){
+        String URL = "http://cyy0908.com/text.txt";
+        try {
+            java.net.URL url = new URL(URL);
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+            String s;
+            while ((s = reader.readLine()) != null) {
+                allDocuments.add(s);
+                invertedIndexManager1.addDocument(new Document(s));
+            }
+            reader.close();
+        }
+        catch (Exception e){
+            new RuntimeException(e);
+        }
+
         analyzer1 = new ComposableAnalyzer(new PunctuationTokenizer(),new PorterStemmer());
         invertedIndexManager1 = InvertedIndexManager.createOrOpen("./index/Team3StressTest/", analyzer1);
-        try {
-            URL dictResource = InvertedIndexManager.class.getClassLoader().getResource("text.txt"); //
-            allDocuments = Files.readAllLines(Paths.get(dictResource.toURI()));
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        //test addDocument()
-        for (int i = 0; i < allDocuments.size(); i++) {
-            invertedIndexManager1.addDocument(new Document(allDocuments.get(i)));
-        }
     }
 
     @Test
