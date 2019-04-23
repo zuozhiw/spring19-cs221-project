@@ -136,7 +136,7 @@ public class Team17InvertedIndexManagerPart1Test {
     }
 
     /**
-     *
+     * tests if multiple documents of different contents can work properly; also tests if mixed explicit flush and auto flush will create conflicts.
      */
     @Test
     public void testMixedDocumentAndFlush(){
