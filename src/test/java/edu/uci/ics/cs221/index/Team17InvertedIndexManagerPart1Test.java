@@ -196,4 +196,32 @@ public class Team17InvertedIndexManagerPart1Test {
             }
         }
     }
+
+    /**
+     * Test if flushes when buffer is empty is handled correctly.
+     */
+    @Test
+    public void testFlushEmptyBuffer() {
+        InvertedIndexManager iim;
+        iim = InvertedIndexManager.createOrOpen("./index/Team17", new ComposableAnalyzer( new PunctuationTokenizer(), new PorterStemmer()));
+
+        iim.flush();
+        iim.flush();
+
+        int expectedNumSegments = 0;
+        assertEquals(expectedNumSegments, iim.getNumSegments());
+        assertEquals(null, iim.getIndexSegment(0));
+
+        Document doc1 = new Document("test case auto");
+        for (int i=0; i<InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD; i++){
+            iim.addDocument(doc1);
+        }
+        iim.addDocument(doc1);
+
+        iim.flush();
+        iim.flush();
+
+        expectedNumSegments = 2;
+        assertEquals(expectedNumSegments, iim.getNumSegments());
+    }
 }
