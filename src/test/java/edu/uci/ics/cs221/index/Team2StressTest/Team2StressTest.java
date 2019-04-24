@@ -16,13 +16,11 @@ import static org.junit.Assert.assertEquals;
 public class Team2StressTest {
 
     Analyzer analyzer;
-    List<String> allDocuments;
     InvertedIndexManager invertedIndexManager;
 
     @Before
     public void init() {
-        Analyzer analyzer = new ComposableAnalyzer(new PunctuationTokenizer(),new PorterStemmer());
-
+        analyzer = new ComposableAnalyzer(new PunctuationTokenizer(),new PorterStemmer());
         invertedIndexManager = InvertedIndexManager.createOrOpen("./index/Team2StressTest/", analyzer);
         String text = "";
         try {
@@ -43,9 +41,6 @@ public class Team2StressTest {
             e.printStackTrace();
         }
 
-        analyzer = new ComposableAnalyzer(new PunctuationTokenizer(),new PorterStemmer());
-        invertedIndexManager = InvertedIndexManager.createOrOpen("./index/Team3StressTest/", analyzer);
-
         // copy full pride-and-prejudice for 5000 times, every document is about 708KB, 5000 times is about 3.46GB
         for (int i = 0; i < 5000; i++) {
             invertedIndexManager.addDocument(new Document(text));
@@ -63,7 +58,6 @@ public class Team2StressTest {
     @Test
     public void test1(){
 
-
         Iterator<Document> result = invertedIndexManager.searchQuery("elizabeth");
 
         int counter = 0;
@@ -79,7 +73,6 @@ public class Team2StressTest {
      */
     @Test
     public void test2(){
-
         List<String> keywords = Arrays.asList("qwertyuiop", "elizabeth");
 
         Iterator<Document> result = invertedIndexManager.searchAndQuery(keywords);
