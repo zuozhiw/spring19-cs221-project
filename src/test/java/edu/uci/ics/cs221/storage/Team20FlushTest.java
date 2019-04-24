@@ -1,6 +1,8 @@
 package edu.uci.ics.cs221.storage;
 
-import edu.uci.ics.cs221.analysis.NaiveAnalyzer;
+import edu.uci.ics.cs221.analysis.ComposableAnalyzer;
+import edu.uci.ics.cs221.analysis.PorterStemmer;
+import edu.uci.ics.cs221.analysis.PunctuationTokenizer;
 import edu.uci.ics.cs221.index.inverted.InvertedIndexManager;
 import edu.uci.ics.cs221.index.inverted.InvertedIndexSegmentForTest;
 import org.junit.After;
@@ -24,17 +26,17 @@ public class Team20FlushTest {
      * automatically called*/
     @Test
     public void check_auto_flush_call() {
-        Document d1 = new Document("cat dog");
-        Document d2 = new Document("cat elephant");
+        Document d1 = new Document("rate roll");
+        Document d2 = new Document("rate sky");
         Map<String, List<Integer>> expectedPostingList = new HashMap<>();
-        expectedPostingList.put("cat", Arrays.asList(0, 1));
-        expectedPostingList.put("dog", Arrays.asList(0));
-        expectedPostingList.put("elephant", Arrays.asList(1));
+        expectedPostingList.put("rate", Arrays.asList(0, 1));
+        expectedPostingList.put("roll", Arrays.asList(0));
+        expectedPostingList.put("sky", Arrays.asList(1));
         Map<Integer, Document> expectedDocStore = new HashMap<>();
         expectedDocStore.put(0, d1);
         expectedDocStore.put(1, d2);
-        NaiveAnalyzer analyzer = new NaiveAnalyzer();
-        InvertedIndexManager ii = InvertedIndexManager.createOrOpen("index/Team20FlushTest/", analyzer);
+        ComposableAnalyzer analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
+        InvertedIndexManager ii = InvertedIndexManager.createOrOpen("./index/Team20FlushTest/", analyzer);
 
         ii.DEFAULT_FLUSH_THRESHOLD = 2;
         ii.addDocument(d1);
@@ -52,30 +54,29 @@ public class Team20FlushTest {
      * automatically called twice*/
     @Test
     public void check_auto_flush_call_twice() {
-        Document d1 = new Document("cat dog");
-        Document d2 = new Document("cat elephant");
-        Document d3 = new Document("call car cast");
-        Document d4 = new Document("call canon cast");
+        Document d1 = new Document("rate roll");
+        Document d2 = new Document("rate sky");
+        Document d3 = new Document("feed bled");
+        Document d4 = new Document("sing feed");
 
         Map<String, List<Integer>> expectedPostingList1 = new HashMap<>();
-        expectedPostingList1.put("cat", Arrays.asList(0, 1));
-        expectedPostingList1.put("dog", Arrays.asList(0));
-        expectedPostingList1.put("elephant", Arrays.asList(1));
+        expectedPostingList1.put("rate", Arrays.asList(0, 1));
+        expectedPostingList1.put("roll", Arrays.asList(0));
+        expectedPostingList1.put("sky", Arrays.asList(1));
         Map<Integer, Document> expectedDocStore1 = new HashMap<>();
         expectedDocStore1.put(0, d1);
         expectedDocStore1.put(1, d2);
 
         Map<String, List<Integer>> expectedPostingList2 = new HashMap<>();
-        expectedPostingList2.put("call", Arrays.asList(0, 1));
-        expectedPostingList2.put("canon", Arrays.asList(1));
-        expectedPostingList2.put("car", Arrays.asList(0));
-        expectedPostingList2.put("cast", Arrays.asList(0, 1));
+        expectedPostingList2.put("feed", Arrays.asList(0, 1));
+        expectedPostingList2.put("sing", Arrays.asList(1));
+        expectedPostingList2.put("bled", Arrays.asList(0));
         Map<Integer, Document> expectedDocStore2 = new HashMap<>();
         expectedDocStore2.put(0, d3);
         expectedDocStore2.put(1, d4);
 
-        NaiveAnalyzer analyzer = new NaiveAnalyzer();
-        InvertedIndexManager ii = InvertedIndexManager.createOrOpen("index/Team20FlushTest/", analyzer);
+        ComposableAnalyzer analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
+        InvertedIndexManager ii = InvertedIndexManager.createOrOpen("./index/Team20FlushTest/", analyzer);
 
         ii.DEFAULT_FLUSH_THRESHOLD = 2;
         ii.addDocument(d1);
@@ -99,8 +100,8 @@ public class Team20FlushTest {
     /* Forcefully call flush(), keeping an empty in-memory buffer, flush() should do nothing*/
     @Test
     public void check_empty_mem_buffer() {
-        NaiveAnalyzer analyzer = new NaiveAnalyzer();
-        InvertedIndexManager ii = InvertedIndexManager.createOrOpen("index/Team20FlushTest/", analyzer);
+        ComposableAnalyzer analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
+        InvertedIndexManager ii = InvertedIndexManager.createOrOpen("./index/Team20FlushTest/", analyzer);
 
         ii.flush();
         assertEquals(0, ii.getNumSegments());
@@ -126,8 +127,8 @@ public class Team20FlushTest {
         expectedDocStore2.put(0, d2);
 
 
-        NaiveAnalyzer analyzer = new NaiveAnalyzer();
-        InvertedIndexManager ii = InvertedIndexManager.createOrOpen("index/Team20FlushTest/", analyzer);
+        ComposableAnalyzer analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
+        InvertedIndexManager ii = InvertedIndexManager.createOrOpen("./index/Team20FlushTest/", analyzer);
         ii.DEFAULT_FLUSH_THRESHOLD = 5;
         ii.addDocument(d1);
         ii.flush();
@@ -149,7 +150,7 @@ public class Team20FlushTest {
 
     @After
     public static void deleteFiles() {
-        String SRC_FOLDER = "index/Team20FlushTest/";
+        String SRC_FOLDER = "./index/Team20FlushTest/";
         File directory = new File(SRC_FOLDER);
         File[] listOfFiles = directory.listFiles();
         for (File file : listOfFiles) {
