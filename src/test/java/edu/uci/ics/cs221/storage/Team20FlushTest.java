@@ -149,7 +149,7 @@ public class Team20FlushTest {
 
 
     @After
-    public static void deleteFiles() {
+    public void deleteFiles() {
         String SRC_FOLDER = "./index/Team20FlushTest/";
         File directory = new File(SRC_FOLDER);
         File[] listOfFiles = directory.listFiles();
