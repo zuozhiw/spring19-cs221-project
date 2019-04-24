@@ -30,7 +30,7 @@ public class Team8KeywordSearchTest {
     @Before
     public void initial(){
         //initialize an InvertedIndexManager
-        Analyzer analyzer = new ComposableAnalyzer( new PunctuationTokenizer(), new PorterStemmer());
+        Analyzer analyzer = new NaiveAnalyzer();
         InvertedIndexManager indexManager = InvertedIndexManager.createOrOpen(pathname, analyzer);
         //add doc
         indexManager.addDocument(doc1);
