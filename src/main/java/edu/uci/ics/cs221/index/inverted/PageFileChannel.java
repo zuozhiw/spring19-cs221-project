@@ -1,4 +1,4 @@
-package edu.uci.ics.cs221.index;
+package edu.uci.ics.cs221.index.inverted;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Verify;
