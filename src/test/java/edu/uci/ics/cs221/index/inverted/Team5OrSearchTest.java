@@ -33,15 +33,22 @@ public class Team5OrSearchTest {
         analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
         invertedList = InvertedIndexManager.createOrOpen(path, analyzer);
         invertedList.addDocument( new Document("cat dog toy"));
+        invertedList.flush();
         invertedList.addDocument( new Document("cat Dot"));
+        invertedList.flush();
         invertedList.addDocument( new Document("cat dot toy"));
+        invertedList.flush();
         invertedList.addDocument(new Document("cat toy Dog"));
+        invertedList.flush();
         invertedList.addDocument(new Document("toy dog cat"));
+        invertedList.flush();
         invertedList.addDocument( new Document("cat Dog"));//docs cannot be null
         invertedList.flush();
     }
 
-    //test if multiple keywords work or not
+    //test if multiple keywords work or not. And we set 5 as a threshold for write counter and read counter,
+    // because I think the number will increase when we call the flush() function and we dont know the execution order
+    // of test cases, so we set them all to 5.
     @Test
     public void Test1() throws Exception {
         List<String> words = new ArrayList<>();
@@ -56,7 +63,7 @@ public class Team5OrSearchTest {
             counter++;
         }
         assertEquals(6, counter);
-        assertTrue(PageFileChannel.readCounter >= 20 && PageFileChannel.writeCounter >= 20);
+        assertTrue(PageFileChannel.readCounter >= 5 && PageFileChannel.writeCounter >= 5);
         words.clear();
 
     }
@@ -76,7 +83,7 @@ public class Team5OrSearchTest {
 
         }
         assertEquals(4, counter);
-        assertTrue(PageFileChannel.readCounter >= 20 && PageFileChannel.writeCounter >= 20);
+        assertTrue(PageFileChannel.readCounter >= 5 && PageFileChannel.writeCounter >= 5);
         words.clear();
 
     }
@@ -86,17 +93,18 @@ public class Team5OrSearchTest {
     public void Test3() throws Exception {
         List<String> words = new ArrayList<>();
         words.add("sdasjdlslsah");
+        words.add("*7&");
         Iterator<Document> iterator = invertedList.searchOrQuery(words);
         int counter = 0;
         while (iterator.hasNext()) {
 
             String text = iterator.next().getText();
-            assertEquals(true, text.contains("sdasjdlslsah"));
+            assertEquals(true, text.contains("sdasjdlslsah")||text.contains("*7&"));
             counter++;
 
         }
         assertEquals(0, counter);
-        assertTrue(PageFileChannel.readCounter >= 20 && PageFileChannel.writeCounter >= 20);
+        assertTrue(PageFileChannel.readCounter >= 5 && PageFileChannel.writeCounter >= 5);
         words.clear();
 
     }
@@ -117,7 +125,7 @@ public class Team5OrSearchTest {
 
         }
         assertEquals(5, counter);
-        assertTrue(PageFileChannel.readCounter >= 20 && PageFileChannel.writeCounter >= 20);
+        assertTrue(PageFileChannel.readCounter >= 5 && PageFileChannel.writeCounter >= 5);
         words.clear();
 
     }
