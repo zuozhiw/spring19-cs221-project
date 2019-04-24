@@ -46,6 +46,8 @@ public class Team21FlushTest {
         if(!set.isEmpty()){
             assertTrue(false);
         }
+
+        deleteWrittenFiles();
     }
 
     @Test
@@ -68,6 +70,8 @@ public class Team21FlushTest {
 
         int expected = 3;
         assertEquals(expected, manager.getNumSegments());
+
+        deleteWrittenFiles();
     }
 
     @Test
@@ -105,6 +109,8 @@ public class Team21FlushTest {
         for(Document temp : documents.values()){
             assertTrue(set.contains(temp.getText()));
         }
+
+        deleteWrittenFiles();
     }
 
     @After
