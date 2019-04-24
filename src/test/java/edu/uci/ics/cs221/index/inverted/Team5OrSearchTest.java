@@ -29,7 +29,7 @@ public class Team5OrSearchTest {
     public void setUp() throws Exception {
         File directory = new File(path);
         if (!directory.exists()) {
-            directory.mkdir();
+            directory.mkdirs();
         }
         documentStore = createOrOpen(path + "/test.db");
         analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
