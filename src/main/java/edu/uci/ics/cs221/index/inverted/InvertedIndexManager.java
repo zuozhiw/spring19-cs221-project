@@ -9,8 +9,10 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class manages an disk-based inverted index and all the documents in the inverted index.
@@ -35,6 +37,8 @@ public class InvertedIndexManager {
      */
     public static int DEFAULT_MERGE_THRESHOLD = 8;
 
+
+    int numSegments = 0;
 
     private InvertedIndexManager(String indexFolder, Analyzer analyzer) {
     }
@@ -66,6 +70,11 @@ public class InvertedIndexManager {
      * @param document
      */
     public void addDocument(Document document) {
+        Map<String, List<Integer>> invertedLists = new HashMap<>();
+        Map<Integer, Document> documents = new HashMap<>();
+        InvertedIndexSegmentForTest segment = new InvertedIndexSegmentForTest(invertedLists, documents);
+        int count = 0;
+        segment.getDocuments().put(count ++, document);
         throw new UnsupportedOperationException();
     }
 
@@ -74,6 +83,7 @@ public class InvertedIndexManager {
      * flush() writes the segment to disk containing the posting list and the corresponding document store.
      */
     public void flush() {
+
         throw new UnsupportedOperationException();
     }
 
@@ -146,7 +156,10 @@ public class InvertedIndexManager {
      * @return number of index segments.
      */
     public int getNumSegments() {
-        throw new UnsupportedOperationException();
+        if(numSegments != 0)
+            return numSegments;
+        else
+            throw new UnsupportedOperationException();
     }
 
     /**
@@ -157,6 +170,7 @@ public class InvertedIndexManager {
      * @return in-memory data structure with all contents in the index segment, null if segmentNum don't exist.
      */
     public InvertedIndexSegmentForTest getIndexSegment(int segmentNum) {
+
         throw new UnsupportedOperationException();
     }
 
