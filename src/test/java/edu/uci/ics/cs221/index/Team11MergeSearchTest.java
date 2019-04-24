@@ -45,12 +45,19 @@ public class Team11MergeSearchTest {
         InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 8;
 
         try {
-            File file = new File(indexPath);
+            // When deleting a folder in Java, all the files inside the folder needs to be deleted already
+            // Reference: https://stackoverflow.com/questions/20281835/how-to-delete-a-folder-with-files-using-java
+            File folder = new File(indexPath);
+            String[] entries = folder.list();
+            for(String s: entries) {
+                File currentFile = new File(folder.getPath(),s);
+                currentFile.delete();
+            }
 
-            if (file.delete()) {
-                System.out.println("File deleted successfully");
+            if (folder.delete()) {
+                System.out.println("Folder deleted successfully");
             } else {
-                System.out.println("Failed to delete the file");
+                System.out.println("Failed to delete the folder");
             }
         } catch (Exception e) {
             System.out.println("Something went wrong when deleting file");
