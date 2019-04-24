@@ -95,8 +95,8 @@ public class Team18FlushTest {
 
         assertEquals(2, invertedLists.size());
         List<Integer> invertedList_1 = invertedLists.get(ps.stem("kitten"));
-        Collections.sort(invertedList_1);
         List<Integer> invertedList_2 = invertedLists.get(ps.stem("bunny"));
+        Collections.sort(invertedList_1);
         Collections.sort(invertedList_2);
 
         assertEquals(1000, documents.size());
@@ -106,7 +106,6 @@ public class Team18FlushTest {
             assertEquals(i, invertedList_2.get(i).intValue());
             assertEquals(doc1, documents.get(i));
         }
-
 
         clear();
     }
@@ -118,7 +117,6 @@ public class Team18FlushTest {
                 file.delete();
             }
         }
-
     }
 
 

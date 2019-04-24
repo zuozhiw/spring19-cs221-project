@@ -69,23 +69,13 @@ public class InvertedIndexManager {
      * Document should live in a in-memory buffer until `flush()` is called to write the segment to disk.
      * @param document
      */
-    public void addDocument(Document document) {
-        Map<String, List<Integer>> invertedLists = new HashMap<>();
-        Map<Integer, Document> documents = new HashMap<>();
-        InvertedIndexSegmentForTest segment = new InvertedIndexSegmentForTest(invertedLists, documents);
-        int count = 0;
-        segment.getDocuments().put(count ++, document);
-        throw new UnsupportedOperationException();
-    }
+    public void addDocument(Document document) { throw new UnsupportedOperationException();}
 
     /**
      * Flushes all the documents in the in-memory segment buffer to disk. If the buffer is empty, it should not do anything.
      * flush() writes the segment to disk containing the posting list and the corresponding document store.
      */
-    public void flush() {
-
-        throw new UnsupportedOperationException();
-    }
+    public void flush() { throw new UnsupportedOperationException();}
 
     /**
      * Merges all the disk segments of the inverted index pair-wise.
