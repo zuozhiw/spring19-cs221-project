@@ -21,7 +21,6 @@ import static org.junit.Assert.assertTrue;
 
 public class Team5OrSearchTest {
     private String path = "./index/Team5OrSearchTest";
-    private DocumentStore documentStore;
     private Analyzer analyzer;
     private InvertedIndexManager invertedList;
 
@@ -31,20 +30,15 @@ public class Team5OrSearchTest {
         if (!directory.exists()) {
             directory.mkdirs();
         }
-        documentStore = createOrOpen(path + "/test.db");
         analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
         invertedList = InvertedIndexManager.createOrOpen(path, analyzer);
-        documentStore.addDocument(0, new Document("cat dog toy"));
-        documentStore.addDocument(1, new Document("cat Dot"));
-        documentStore.addDocument(2, new Document("cat dot toy"));
-        documentStore.addDocument(3, new Document("cat toy Dog"));
-        documentStore.addDocument(4, new Document("toy dog cat"));
-        documentStore.addDocument(5, new Document("cat Dog"));//docs cannot be null
-
-        for (int i = 0; i < documentStore.size(); i++) {
-            invertedList.addDocument(documentStore.getDocument(i));
-            invertedList.flush();
-        }
+        invertedList.addDocument( new Document("cat dog toy"));
+        invertedList.addDocument( new Document("cat Dot"));
+        invertedList.addDocument( new Document("cat dot toy"));
+        invertedList.addDocument(new Document("cat toy Dog"));
+        invertedList.addDocument(new Document("toy dog cat"));
+        invertedList.addDocument( new Document("cat Dog"));//docs cannot be null
+        invertedList.flush();
     }
 
     //test if multiple keywords work or not
@@ -131,7 +125,6 @@ public class Team5OrSearchTest {
 
     @After
     public void deleteTmp() throws Exception {
-        if (documentStore != null) documentStore.close();
         PageFileChannel.resetCounters();
         File f = new File(path);
         File[] files = f.listFiles();
