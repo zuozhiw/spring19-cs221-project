@@ -19,7 +19,7 @@ public class Team2StressTest {
     InvertedIndexManager invertedIndexManager;
 
     /**
-     * Create the invertedIndexManager.
+     * Instantiate the invertedIndexManager.
      * Import and add external documents to get prepared for the tests.
      */
     @Before
