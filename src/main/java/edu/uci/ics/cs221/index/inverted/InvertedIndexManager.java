@@ -145,12 +145,7 @@ public class InvertedIndexManager {
      *
      * @return number of index segments.
      */
-    public int getNumSegments() {
-        if(numSegments != 0)
-            return numSegments;
-        else
-            throw new UnsupportedOperationException();
-    }
+    public int getNumSegments() { throw new UnsupportedOperationException();}
 
     /**
      * Reads a disk segment into memory based on segmentNum.
@@ -159,10 +154,7 @@ public class InvertedIndexManager {
      * @param segmentNum n-th segment in the inverted index (start from 0).
      * @return in-memory data structure with all contents in the index segment, null if segmentNum don't exist.
      */
-    public InvertedIndexSegmentForTest getIndexSegment(int segmentNum) {
-
-        throw new UnsupportedOperationException();
-    }
+    public InvertedIndexSegmentForTest getIndexSegment(int segmentNum) { throw new UnsupportedOperationException();}
 
 
 }
