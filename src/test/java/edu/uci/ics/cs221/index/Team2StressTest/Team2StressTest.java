@@ -26,6 +26,7 @@ public class Team2StressTest {
     public void init() {
         analyzer = new ComposableAnalyzer(new PunctuationTokenizer(),new PorterStemmer());
         invertedIndexManager = InvertedIndexManager.createOrOpen("./index/Team2StressTest/", analyzer);
+        invertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1;
         String text = "";
         try {
             URL url = new URL("http://www.gutenberg.org/cache/epub/42671/pg42671.txt");
@@ -111,6 +112,7 @@ public class Team2StressTest {
      */
     @After
     public void after(){
+        invertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1000;
         String path = "./index/Team2StressTest/";
         if (delAllFile(path)) {
             System.out.println("All files in " + path + " are deleted.");
