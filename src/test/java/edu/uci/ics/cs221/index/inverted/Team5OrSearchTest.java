@@ -21,12 +21,19 @@ import static org.junit.Assert.assertTrue;
 
 public class Team5OrSearchTest {
     private String path = "./index/Team5OrSearchTest";
-    private DocumentStore documentStore = createOrOpen(path + "/test.db");
-    private Analyzer analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
-    private InvertedIndexManager invertedList = InvertedIndexManager.createOrOpen(path, analyzer);
+    private DocumentStore documentStore;
+    private Analyzer analyzer;
+    private InvertedIndexManager invertedList;
 
     @Before
     public void setUp() throws Exception {
+        File directory = new File(path);
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+        documentStore = createOrOpen(path + "/test.db");
+        analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
+        invertedList = InvertedIndexManager.createOrOpen(path, analyzer);
         documentStore.addDocument(0, new Document("cat dog toy"));
         documentStore.addDocument(1, new Document("cat Dot"));
         documentStore.addDocument(2, new Document("cat dot toy"));
