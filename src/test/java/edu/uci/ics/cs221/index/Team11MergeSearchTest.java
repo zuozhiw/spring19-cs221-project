@@ -57,24 +57,13 @@ public class Team11MergeSearchTest {
             System.out.println("Something went wrong when deleting file");
         }
     }
-    
-    @Test
-    public void mergeSearchTest1() {
-        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1;
-        InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 4;
-
-        for (Document doc : documents) {
-            index.addDocument(doc);
-            assert index.getNumSegments() <= InvertedIndexManager.DEFAULT_MERGE_THRESHOLD;
-        }
-    }
 
     /* Test an easy case of flush threshold=1 and merge threshold=2,
      * after we add 2 documents, the number of segments after merging
      * should be 1
      */
     @Test
-    public void mergeSearchTest2() {
+    public void mergeSearchTest1() {
         InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1;
         InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 2;
 
@@ -88,7 +77,7 @@ public class Team11MergeSearchTest {
      * mergeAllSegments() and then the result of merging should still be 3
      */
     @Test
-    public void mergeSearchTest3() {
+    public void mergeSearchTest2() {
         InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 2;
 
         for (int i = 0; i < 6 ; i++){
@@ -103,7 +92,7 @@ public class Team11MergeSearchTest {
      * the detailed docIDs of the keywords
      */
     @Test
-    public void mergeSearchTest4() {
+    public void mergeSearchTest3() {
         InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1;
         InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 4;
 
