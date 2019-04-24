@@ -31,19 +31,19 @@ public class Team5OrSearchTest {
             directory.mkdirs();
         }
         analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
-//        invertedList = InvertedIndexManager.createOrOpen(path, analyzer);
-//        invertedList.addDocument( new Document("cat dog toy"));
-//        invertedList.flush();
-//        invertedList.addDocument( new Document("cat Dot"));
-//        invertedList.flush();
-//        invertedList.addDocument( new Document("cat dot toy"));
-//        invertedList.flush();
-//        invertedList.addDocument(new Document("cat toy Dog"));
-//        invertedList.flush();
-//        invertedList.addDocument(new Document("toy dog cat"));
-//        invertedList.flush();
-//        invertedList.addDocument( new Document("cat Dog"));//docs cannot be null
-//        invertedList.flush();
+        invertedList = InvertedIndexManager.createOrOpen(path, analyzer);
+        invertedList.addDocument( new Document("cat dog toy"));
+        invertedList.flush();
+        invertedList.addDocument( new Document("cat Dot"));
+        invertedList.flush();
+        invertedList.addDocument( new Document("cat dot toy"));
+        invertedList.flush();
+        invertedList.addDocument(new Document("cat toy Dog"));
+        invertedList.flush();
+        invertedList.addDocument(new Document("toy dog cat"));
+        invertedList.flush();
+        invertedList.addDocument( new Document("cat Dog"));//docs cannot be null
+        invertedList.flush();
     }
 
     //test if multiple keywords work or not. And we set 5 as a threshold for write counter and read counter,
