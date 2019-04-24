@@ -115,7 +115,7 @@ public class Team2StressTest {
      */
     @After
     public void after(){
-        String path = "./index/Team3StressTest/";
+        String path = "./index/Team2StressTest/";
         delAllFile(path);
     }
 
