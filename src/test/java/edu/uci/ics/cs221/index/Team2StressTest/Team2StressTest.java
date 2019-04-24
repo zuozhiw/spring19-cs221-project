@@ -61,7 +61,6 @@ public class Team2StressTest {
      */
     @Test
     public void test1(){
-
         Iterator<Document> result = invertedIndexManager.searchQuery("elizabeth");
 
         int counter = 0;
@@ -113,20 +112,30 @@ public class Team2StressTest {
     @After
     public void after(){
         String path = "./index/Team2StressTest/";
-        delAllFile(path);
+        if (delAllFile(path)) {
+            System.out.println("All files in " + path + " are deleted.");
+        } else {
+            System.out.println("Deletion of all files in " + path + " failed to complete.");
+        }
     }
 
-    public boolean delAllFile(String path) {
+    private boolean delAllFile(String path) {
         boolean flag = false;
         File file = new File(path);
         if (!file.exists()) {
+            System.out.println("Path: " + file.toString() + "is not a valid file.");
             return flag;
         }
         if (!file.isDirectory()) {
+            System.out.println("Path: " + file.toString() + "is not a valid directory");
             return flag;
         }
         String[] tempList = file.list();
         File temp = null;
+        if (tempList == null || tempList.length == 0) {
+            System.out.println("No files in current folder " + file.toString());
+            return true;
+        }
         for (int i = 0; i < tempList.length; i++) {
             if (path.endsWith(File.separator)) {
                 temp = new File(path + tempList[i]);
@@ -134,7 +143,11 @@ public class Team2StressTest {
                 temp = new File(path + File.separator + tempList[i]);
             }
             if (temp.isFile()) {
-                temp.delete();
+                if (temp.delete()) {
+                    System.out.println("File: " + temp + " is successfully deleted.");
+                } else {
+                    System.out.println("File: " + temp + " failed to be deleted.");
+                }
             }
             if (temp.isDirectory()) {
                 delAllFile(path + "/" + tempList[i]);
@@ -145,12 +158,15 @@ public class Team2StressTest {
         return flag;
     }
 
-    public void delFolder(String folderPath) {
+    private void delFolder(String folderPath) {
         try {
             delAllFile(folderPath);
-            String filePath = folderPath;
-            java.io.File myFilePath = new java.io.File(filePath);
-            myFilePath.delete();
+            java.io.File myFilePath = new java.io.File(folderPath);
+            if (myFilePath.delete()) {
+                System.out.println(folderPath + " folder is successfully deleted");
+            } else {
+                System.out.println(folderPath + " folder failed to be deleted");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
