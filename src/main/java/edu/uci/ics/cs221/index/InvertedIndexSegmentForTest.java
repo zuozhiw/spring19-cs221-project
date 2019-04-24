@@ -1,4 +1,4 @@
-package edu.uci.ics.cs221.index.inverted;
+package edu.uci.ics.cs221.index;
 
 import edu.uci.ics.cs221.storage.Document;
 

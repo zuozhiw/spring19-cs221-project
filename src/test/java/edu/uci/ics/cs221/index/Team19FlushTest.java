@@ -1,10 +1,10 @@
-package edu.uci.ics.cs221;
+package edu.uci.ics.cs221.index;
 
 import edu.uci.ics.cs221.analysis.ComposableAnalyzer;
 import edu.uci.ics.cs221.analysis.PorterStemmer;
 import edu.uci.ics.cs221.analysis.PunctuationTokenizer;
-import edu.uci.ics.cs221.index.inverted.InvertedIndexManager;
-import edu.uci.ics.cs221.index.inverted.InvertedIndexSegmentForTest;
+import edu.uci.ics.cs221.index.InvertedIndexManager;
+import edu.uci.ics.cs221.index.InvertedIndexSegmentForTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
