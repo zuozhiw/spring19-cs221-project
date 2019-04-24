@@ -29,7 +29,6 @@ public class Team4OrSearchTest {
         // Initialize analyzer
         Analyzer analyzer = new NaiveAnalyzer();
         // Initialize InvertedIndexManager
-        String FOLDER = "./index/Team4OrSearchTest";
         InvertedIndexManager manager = InvertedIndexManager.createOrOpen(FOLDER, analyzer);
         manager.addDocument(doc1);
         manager.addDocument(doc2);
