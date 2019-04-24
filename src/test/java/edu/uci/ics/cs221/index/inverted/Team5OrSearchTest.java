@@ -10,8 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -21,9 +20,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class Team5OrSearchTest {
-    private DocumentStore documentStore = createOrOpen("./index/Team5OrSearchTest/test.db");
+    private String path = "./index/Team5OrSearchTest";
+    private DocumentStore documentStore = createOrOpen(path + "/test.db");
     private Analyzer analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
-    private InvertedIndexManager invertedList = InvertedIndexManager.createOrOpen("./index/Team5OrSearchTest", analyzer);
+    private InvertedIndexManager invertedList = InvertedIndexManager.createOrOpen(path, analyzer);
 
     @Before
     public void setUp() throws Exception {
@@ -125,7 +125,12 @@ public class Team5OrSearchTest {
     @After
     public void deleteTmp() throws Exception {
         if (documentStore != null) documentStore.close();
-        Files.deleteIfExists(Paths.get("./index/Team5OrSearchTest"));
+        PageFileChannel.resetCounters();
+        File f = new File(path);
+        File[] files = f.listFiles();
+        for (File file : files) {
+            file.delete();
+        }
     }
 
 }
