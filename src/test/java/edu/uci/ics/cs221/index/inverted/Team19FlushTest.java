@@ -134,7 +134,7 @@ public class FlushTest {
         iim.addDocument(d6);
         iim.flush();
         assertEquals(3, iim.getNumSegments());
-        InvertedIndexSegmentForTest num = iim.getIndexSegment(0);
+        InvertedIndexSegmentForTest num = iim.getIndexSegment(1);
         assertEquals(postingList, num.getInvertedLists());
         Set<Document> result = new HashSet<>();
         Set<Document> expected = new HashSet<>();
