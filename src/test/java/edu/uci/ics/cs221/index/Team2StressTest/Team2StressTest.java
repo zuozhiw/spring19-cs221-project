@@ -18,6 +18,10 @@ public class Team2StressTest {
     Analyzer analyzer;
     InvertedIndexManager invertedIndexManager;
 
+    /**
+     * Create the invertedIndexManager.
+     * Import and add external documents to get prepared for the tests.
+     */
     @Before
     public void init() {
         analyzer = new ComposableAnalyzer(new PunctuationTokenizer(),new PorterStemmer());
