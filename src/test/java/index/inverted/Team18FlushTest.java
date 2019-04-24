@@ -53,7 +53,7 @@ public class Team18FlushTest {
         Collections.sort(invertedList);
         assertEquals(expectedInvertedList, invertedList);
 
-        clear();
+        
 
     }
 
@@ -73,7 +73,7 @@ public class Team18FlushTest {
         assertEquals(0, invertedLists.size());
         assertEquals(0, documents.size());
 
-        clear();
+
     }
 
 
@@ -107,9 +107,10 @@ public class Team18FlushTest {
             assertEquals(doc1, documents.get(i));
         }
 
-        clear();
+
     }
 
+    @After
     public void clear(){
         File dir = new File("./index/Team18FlushTest");
         for (File file: dir.listFiles()){
