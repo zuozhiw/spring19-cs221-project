@@ -22,6 +22,7 @@ public class Team3StressTest {
     Analyzer analyzer1;
     List<String> allDocuments;
     InvertedIndexManager invertedIndexManager1;
+    static final int NUM = 10000000;
 
     @BeforeClass
     public void beforeClass(){
@@ -33,7 +34,6 @@ public class Team3StressTest {
             String s;
             while ((s = reader.readLine()) != null) {
                 allDocuments.add(s);
-                invertedIndexManager1.addDocument(new Document(s));
             }
             reader.close();
         }
@@ -43,69 +43,30 @@ public class Team3StressTest {
 
         analyzer1 = new ComposableAnalyzer(new PunctuationTokenizer(),new PorterStemmer());
         invertedIndexManager1 = InvertedIndexManager.createOrOpen("./index/Team3StressTest/", analyzer1);
+
+        for(int i=0;i<NUM;i++){
+            invertedIndexManager1.addDocument(new Document(allDocuments.get(i%allDocuments.size())));
+        }
     }
 
     @Test
     public void test1(){
-
-
         Iterator<Document> result1 = invertedIndexManager1.searchQuery("CD");
-
-        Document docCD1 = new Document(allDocuments.get(0));
-        Document docCD2 = new Document(allDocuments.get(12));
-        Document docCD3 = new Document(allDocuments.get(22));
-        Document docCD4 = new Document(allDocuments.get(34));
-
-
-        List<Document> expected = Arrays.asList(docCD1,docCD2,docCD3,docCD4);
-        Comparator<Document> docCompare = new Comparator<Document>() {
-            @Override
-            public int compare(Document o1, Document o2) {
-                return o1.hashCode()-o2.hashCode();
-            }
-        };
-
-        Collections.sort(expected,docCompare);
-        int i = 0;
-        boolean allRight = true;
+        int count = 0;
         while(result1.hasNext()){
-            if(!expected.get(i).equals(result1.next())) allRight = false;
-            i++;
+            count++;
         }
-        assertTrue(allRight);
+        assertTrue(count>50000?true:false);
     }
 
     @Test
     public void test2(){
-
         Iterator<Document> result1 = invertedIndexManager1.searchQuery("DVD");
-
-        Document docCD1 = new Document(allDocuments.get(4));
-        Document docCD2 = new Document(allDocuments.get(5));
-        Document docCD3 = new Document(allDocuments.get(6));
-        Document docCD4 = new Document(allDocuments.get(7));
-        Document docCD5 = new Document(allDocuments.get(26));
-        Document docCD6 = new Document(allDocuments.get(27));
-        Document docCD7 = new Document(allDocuments.get(28));
-        Document docCD8 = new Document(allDocuments.get(29));
-
-
-        List<Document> expected = Arrays.asList(docCD1,docCD2,docCD3,docCD4,docCD5,docCD6, docCD7,docCD8);
-        Comparator<Document> docCompare = new Comparator<Document>() {
-            @Override
-            public int compare(Document o1, Document o2) {
-                return o1.hashCode()-o2.hashCode();
-            }
-        };
-
-        Collections.sort(expected,docCompare);
-        int i = 0;
-        boolean allRight = true;
+        int count = 0;
         while(result1.hasNext()){
-            if(!expected.get(i).equals(result1.next())) allRight = false;
-            i++;
+            count++;
         }
-        assertTrue(allRight);
+        assertTrue(count>100000?true:false);
     }
 
     @Test
@@ -116,39 +77,12 @@ public class Team3StressTest {
 
     @Test
     public void test4(){
-
         Iterator<Document> result1 = invertedIndexManager1.searchOrQuery(Arrays.asList("DVD","CD"));
-
-        Document docCD1 = new Document(allDocuments.get(4));
-        Document docCD2 = new Document(allDocuments.get(5));
-        Document docCD3 = new Document(allDocuments.get(6));
-        Document docCD4 = new Document(allDocuments.get(7));
-        Document docCD5 = new Document(allDocuments.get(26));
-        Document docCD6 = new Document(allDocuments.get(27));
-        Document docCD7 = new Document(allDocuments.get(28));
-        Document docCD8 = new Document(allDocuments.get(29));
-        Document docCD9 = new Document(allDocuments.get(0));
-        Document docCD10 = new Document(allDocuments.get(12));
-        Document docCD11 = new Document(allDocuments.get(22));
-        Document docCD12 = new Document(allDocuments.get(34));
-
-
-        List<Document> expected = Arrays.asList(docCD1,docCD2,docCD3,docCD4,docCD5,docCD6, docCD7,docCD8,docCD9,docCD10,docCD11,docCD12);
-        Comparator<Document> docCompare = new Comparator<Document>() {
-            @Override
-            public int compare(Document o1, Document o2) {
-                return o1.hashCode()-o2.hashCode();
-            }
-        };
-
-        Collections.sort(expected,docCompare);
-        int i = 0;
-        boolean allRight = true;
+        int count = 0;
         while(result1.hasNext()){
-            if(!expected.get(i).equals(result1.next())) allRight = false;
-            i++;
+            count++;
         }
-        assertTrue(allRight);
+        assertTrue(count>150000?true:false);
     }
     @AfterClass
     public void afterClass(){
