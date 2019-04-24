@@ -21,7 +21,6 @@ import java.io.File;
 public class Team11MergeSearchTest {
     String indexPath = "index_path";
 
-    // Back to December by Taylor Swift
     Document[] documents = new Document[] {
             new Document("import edu uci ics cs221 analysis  Analyzer"),
             new Document("import edu uci ics cs221 analysis  ComposableAnalyzer"),
@@ -87,6 +86,7 @@ public class Team11MergeSearchTest {
         int expectedNumSegments = 3;
         assertEquals(expectedNumSegments, index.getNumSegments());
     }
+    
     /* Test when the flush and merge thresholds are 1 and 4 respectively,
      * after merging the number of segments should be 3 and we also check
      * the detailed docIDs of the keywords
