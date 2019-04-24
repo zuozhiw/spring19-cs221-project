@@ -5,7 +5,6 @@ import edu.uci.ics.cs221.analysis.ComposableAnalyzer;
 import edu.uci.ics.cs221.analysis.PorterStemmer;
 import edu.uci.ics.cs221.analysis.PunctuationTokenizer;
 import edu.uci.ics.cs221.storage.Document;
-import edu.uci.ics.cs221.storage.DocumentStore;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,13 +14,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static edu.uci.ics.cs221.storage.MapdbDocStore.createOrOpen;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class Team5OrSearchTest {
     private String path = "./index/Team5OrSearchTest";
-    private Analyzer analyzer;
+    private Analyzer analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
     private InvertedIndexManager invertedList;
 
     @Before
@@ -30,23 +28,22 @@ public class Team5OrSearchTest {
         if (!directory.exists()) {
             directory.mkdirs();
         }
-        analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
         invertedList = InvertedIndexManager.createOrOpen(path, analyzer);
-        invertedList.addDocument( new Document("cat dog toy"));
+        invertedList.addDocument(new Document("cat dog toy"));
         invertedList.flush();
-        invertedList.addDocument( new Document("cat Dot"));
+        invertedList.addDocument(new Document("cat Dot"));
         invertedList.flush();
-        invertedList.addDocument( new Document("cat dot toy"));
+        invertedList.addDocument(new Document("cat dot toy"));
         invertedList.flush();
         invertedList.addDocument(new Document("cat toy Dog"));
         invertedList.flush();
         invertedList.addDocument(new Document("toy dog cat"));
         invertedList.flush();
-        invertedList.addDocument( new Document("cat Dog"));//docs cannot be null
+        invertedList.addDocument(new Document("cat Dog"));//docs cannot be null
         invertedList.flush();
     }
 
-    //test if multiple keywords work or not. And we set 5 as a threshold for write counter and read counter,
+    // test if multiple keywords work or not. And we set 5 as a threshold for write counter and read counter,
     // because I think the number will increase when we call the flush() function and we dont know the execution order
     // of test cases, so we set them all to 5.
     @Test
@@ -99,7 +96,7 @@ public class Team5OrSearchTest {
         while (iterator.hasNext()) {
 
             String text = iterator.next().getText();
-            assertEquals(true, text.contains("sdasjdlslsah")||text.contains("*7&"));
+            assertEquals(true, text.contains("sdasjdlslsah") || text.contains("*7&"));
             counter++;
 
         }
@@ -109,7 +106,7 @@ public class Team5OrSearchTest {
 
     }
 
-    //test or operation works or not
+    //test other words combination
     @Test
     public void Test4() throws Exception {
         List<String> words = new ArrayList<>();
@@ -130,9 +127,9 @@ public class Team5OrSearchTest {
 
     }
 
-    //Test empty query list. The  NullPointerException is excepted
+    //test empty query list. The  NullPointerException is excepted
     @Test(expected = NullPointerException.class)
-    public void Test5()  {
+    public void Test5() {
         List<String> words = new ArrayList<>();
         Iterator<Document> iterator = invertedList.searchOrQuery(words);
     }
