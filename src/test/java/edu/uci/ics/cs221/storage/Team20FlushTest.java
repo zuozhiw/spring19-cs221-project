@@ -108,7 +108,7 @@ public class Team20FlushTest {
     }
 
     @Test
-    public void test3() {
+    public void test4() {
 
         /* check if explicit call to flush works even when the number of documents in the in-memory data structure is below the
         threshold - checks that the number of segments is correct and the postings and document stores are returned correctly*/
