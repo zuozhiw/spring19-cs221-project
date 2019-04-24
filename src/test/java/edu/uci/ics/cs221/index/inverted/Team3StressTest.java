@@ -52,12 +52,15 @@ public class Team3StressTest {
     //If true it means the engine didn't crash under a Stress Condition.
     @Test
     public void test1(){
+        PageFileChannel.resetCounters();
         Iterator<Document> result1 = invertedIndexManager1.searchQuery("CD");
         int count = 0;
         while(result1.hasNext()){
             result1.next();
             count++;
         }
+        assertTrue(PageFileChannel.writeCounter>=500);
+        assertTrue(PageFileChannel.readCounter>=500);
         assertTrue(count>500?true:false);
     }
 
@@ -65,12 +68,15 @@ public class Team3StressTest {
     //If true it means the engine didn't crash under a Stress Condition.
     @Test
     public void test2(){
+        PageFileChannel.resetCounters();
         Iterator<Document> result1 = invertedIndexManager1.searchQuery("DVD");
         int count = 0;
         while(result1.hasNext()){
             result1.next();
             count++;
         }
+        assertTrue(PageFileChannel.writeCounter>=500);
+        assertTrue(PageFileChannel.readCounter>=500);
         assertTrue(count>1000?true:false);
     }
     //Test searchAndQuery with keyword "CD" and "DVD" and see if it finds no answer.
