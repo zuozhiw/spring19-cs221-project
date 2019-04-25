@@ -39,7 +39,7 @@ public class Team3StressTest {
     }
 
 
-    //Test searchQuery with keyword "CD" and see if it finds more than 500 results.
+    //Test searchQuery with keyword "CD" and see if it can get the right answer.
     //If true it means the engine didn't crash under a Stress Condition.
     @Test
     public void test1(){
@@ -51,11 +51,11 @@ public class Team3StressTest {
             count++;
         }
         assertTrue(PageFileChannel.readCounter>=50);
-        assertTrue(count>=500);
+        assertTrue(count==9091);
     }
 
 
-    //Test searchQuery with keyword "DVD" and see if it finds more than 1000 results.
+    //Test searchQuery with keyword "DVD" and see if it can get the right answer.
     //If true it means the engine didn't crash under a Stress Condition.
     @Test
     public void test2(){
@@ -67,7 +67,7 @@ public class Team3StressTest {
             count++;
         }
         assertTrue(PageFileChannel.readCounter>=100);
-        assertTrue(count>=1000);
+        assertTrue(count==18184);
     }
 
 
@@ -79,7 +79,7 @@ public class Team3StressTest {
     }
 
 
-    //Test searchOrQuery with keyword "DVD" or "CD" and see if it finds more than 1500 results.
+    //Test searchOrQuery with keyword "DVD" or "CD" and see if it can find the right answer.
     //If true it means the engine didn't crash under a Stress Condition.
     @Test
     public void test4(){
@@ -90,7 +90,7 @@ public class Team3StressTest {
             result1.next();
             count++;
         }
-        assertTrue(count>=1500);
+        assertTrue(count==27275);
         assertTrue(PageFileChannel.readCounter>=150);
     }
 
