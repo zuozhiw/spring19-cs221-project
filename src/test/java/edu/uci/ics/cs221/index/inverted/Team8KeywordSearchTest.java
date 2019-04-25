@@ -47,9 +47,11 @@ public class Team8KeywordSearchTest {
 
         List<Document> expected = Arrays.asList(doc1,doc2);
         Iterator<Document> results = indexManager.searchQuery(query);
-        for(int i = 0; results.hasNext(); ++i){
-            assertEquals(results.next().getText(), expected.get(i).getText());
+        int count = 0;
+        while(results.hasNext()){
+            assertEquals(results.next().getText(), expected.get(count++).getText());
         }
+        assertEquals(count, expected.size());
     }
     //test empty query word, the result should be empty
     @Test
