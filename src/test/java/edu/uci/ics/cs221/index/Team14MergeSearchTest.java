@@ -76,7 +76,7 @@ public class Team14MergeSearchTest {
 
     @Before public void build() {
         index = InvertedIndexManager.createOrOpen(path, analyzer);
-        index.DEFAULT_FLUSH_THRESHOLD = 1;
+        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1;
     }
 
     @After public void tear() {
@@ -87,6 +87,8 @@ public class Team14MergeSearchTest {
             currentFile.delete();
         }
         index.delete();
+        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1000;
+        InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 8;
     }
 
     /*
@@ -96,7 +98,7 @@ public class Team14MergeSearchTest {
       is inserted we will merge the two segments resulting in there only being one segment present.
      */
     @Test public void test1() {
-        index.DEFAULT_MERGE_THRESHOLD = 2;
+        InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 2;
         for (Document d : documents1) {
             index.addDocument(d);
             assert index.getNumSegments() == 1;
@@ -113,7 +115,7 @@ public class Team14MergeSearchTest {
      */
 
     @Test public void test2() {
-        index.DEFAULT_MERGE_THRESHOLD = 4;
+        InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 4;
         for (Document d : documents2) {
             index.addDocument(d);
         }
