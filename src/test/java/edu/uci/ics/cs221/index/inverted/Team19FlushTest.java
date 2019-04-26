@@ -18,7 +18,7 @@ import java.util.*;
 import edu.uci.ics.cs221.analysis.Analyzer;
 import edu.uci.ics.cs221.storage.Document;
 
-public class FlushTest {
+public class Team19FlushTest {
 
     Analyzer an = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
     InvertedIndexManager iim;
@@ -77,7 +77,6 @@ public class FlushTest {
         iim.addDocument(d1);
         iim.addDocument(d2);
         iim.addDocument(d3);
-        iim.flush();
         iim.addDocument(d4);
         iim.flush();
         assertEquals(2, iim.getNumSegments());
