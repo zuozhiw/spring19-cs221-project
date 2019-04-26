@@ -47,7 +47,7 @@ public class Team1StressTest {
     @Before
     public void initialize() {
         iim = InvertedIndexManager.createOrOpen(indexDir, analyzer);
-        iim.DEFAULT_FLUSH_THRESHOLD = 1;
+        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1;
         PageFileChannel.resetCounters();
     }
 
