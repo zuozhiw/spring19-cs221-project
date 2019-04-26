@@ -28,7 +28,7 @@ public class Team8KeywordSearchTest {
     private InvertedIndexManager indexManager = null;
 
     @Before
-    public void initial(){
+    public void initial() throws Exception {
         //initialize an InvertedIndexManager
         Analyzer analyzer = new NaiveAnalyzer();
         InvertedIndexManager indexManager = InvertedIndexManager.createOrOpen(pathname, analyzer);
@@ -42,7 +42,7 @@ public class Team8KeywordSearchTest {
 
     //test query single word "cat", the result should be doc1 and doc2
     @Test
-    public void test1() {
+    public void test1() throws Exception {
         String query = "cat";
 
         List<Document> expected = Arrays.asList(doc1,doc2);
@@ -55,7 +55,7 @@ public class Team8KeywordSearchTest {
     }
     //test empty query word, the result should be empty
     @Test
-    public void test2(){
+    public void test2() throws Exception {
         String query = "";
 
         Iterator<Document> results = indexManager.searchQuery(query);
@@ -65,7 +65,7 @@ public class Team8KeywordSearchTest {
 
     //test when query word is not in inverted list
     @Test
-    public void test3(){
+    public void test3() throws Exception {
         String query = "elephant";
 
         Iterator<Document> results = indexManager.searchQuery(query);
@@ -74,7 +74,7 @@ public class Team8KeywordSearchTest {
     }
 
     @After
-    public void delete(){
+    public void delete() throws Exception {
         File files = new File(pathname);
         for (File file: files.listFiles()){
             if (!file.isDirectory()){
