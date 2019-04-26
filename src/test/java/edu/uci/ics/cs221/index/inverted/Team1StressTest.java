@@ -54,6 +54,7 @@ public class Team1StressTest {
     @After
     public void clean() throws IOException {
         deleteDirectory(Paths.get(indexDir));
+        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1000;
     }
 
     /**
