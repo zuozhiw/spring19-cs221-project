@@ -6,6 +6,7 @@ import edu.uci.ics.cs221.index.inverted.InvertedIndexSegmentForTest;
 import edu.uci.ics.cs221.analysis.*;
 
 import edu.uci.ics.cs221.storage.Document;
+import org.junit.After;
 import org.junit.Test;
 
 import java.io.File;
@@ -15,7 +16,18 @@ import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
-public class Team17InvertedIndexManagerPart1Test {
+public class Team17FlushTest {
+
+    @After
+    public void cleanUp (){
+        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1000;
+        File dir = new File("./index/Team17");
+        for (File file: dir.listFiles()){
+            if (!file.isDirectory()){
+                file.delete();
+            }
+        }
+    }
 
     /**
      * Tests if initialization works correctly in InvertedIndexManager when creating a new folder.
