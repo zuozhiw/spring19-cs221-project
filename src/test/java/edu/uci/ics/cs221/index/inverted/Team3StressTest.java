@@ -115,7 +115,7 @@ public class Team3StressTest {
             reader.close();
         }
         catch (Exception e){
-            new RuntimeException(e);
+            throw new RuntimeException(e);
         }
         return result;
     }
