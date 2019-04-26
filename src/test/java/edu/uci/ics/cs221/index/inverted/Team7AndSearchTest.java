@@ -25,7 +25,9 @@ public class Team7AndSearchTest {
 
     @Before
     public void before() {
-        Analyzer analyzer = new NaiveAnalyzer();
+        Analyzer analyzer = new ComposableAnalyzer(new WordBreakTokenizer(), new PorterStemmer());
+        File INDEX = new File(PATH);
+        if (!INDEX.exists()) {INDEX.mkdirs();}
         manager = InvertedIndexManager.createOrOpen(PATH, analyzer);
         manager.addDocument(doc);
         manager.addDocument(doc1);
