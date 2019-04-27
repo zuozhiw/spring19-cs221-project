@@ -64,16 +64,7 @@ public class Team18FlushTest {
     @Test
     public void test2(){
         manager.flush();
-        int expectedNumSegments = 0;
-        assertEquals(expectedNumSegments, manager.getNumSegments());
-
-        InvertedIndexSegmentForTest iiTestSegment = manager.getIndexSegment(0);
-        Map<String, List<Integer>> invertedLists = iiTestSegment.getInvertedLists();
-        Map<Integer, Document> documents = iiTestSegment.getDocuments();
-        assertEquals(0, invertedLists.size());
-        assertEquals(0, documents.size());
-
-
+        assertEquals(null, manager.getIndexSegment(0));
     }
 
 
