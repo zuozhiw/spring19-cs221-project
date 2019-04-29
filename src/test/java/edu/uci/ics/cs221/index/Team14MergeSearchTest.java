@@ -76,7 +76,7 @@ public class Team14MergeSearchTest {
 
     @Before public void build() {
         index = InvertedIndexManager.createOrOpen(path, analyzer);
-        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1;
+        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 0;
     }
 
     @After public void tear() {
@@ -136,7 +136,7 @@ public class Team14MergeSearchTest {
         assert invertedLists.get("fridai").size() == 3;
         assert invertedLists.get("san").size() == 3;
         assert invertedLists.get("veget").size() == 2;
-        assert invertedLists.get("avengers").size() == 2;
+        assert invertedLists.get("aveng").size() == 2;
         assert invertedLists.get("theater").size() == 2;
         assert invertedLists.get("chocol").size() == 2;
         assert invertedLists.get("stole").size() == 1;
