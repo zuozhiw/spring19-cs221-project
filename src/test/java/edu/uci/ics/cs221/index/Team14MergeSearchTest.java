@@ -133,7 +133,7 @@ public class Team14MergeSearchTest {
         assert invertedLists.get("dice").size() == 4;
         assert invertedLists.get("express").size() == 3;
         assert invertedLists.get("diego").size() == 3;
-        assert invertedLists.get("fridai").size() == 3;
+        assert invertedLists.get("fridai").size() == 4;
         assert invertedLists.get("san").size() == 3;
         assert invertedLists.get("veget").size() == 2;
         assert invertedLists.get("aveng").size() == 2;
