@@ -14,8 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class Team5OrSearchTest {
     private String path = "./index/Team5OrSearchTest";
@@ -75,7 +74,7 @@ public class Team5OrSearchTest {
         int counter = 0;
         while (iterator.hasNext()) {
             String text = iterator.next().getText();
-            assertEquals(true, text.contains("dog"));
+            assertEquals(true, text.toLowerCase().contains("dog"));
             counter++;
 
         }
@@ -117,7 +116,8 @@ public class Team5OrSearchTest {
         while (iterator.hasNext()) {
 
             String text = iterator.next().getText();
-            assertEquals(true, text.contains("dog") || text.contains("toy"));
+            assertEquals(true,
+                    text.toLowerCase().contains("dog") || text.toLowerCase().contains("toy"));
             counter++;
 
         }
@@ -127,11 +127,12 @@ public class Team5OrSearchTest {
 
     }
 
-    //test empty query list. The  NullPointerException is excepted
-    @Test(expected = NullPointerException.class)
+    //test empty query list.
+    @Test
     public void Test5() {
         List<String> words = new ArrayList<>();
         Iterator<Document> iterator = invertedList.searchOrQuery(words);
+        assertFalse(iterator.hasNext());
     }
 
     @After
@@ -143,6 +144,7 @@ public class Team5OrSearchTest {
         for (File file : files) {
             file.delete();
         }
+        f.delete();
     }
 
 }

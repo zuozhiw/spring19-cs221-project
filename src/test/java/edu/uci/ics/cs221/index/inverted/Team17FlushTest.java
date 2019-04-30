@@ -1,4 +1,4 @@
-package edu.uci.ics.cs221.index;
+package edu.uci.ics.cs221.index.inverted;
 
 import edu.uci.ics.cs221.index.inverted.InvertedIndexManager;
 import edu.uci.ics.cs221.index.inverted.InvertedIndexSegmentForTest;
@@ -27,6 +27,7 @@ public class Team17FlushTest {
                 file.delete();
             }
         }
+        dir.delete();
     }
 
     /**
@@ -171,7 +172,6 @@ public class Team17FlushTest {
                 iim.addDocument(doc2);
             }
         }
-        iim.addDocument(doc3);
 
         int expectedNumSegments = 2;
         assertEquals(expectedNumSegments, iim.getNumSegments());
@@ -186,7 +186,7 @@ public class Team17FlushTest {
         PorterStemmer ps = new PorterStemmer();
 
         List<Integer> invertedList = invertedLists.get(ps.stem("auto"));
-        assertEquals(InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD,invertedList.size());
+        assertEquals(InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD / 2,invertedList.size());
         Collections.sort(invertedList);
         for (int i=0; i<500; i++){
             assertEquals(i*2, invertedList.get(i).intValue());
@@ -194,11 +194,11 @@ public class Team17FlushTest {
         }
 
         invertedList = invertedLists.get(ps.stem("base"));
-        assertEquals(InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD,invertedList.size());
+        assertEquals(InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD / 2,invertedList.size());
         Collections.sort(invertedList);
         for (int i=0; i<500; i++){
             assertEquals(i*2+1, invertedList.get(i).intValue());
-            assertEquals(doc1, expectedDocuments.get(i*2+1));
+            assertEquals(doc1, expectedDocuments.get(i*2));
         }
 
         File dir = new File("./index/Team17");

@@ -3,6 +3,8 @@ package edu.uci.ics.cs221.index.inverted;
 import edu.uci.ics.cs221.analysis.*;
 import edu.uci.ics.cs221.storage.Document;
 import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.BufferedReader;
@@ -11,21 +13,27 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.*;
 
+import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
 public class Team3StressTest {
 
-    Analyzer analyzer;
-    List<String> allDocuments;
-    InvertedIndexManager invertedIndexManager;
+    static Analyzer analyzer;
+    static List<String> allDocuments;
+    static InvertedIndexManager invertedIndexManager;
     private static final int TOTALNUM = 100000;
-    private static final String textUrl = "http://cyy0908.com/text.txt";
+    private static final String textUrl = "https://grape.ics.uci.edu/wiki/public/raw-attachment/wiki/cs221-2019-spring-project2/Team3StressTest.txt";
     private static final String indexFolder = "./index/Team3StressTest/";
 
 
     //Construct to do some initialization like downloading the text resources
     //and objects construction.
-    public Team3StressTest(){
+    // finish this test in 10 min.
+    @Test(timeout = 600000)
+    public void setupAndRun(){
+        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 5000;
+        InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 12;
+
         allDocuments = getOnlineTextFile(textUrl);
         analyzer = new ComposableAnalyzer(new PunctuationTokenizer(),new PorterStemmer());
         invertedIndexManager = InvertedIndexManager.createOrOpen(indexFolder, analyzer);
@@ -36,12 +44,42 @@ public class Team3StressTest {
             invertedIndexManager.addDocument(new Document(allDocuments.get(i%allDocuments.size())));
         }
         assertTrue(PageFileChannel.writeCounter>=TOTALNUM/invertedIndexManager.DEFAULT_FLUSH_THRESHOLD);
+
+
+        try {
+            test1();
+        } catch (Throwable e) {
+            System.out.println("Team3StressTest test1 FAILED");
+            e.printStackTrace();
+        }
+
+        try {
+            test2();
+        } catch (Throwable e) {
+            System.out.println("Team3StressTest test2 FAILED");
+            e.printStackTrace();
+        }
+
+        try {
+            test3();
+        } catch (Throwable e) {
+            System.out.println("Team3StressTest test3 FAILED");
+            e.printStackTrace();
+        }
+
+        try {
+            test4();
+        } catch (Throwable e) {
+            System.out.println("Team3StressTest test4 FAILED");
+            e.printStackTrace();
+        }
+
     }
 
 
     //Test searchQuery with keyword "CD" and see if it can get the right answer.
     //If true it means the engine didn't crash under a Stress Condition.
-    @Test
+
     public void test1(){
         PageFileChannel.resetCounters();
         Iterator<Document> result1 = invertedIndexManager.searchQuery("CD");
@@ -51,13 +89,13 @@ public class Team3StressTest {
             count++;
         }
         assertTrue(PageFileChannel.readCounter>=50);
-        assertTrue(count==9091);
+        assertEquals(10000, count);
     }
 
 
     //Test searchQuery with keyword "DVD" and see if it can get the right answer.
     //If true it means the engine didn't crash under a Stress Condition.
-    @Test
+
     public void test2(){
         PageFileChannel.resetCounters();
         Iterator<Document> result1 = invertedIndexManager.searchQuery("DVD");
@@ -67,12 +105,13 @@ public class Team3StressTest {
             count++;
         }
         assertTrue(PageFileChannel.readCounter>=100);
-        assertTrue(count==18184);
+        assertEquals(20000, count);
+
     }
 
 
     //Test searchAndQuery with keyword "CD" and "DVD" and see if it finds no answer.
-    @Test
+
     public void test3(){
         Iterator<Document> result1 = invertedIndexManager.searchAndQuery(Arrays.asList("DVD","CD"));
         assertTrue(!result1.hasNext());
@@ -81,7 +120,7 @@ public class Team3StressTest {
 
     //Test searchOrQuery with keyword "DVD" or "CD" and see if it can find the right answer.
     //If true it means the engine didn't crash under a Stress Condition.
-    @Test
+
     public void test4(){
         PageFileChannel.resetCounters();
         Iterator<Document> result1 = invertedIndexManager.searchOrQuery(Arrays.asList("DVD","CD"));
@@ -90,7 +129,7 @@ public class Team3StressTest {
             result1.next();
             count++;
         }
-        assertTrue(count==27275);
+        assertEquals(30000, count);
         assertTrue(PageFileChannel.readCounter>=150);
     }
 
@@ -98,12 +137,14 @@ public class Team3StressTest {
     //Delete the files that are created during the process of searching.
     @After
     public void after(){
-        deleteFile(indexFolder);
+        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1000;
+        InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 8;
+        Team2StressTest.delAllFile(indexFolder);
     }
 
 
     //Get our large resources text file from a URL
-    private List<String> getOnlineTextFile(String URL){
+    private static List<String> getOnlineTextFile(String URL){
         List<String> result = new ArrayList<>();
         try {
             java.net.URL url = new URL(URL);
@@ -120,25 +161,4 @@ public class Team3StressTest {
         return result;
     }
 
-
-    //Delete the index/Team directory
-    private void deleteFile(String fileDir){
-        File file = new File(fileDir);
-        if(!file.isDirectory()){
-            System.out.println("File name is not a directory");
-            return;
-        }
-        String[] tempList = file.list();
-        File temp = null;
-        for (int i = 0; i < tempList.length; i++) {
-            if (fileDir.endsWith(File.separator)) {
-                temp = new File(fileDir + tempList[i]);
-            } else {
-                temp = new File(fileDir + File.separator + tempList[i]);
-            }
-            if (temp.isFile()) {
-                temp.delete();
-            }
-        }
-    }
 }

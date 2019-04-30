@@ -1,14 +1,15 @@
 package edu.uci.ics.cs221.index.inverted;
 
-import edu.uci.ics.cs221.analysis.ComposableAnalyzer;
-import edu.uci.ics.cs221.analysis.PorterStemmer;
-import edu.uci.ics.cs221.analysis.WordBreakTokenizer;
+import edu.uci.ics.cs221.analysis.*;
 import edu.uci.ics.cs221.storage.Document;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -24,7 +25,7 @@ public class Team21FlushTest {
 
     @Before
     public void before(){
-        analyzer = new ComposableAnalyzer(new WordBreakTokenizer(), new PorterStemmer());
+        analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), token -> token);
         manager = InvertedIndexManager.createOrOpen(indexFolder, analyzer);
         manager.addDocument(doc1);
         manager.flush();
@@ -35,7 +36,7 @@ public class Team21FlushTest {
     }
 
     @After
-    public void deleteWrittenFiles(){
+    public void deleteWrittenFiles() throws IOException  {
         String path = "./index/Team21FlushTest/";
         File file = new File(path);
         if (file.exists() && file.isDirectory()) {
@@ -52,6 +53,7 @@ public class Team21FlushTest {
                 }
             }
         }
+        Files.deleteIfExists(Paths.get(path));
     }
 
     @Test
@@ -63,7 +65,7 @@ public class Team21FlushTest {
         String str2 = "bird cat lion";
         String str3 = "fish cat bear";
 
-        Set<String> set = new HashSet();
+        Set<String> set = new HashSet<>();
         set.add(str1);
         set.add(str2);
         set.add(str3);
@@ -72,11 +74,9 @@ public class Team21FlushTest {
         while(managerIt.hasNext()){
             Document temp = managerIt.next();
             assertTrue(set.contains(temp.getText()));
-            set.remove(temp);
+            set.remove(temp.getText());
         }
-        if(!set.isEmpty()){
-            assertTrue(false);
-        }
+        assertTrue(set.isEmpty());
     }
 
     @Test
@@ -98,20 +98,15 @@ public class Team21FlushTest {
         test getIndexSegment() functions.
          */
         String str1 = "dog cat penguin";
-        String str2 = "bird cat lion";
-        String str3 = "fish cat bear";
-        String str4 = "dog cat";
 
-        Set<String> set = new HashSet();
+
+        Set<String> set = new HashSet<>();
         set.add(str1);
-        set.add(str2);
-        set.add(str3);
-        set.add(str4);
 
         InvertedIndexSegmentForTest test = manager.getIndexSegment(0);
 
         Map<String, List<Integer>> invertedList = test.getInvertedLists();
-        String[] words = {"dog", "cat","penguin", "bird", "lion", "fish", "bear" };
+        String[] words = {"dog", "cat","penguin"};
         assertEquals(words.length, invertedList.size());
         for(String word : words){
             assertTrue(invertedList.containsKey(word));

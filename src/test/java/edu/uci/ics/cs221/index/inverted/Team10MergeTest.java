@@ -13,14 +13,14 @@ import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
-public class Team10MergeSegmentTest {
+public class Team10MergeTest {
 
     private String path = "./index/Team10MergeSearchTest";
 
     @Test
     public void test1() {
         InvertedIndexManager invertedmanager;
-        invertedmanager = InvertedIndexManager.createOrOpen(path, new ComposableAnalyzer(new PunctuationTokenizer(),new PorterStemmer()));
+        invertedmanager = InvertedIndexManager.createOrOpen(path, new NaiveAnalyzer());
 
         Document doc0 = new Document("what is he doing today");
         Document doc1 = new Document("what a cute dog");
@@ -60,7 +60,7 @@ public class Team10MergeSegmentTest {
     @Test
     public void test2() {
         InvertedIndexManager invertedmanager;
-        invertedmanager = InvertedIndexManager.createOrOpen(path, new ComposableAnalyzer(new PunctuationTokenizer(),new PorterStemmer()));
+        invertedmanager = InvertedIndexManager.createOrOpen(path, new NaiveAnalyzer());
 
         Document doc0 = new Document("cat dog");
         Document doc1 = new Document("dog wolf cat");
@@ -95,7 +95,7 @@ public class Team10MergeSegmentTest {
 
         Map<String,List<Integer>> expectedlist2 = new HashMap<>();
         expectedlist2.put("pig", Arrays.asList(0,1,3));
-        expectedlist2.put("wolf",Arrays.asList(0,1));
+        expectedlist2.put("wolf",Arrays.asList(0,2));
         expectedlist2.put("cat",Arrays.asList(0,2,3));
         expectedlist2.put("dog",Arrays.asList(1,3));
         Map<Integer, Document> expecteddocuments2 = new HashMap<>();

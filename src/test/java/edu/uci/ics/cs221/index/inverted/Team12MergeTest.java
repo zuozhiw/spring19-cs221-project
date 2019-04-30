@@ -4,7 +4,7 @@
 //check content of segment if it has both lists
 //stop merge in middle of execution and see if merged segment has some content
 
-package edu.uci.ics.cs221.index;
+package edu.uci.ics.cs221.index.inverted;
 
 
 import edu.uci.ics.cs221.analysis.Analyzer;
@@ -21,7 +21,7 @@ import org.junit.Test;
 
 import java.io.File;
 
-public class Team12MergeSearchTest {
+public class Team12MergeTest {
 
     PunctuationTokenizer tokenizer = new PunctuationTokenizer();
     PorterStemmer porterStemmer = new PorterStemmer();
@@ -76,13 +76,13 @@ public class Team12MergeSearchTest {
 
     @Before
     public void init() {
-        iim = InvertedIndexManager.createOrOpen("index", analyzer);
+        iim = InvertedIndexManager.createOrOpen("./index/Team12MergeTest/", analyzer);
         iim.DEFAULT_FLUSH_THRESHOLD = 1;
     }
 
     @After
     public void cleanup() {
-        File p = new File("index");
+        File p = new File("./index/Team12MergeTest/");
         String[] entries = p.list();
         for (int i = 0; i < entries.length; ++i) {
             File currentFile = new File(p.getPath(), entries[i]);

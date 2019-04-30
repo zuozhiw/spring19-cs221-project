@@ -14,21 +14,25 @@ import static org.junit.Assert.assertEquals;
 
 public class Team2StressTest {
 
-    Analyzer analyzer;
-    InvertedIndexManager invertedIndexManager;
+    static Analyzer analyzer;
+    static InvertedIndexManager invertedIndexManager;
 
     /**
      * Instantiate the invertedIndexManager.
      * Import and add external documents to get prepared for the tests.
+     *
+     * Finish this test within 20 min.
      */
-    @Before
-    public void init() {
+    @Test(timeout = 1200000)
+    public void initAndTest() {
         analyzer = new ComposableAnalyzer(new PunctuationTokenizer(),new PorterStemmer());
         invertedIndexManager = InvertedIndexManager.createOrOpen("./index/Team2StressTest/", analyzer);
-        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1;
+        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 200;
+        InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 6;
+
         String text = "";
         try {
-            URL url = new URL("http://www.gutenberg.org/cache/epub/42671/pg42671.txt");
+            URL url = new URL("https://grape.ics.uci.edu/wiki/public/raw-attachment/wiki/cs221-2019-spring-project2/Team2StressTest.txt");
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream()));
             StringBuilder stringBuilder = new StringBuilder();
 
@@ -45,13 +49,29 @@ public class Team2StressTest {
             e.printStackTrace();
         }
 
-        // copy full pride-and-prejudice for 5000 times, every document is about 708KB, 5000 times is about 3.46GB
-        for (int i = 0; i < 5000; i++) {
+        // copy full pride-and-prejudice for around 1500 times, every document is about 708KB, 1500 times is about 1GB
+        for (int i = 0; i < 1500; i++) {
             invertedIndexManager.addDocument(new Document(text));
         }
         // Then, add two small test documents
         invertedIndexManager.addDocument(new Document("qwertyuiop elizabeth"));
         invertedIndexManager.addDocument(new Document("qwertyuiop"));
+        invertedIndexManager.flush();
+
+
+        try {
+            test1();
+        } catch (Throwable e) {
+            System.out.println("Team2StressTest test1 FAILED");
+            e.printStackTrace();
+        }
+
+        try {
+            test2();
+        } catch (Throwable e) {
+            System.out.println("Team2StressTest test1 FAILED");
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -59,7 +79,6 @@ public class Team2StressTest {
      * the purpose of doing this is to check whether the system can handle large amounts of data
      * and process it correctly
      */
-    @Test
     public void test1(){
         Iterator<Document> result = invertedIndexManager.searchQuery("elizabeth");
 
@@ -68,13 +87,12 @@ public class Team2StressTest {
             counter++;
             result.next();
         }
-        assertEquals(5001, counter);
+        assertEquals(1501, counter);
     }
 
     /**
      * Test whether searchAndQuery() works well in large datasets
      */
-    @Test
     public void test2(){
         List<String> keywords = Arrays.asList("qwertyuiop", "elizabeth");
 
@@ -89,23 +107,6 @@ public class Team2StressTest {
     }
 
     /**
-     * Test whether searchOrQuery() works well in large datasets
-     */
-    @Test
-    public void test3(){
-        List<String> keywords = Arrays.asList("qwertyuiop", "elizabeth");
-
-        Iterator<Document> result = invertedIndexManager.searchOrQuery(keywords);
-
-        int counter = 0;
-        while (result.hasNext()) {
-            counter++;
-            result.next();
-        }
-        assertEquals(5002, counter);
-    }
-
-    /**
      * Change back the flush threshold
      * Delete all the files and empty or non-empty folders in ./index/Team2StressTest/
      * Use recursive delete in case any sub folders is created
@@ -113,6 +114,8 @@ public class Team2StressTest {
     @After
     public void after(){
         InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1000;
+        InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 8;
+
         String path = "./index/Team2StressTest/";
         if (delAllFile(path)) {
             System.out.println("All files in " + path + " are deleted.");
@@ -121,7 +124,7 @@ public class Team2StressTest {
         }
     }
 
-    private boolean delAllFile(String path) {
+    static boolean delAllFile(String path) {
         File file = new File(path);
         if (!file.isDirectory()) {
             System.out.println("Path: " + file.toString() + "is not a valid directory");
@@ -143,6 +146,7 @@ public class Team2StressTest {
                 temp.delete();
             }
         }
+        file.delete();
         return true;
     }
 }

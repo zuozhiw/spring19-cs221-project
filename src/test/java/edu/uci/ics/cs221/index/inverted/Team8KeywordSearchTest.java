@@ -31,7 +31,7 @@ public class Team8KeywordSearchTest {
     public void initial() throws Exception {
         //initialize an InvertedIndexManager
         Analyzer analyzer = new NaiveAnalyzer();
-        InvertedIndexManager indexManager = InvertedIndexManager.createOrOpen(pathname, analyzer);
+        this.indexManager = InvertedIndexManager.createOrOpen(pathname, analyzer);
         //add doc
         indexManager.addDocument(doc1);
         indexManager.addDocument(doc2);
@@ -81,5 +81,6 @@ public class Team8KeywordSearchTest {
                 file.delete();
             }
         }
+        files.delete();
     }
 }

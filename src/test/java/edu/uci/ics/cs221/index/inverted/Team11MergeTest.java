@@ -1,4 +1,4 @@
-package edu.uci.ics.cs221.index;
+package edu.uci.ics.cs221.index.inverted;
 
 import edu.uci.ics.cs221.analysis.Analyzer;
 import edu.uci.ics.cs221.analysis.ComposableAnalyzer;
@@ -18,8 +18,8 @@ import java.util.Map;
 import java.util.List;
 import java.io.File;
 
-public class Team11MergeSearchTest {
-    String indexPath = "index_path";
+public class Team11MergeTest {
+    String indexPath = "./index/Team11MergeTest";
 
     Document[] documents = new Document[] {
             new Document("import edu uci ics cs221 analysis  Analyzer"),
@@ -79,21 +79,19 @@ public class Team11MergeSearchTest {
         assertEquals(expectedNumSegments, index.getNumSegments());
     }
 
-    /* Test when the number of segments is 3 and we forcefully use
-     * mergeAllSegments() and then the result of merging should still be 3
-     */
     @Test
     public void mergeSearchTest2() {
-        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 2;
+        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1;
 
-        for (int i = 0; i < 6 ; i++){
+        for (int i = 0; i < 4 ; i++){
             index.addDocument(documents[i]);
         }
         index.mergeAllSegments();
-        int expectedNumSegments = 3;
+        int expectedNumSegments = 2;
         assertEquals(expectedNumSegments, index.getNumSegments());
     }
-    
+
+
     /* Test when the flush and merge thresholds are 1 and 4 respectively,
      * after merging the number of segments should be 3 and we also check
      * the detailed docIDs of the keywords
@@ -106,15 +104,13 @@ public class Team11MergeSearchTest {
         for (Document doc : documents) {
             index.addDocument(doc);
         }
-        int expectedNumSegments = 3;
+
+        int expectedNumSegments = 2;
         assertEquals(expectedNumSegments, index.getNumSegments());
         InvertedIndexSegmentForTest it = index.getIndexSegment(0);
         Map<String, List<Integer>> invertedLists = it.getInvertedLists();
         List<Integer> docIds = invertedLists.get("import");
         List<Integer> expectedDocIds = Arrays.asList(0, 1, 2, 3);
         assertEquals(expectedDocIds, docIds);
-        List<Integer> docIds1 = invertedLists.get("composableanalyz");
-        List<Integer> expectedDocIds1 = Arrays.asList(1);
-        assertEquals(expectedDocIds1, docIds1);
     }
 }
