@@ -1,4 +1,4 @@
-package edu.uci.ics.cs221.index;
+package edu.uci.ics.cs221.index.inverted;
 import edu.uci.ics.cs221.analysis.*;
 import edu.uci.ics.cs221.index.inverted.InvertedIndexManager;
 import edu.uci.ics.cs221.index.inverted.InvertedIndexSegmentForTest;

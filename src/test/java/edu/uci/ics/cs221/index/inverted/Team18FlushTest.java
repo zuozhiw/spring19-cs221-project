@@ -1,4 +1,4 @@
-package index.inverted;
+package edu.uci.ics.cs221.index.inverted;
 
 import edu.uci.ics.cs221.analysis.*;
 import edu.uci.ics.cs221.index.inverted.InvertedIndexManager;
@@ -109,6 +109,7 @@ public class Team18FlushTest {
                 file.delete();
             }
         }
+        dir.delete();
     }
 
 

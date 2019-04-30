@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -20,9 +21,9 @@ import edu.uci.ics.cs221.storage.Document;
 
 public class Team19FlushTest {
 
-    Analyzer an = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
+    Analyzer an = new ComposableAnalyzer(new PunctuationTokenizer(), token -> token);
     InvertedIndexManager iim;
-    String file = "./index";
+    String file = "./index/Team19FlushTest/";
 
     @Before
     public void setup() throws Exception {
@@ -32,7 +33,19 @@ public class Team19FlushTest {
 
     @After
     public void cleanup() throws Exception {
+        try{
+            File index = new File(file);
+            String[] f = index.list();
+            for(String s: f){
+                File currentFile = new File(index.getPath(),s);
+                currentFile.delete();
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
         Files.deleteIfExists(Paths.get(file));
+
         iim.DEFAULT_FLUSH_THRESHOLD = 1000;
     }
 
@@ -86,8 +99,9 @@ public class Team19FlushTest {
         expected.add(d2);
         expected.add(d3);
         expected.add(d4);
-        while(iim.documentIterator().hasNext()) {
-            result.add(iim.documentIterator().next());
+        Iterator<Document> documentIterator = iim.documentIterator();
+        while(documentIterator.hasNext()) {
+            result.add(documentIterator.next());
         }
         assertEquals(result, expected);
     }
@@ -143,8 +157,9 @@ public class Team19FlushTest {
         expected.add(d4);
         expected.add(d5);
         expected.add(d6);
-        while(iim.documentIterator().hasNext()) {
-            result.add(iim.documentIterator().next());
+        Iterator<Document> documentIterator = iim.documentIterator();
+        while(documentIterator.hasNext()) {
+            result.add(documentIterator.next());
         }
         assertEquals(result, expected);
     }

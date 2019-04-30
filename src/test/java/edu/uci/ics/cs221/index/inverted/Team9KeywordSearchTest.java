@@ -33,7 +33,8 @@ public class Team9KeywordSearchTest {
 
         Doc1 = new Document("catdog");
         Doc2 = new Document("dogbird");
-        Doc3 = new Document("catbird");
+        // original was "catbird", but there's actually a kind of bird called "catbird", so it's not "cat bird"
+        Doc3 = new Document("catpig");
         Doc4 = new Document("cat");
     }
 
@@ -45,6 +46,7 @@ public class Team9KeywordSearchTest {
         for (File file : localStorageFolder.listFiles()) {
             file.delete();
         }
+        localStorageFolder.delete();
     }
 
     // Normal search test
@@ -63,7 +65,7 @@ public class Team9KeywordSearchTest {
 
         for (Document expectedDoc : expected) {
             assertNotNull(actualDoc);
-            assertEquals(actualDoc.next().getText(), expectedDoc.getText());
+            assertEquals(expectedDoc.getText(), actualDoc.next().getText());
         }
         assertFalse(actualDoc.hasNext());
     }

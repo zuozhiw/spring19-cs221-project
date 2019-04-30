@@ -1,10 +1,11 @@
-package edu.uci.ics.cs221.storage;
+package edu.uci.ics.cs221.index.inverted;
 
 import edu.uci.ics.cs221.analysis.ComposableAnalyzer;
 import edu.uci.ics.cs221.analysis.PorterStemmer;
 import edu.uci.ics.cs221.analysis.PunctuationTokenizer;
 import edu.uci.ics.cs221.index.inverted.InvertedIndexManager;
 import edu.uci.ics.cs221.index.inverted.InvertedIndexSegmentForTest;
+import edu.uci.ics.cs221.storage.Document;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Test;
@@ -38,7 +39,7 @@ public class Team20FlushTest {
         ComposableAnalyzer analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
         InvertedIndexManager ii = InvertedIndexManager.createOrOpen("./index/Team20FlushTest/", analyzer);
 
-        ii.DEFAULT_FLUSH_THRESHOLD = 2;
+        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 2;
         ii.addDocument(d1);
         ii.addDocument(d2);
 
@@ -78,7 +79,7 @@ public class Team20FlushTest {
         ComposableAnalyzer analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
         InvertedIndexManager ii = InvertedIndexManager.createOrOpen("./index/Team20FlushTest/", analyzer);
 
-        ii.DEFAULT_FLUSH_THRESHOLD = 2;
+        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 2;
         ii.addDocument(d1);
         ii.addDocument(d2);
         ii.addDocument(d3);
@@ -150,6 +151,8 @@ public class Team20FlushTest {
 
     @After
     public void deleteFiles() {
+        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1000;
+
         String SRC_FOLDER = "./index/Team20FlushTest/";
         File directory = new File(SRC_FOLDER);
         File[] listOfFiles = directory.listFiles();

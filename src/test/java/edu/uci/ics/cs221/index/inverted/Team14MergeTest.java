@@ -1,4 +1,4 @@
-package edu.uci.ics.cs221.index;
+package edu.uci.ics.cs221.index.inverted;
 
 import edu.uci.ics.cs221.analysis.Analyzer;
 import edu.uci.ics.cs221.analysis.ComposableAnalyzer;
@@ -19,10 +19,10 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
-public class Team14MergeSearchTest {
+public class Team14MergeTest {
     InvertedIndexManager index;
     Analyzer analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
-    String path = "index";
+    String path = "./index/Team14MergeTest/";
 
     Document[] documents1 = new Document[] {
             new Document("This morning I ate eggs"),
@@ -76,7 +76,7 @@ public class Team14MergeSearchTest {
 
     @Before public void build() {
         index = InvertedIndexManager.createOrOpen(path, analyzer);
-        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 0;
+        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1;
     }
 
     @After public void tear() {

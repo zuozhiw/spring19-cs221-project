@@ -1,8 +1,6 @@
 package edu.uci.ics.cs221.index.inverted;
 
-import edu.uci.ics.cs221.analysis.Analyzer;
-import edu.uci.ics.cs221.analysis.NaiveAnalyzer;
-import edu.uci.ics.cs221.index.inverted.InvertedIndexManager;
+import edu.uci.ics.cs221.analysis.*;
 import edu.uci.ics.cs221.storage.Document;
 import org.junit.After;
 import org.junit.Before;
@@ -25,7 +23,7 @@ public class Team7AndSearchTest {
 
     @Before
     public void before() {
-        Analyzer analyzer = new ComposableAnalyzer(new WordBreakTokenizer(), new PorterStemmer());
+        Analyzer analyzer = new NaiveAnalyzer();
         File INDEX = new File(PATH);
         if (!INDEX.exists()) {INDEX.mkdirs();}
         manager = InvertedIndexManager.createOrOpen(PATH, analyzer);
@@ -44,6 +42,7 @@ public class Team7AndSearchTest {
                 File currentFile = new File(index.getPath(),s);
                 currentFile.delete();
              }
+             index.delete();
         }
         catch (Exception e){
             e.printStackTrace();

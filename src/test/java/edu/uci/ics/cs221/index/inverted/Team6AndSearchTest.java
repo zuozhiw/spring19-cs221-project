@@ -1,8 +1,5 @@
-package edu.uci.ics.cs221;
-import edu.uci.ics.cs221.analysis.Analyzer;
-import edu.uci.ics.cs221.analysis.ComposableAnalyzer;
-import edu.uci.ics.cs221.analysis.PorterStemmer;
-import edu.uci.ics.cs221.analysis.WordBreakTokenizer;
+package edu.uci.ics.cs221.index.inverted;
+import edu.uci.ics.cs221.analysis.*;
 import edu.uci.ics.cs221.index.inverted.InvertedIndexManager;
 import edu.uci.ics.cs221.storage.Document;
 import org.junit.After;
@@ -54,14 +51,14 @@ public class Team6AndSearchTest {
     @Before
     public void before() {
     // Initialize analyzer
-        Analyzer analyzer = new ComposableAnalyzer(new WordBreakTokenizer(), new PorterStemmer());
+        Analyzer analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
 
         File directory = new File(path);
         if (!directory.exists()) {
             directory.mkdirs();
         }
         // Initialize InvertedIndexManager
-        InvertedIndexManager manager = InvertedIndexManager.createOrOpen(path, analyzer);
+        this.manager = InvertedIndexManager.createOrOpen(path, analyzer);
         manager.addDocument(doc1);
         manager.addDocument(doc2);
         manager.addDocument(doc3);
@@ -171,5 +168,6 @@ public class Team6AndSearchTest {
                 e.printStackTrace();
             }
         }
+        cacheFolder.delete();
     }
 }

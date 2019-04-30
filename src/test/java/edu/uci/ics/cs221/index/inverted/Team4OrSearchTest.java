@@ -1,4 +1,4 @@
-package edu.uci.ics.cs221.inverted;
+package edu.uci.ics.cs221.index.inverted;
 
 import edu.uci.ics.cs221.analysis.Analyzer;
 import edu.uci.ics.cs221.analysis.NaiveAnalyzer;
@@ -29,7 +29,7 @@ public class Team4OrSearchTest {
         // Initialize analyzer
         Analyzer analyzer = new NaiveAnalyzer();
         // Initialize InvertedIndexManager
-        InvertedIndexManager manager = InvertedIndexManager.createOrOpen(FOLDER, analyzer);
+        this.manager = InvertedIndexManager.createOrOpen(FOLDER, analyzer);
         manager.addDocument(doc1);
         manager.addDocument(doc2);
         manager.addDocument(doc3);
@@ -106,5 +106,6 @@ public class Team4OrSearchTest {
                 e.printStackTrace();
             }
         }
+        cacheFolder.delete();
     }
 }
