@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * An in-memory representation of an inverted index segment, used *only* for testing purposes.
+ * An in-memory representation of a positional index segment, used *only* for testing purposes.
  * Only for this testing class, you could load everything into memory.
  */
 public class PositionalIndexSegmentForTest {
