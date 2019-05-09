@@ -86,6 +86,13 @@ public class Team14PhraseSearchTest {
         InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 8;
     }
 
+
+    /*
+
+        For this test we check to make sure that if a segment is flushed to disk it is still being checked. In the phrase
+        search. We do this by setting the flush threshold to 1000 and then adding less than 1000 documents. We then
+        check multiple phrases.
+     */
     @Test public void test1() {
         InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1000;
         for (Document doc : documents2) {
@@ -101,7 +108,14 @@ public class Team14PhraseSearchTest {
         queryIndex(Arrays.asList("Last", "Friday"), 2);
     }
 
-    @Test public void test3() {
+ /*
+ *
+ * For test2 we check to make sure that if the phrase isn't in the documents that has next doesn't return true.
+ * This test is rather straight forward, however it checks to make sure that the positional index is correct and
+ * that we aren't returning when we shouldn't.
+ *
+ * */
+    @Test public void test2() {
         for (Document doc : documents1) {
             index.addDocument(doc);
         }
