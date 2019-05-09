@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -47,7 +48,10 @@ public class Team14PhraseSearchTest {
             new Document("The weather outside was too cool for the camel."),
             new Document("Wednesday is the day that our chicken produces a lot of eggs."),
             new Document("Two jobs to make ends meet, means we need to less eggs."),
-            new Document("As a camel do you have one or two humps?") };
+            new Document("As a camel do you have one or two humps?"),
+            new Document("I hate going to the movie alone."),
+            new Document("the movie alone."),
+            new Document("You went to the  movie alone.")};
 
     Document[] documents2 = new Document[] { new Document("Hello"), new Document("I like to eat pineapples."),
             new Document("Last week I took the express train to San Diego."),
@@ -67,7 +71,7 @@ public class Team14PhraseSearchTest {
             new Document("Don't tell mother but I stole her credit card and used it to buy pineapples"),
             new Document("I predict the new Avengers movie will be worthy of a diced pineapples"),
             new Document("Unfortudently, the movie theater doesn't sell diced pineapples"),
-            new Document("I'm going to have to find a way to get my diced pineapples into the movie theater") };
+            new Document("I'm going to have to find a way to get my diced pineapples into the movie theater"),};
 
     @Before public void build() {
         index = InvertedIndexManager.createOrOpenPositional(path, analyzer, compressor);
@@ -123,6 +127,23 @@ public class Team14PhraseSearchTest {
         queryIndex(Arrays.asList("never", "mind"), 0);
     }
 
+/*
+*
+* For test3 we are making sure that phrase search spans multiple segments. We do this by creating a new segment after
+* each document is added.
+*
+* We are expecting the phrase "movie alone" to appear 4 times.
+*
+* */
+
+    @Test public void test3(){
+        for (Document doc : documents1) {
+            index.addDocument(doc);
+            index.flush();
+        }
+        queryIndex(Arrays.asList("movie", "alone"),4);
+
+    }
     private void queryIndex(List<String> keyWords, int expectedCount) {
         Iterator<Document> it = index.searchPhraseQuery(keyWords);
         int counter = 0;
