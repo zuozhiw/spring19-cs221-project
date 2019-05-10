@@ -93,15 +93,14 @@ public class Team14PhraseSearchTest {
 
     /*
 
-        For this test we check to make sure that if a segment is flushed to disk it is still being checked. In the phrase
-        search. We do this by setting the flush threshold to 1000 and then adding less than 1000 documents. We then
-        check multiple phrases.
+        For this test we check to make sure that if all of the documents are on one segment that we can correctly find
+        all of the phrases.
      */
     @Test public void test1() {
-        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1000;
         for (Document doc : documents2) {
             index.addDocument(doc);
         }
+        index.flush();
         queryIndex(Arrays.asList("movie", "theater"), 2);
         queryIndex(Arrays.asList("credit", "card"), 1);
         queryIndex(Arrays.asList("diced", "pineapples"), 3);
