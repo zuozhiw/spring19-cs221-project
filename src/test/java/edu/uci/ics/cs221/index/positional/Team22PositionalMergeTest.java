@@ -20,6 +20,8 @@ import java.util.*;
 import com.google.common.collect.Table;
 import com.google.common.collect.Table.Cell;
 
+import javax.print.Doc;
+
 import static org.junit.Assert.*;
 
 public class Team22PositionalMergeTest {
@@ -77,25 +79,29 @@ public class Team22PositionalMergeTest {
         Document doc4 = new Document("A general theory of information retrieval");
         im.flush();
 
+
+
         im.mergeAllSegments();
+
+        List<Document> seg1Docs = new ArrayList<>();
+        seg1Docs.add(doc1);
+        seg1Docs.add(doc2);
+        seg1Docs.add(doc3);
+        seg1Docs.add(doc4);
 
         assertEquals(1, im.getNumSegments()); // there is only one segment after merge
 
         imt = im.getIndexSegmentPositional(0);
 
 
-
-
-
-
-
-
-
-
+        checkSegment(0, seg1Docs);
+        checkPositional(0, seg1Docs);
 
     }
+
+
     /*
-    create positional table without any compressor
+    create positional table
      */
     private Table<String, Integer, List<Integer>> createPositional(List<Document> docs){
         Table<String, Integer, List<Integer>> table = HashBasedTable.create();
