@@ -59,7 +59,7 @@ public class Team10PositionalStressTest {
         }
 
         try{
-            test2();
+            test3();
         }catch (Throwable e){
             System.out.println("Sorry, u failed at test3");
             e.printStackTrace();
