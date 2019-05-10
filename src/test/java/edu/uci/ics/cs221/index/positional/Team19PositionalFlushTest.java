@@ -50,14 +50,13 @@ public class Team19PositionalFlushTest {
         iim.DEFAULT_FLUSH_THRESHOLD = 1000;
     }
 
-    // test flush when flush() is called by user, whether the total number of segments is correct
+    // test flush when flush() is called automatically, whether the total number of segments is correct
     // and whether the first disk segment is set correctly.
     @Test
     public void testPositionalFlush1() throws Exception {
         iim.addDocument(new Document("cat dog"));
         iim.addDocument(new Document("cat elephant"));
         iim.addDocument(new Document("wolf dog dog"));
-        iim.flush();
         iim.addDocument(new Document("cat dog"));
         iim.flush();
         assertEquals(2, iim.getNumSegments());
