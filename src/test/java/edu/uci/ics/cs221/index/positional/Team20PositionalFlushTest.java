@@ -23,6 +23,9 @@ import static org.junit.Assert.assertEquals;
 
 public class Team20PositionalFlushTest {
 
+    /* Test to see if the posting lists and position lists are rightly stored onto the disk.
+     * In this test, we set the threshold to 2. We then add two documents, after which flush() would be
+     * automatically called*/
     @Test
     public void test_auto_call_flush() {
         Document d1 = new Document("rate roll rate sing roll");
@@ -60,7 +63,9 @@ public class Team20PositionalFlushTest {
         assertEquals(expectedPositions, segment.getPositions());
     }
 
-    // TODO should we add tests based on having multiple pages - here the dictionary, posting list and the position list go beyond one page ?
+    /* When the dictionary, posting list and the position list go beyond one page, check if the postings lists
+     * and and the position lists are rightly stored and retrieved.
+     */
     @Test
     public void test_more_than_a_page_listings() {
         Document d1 = new Document("bled cat dog feed bled feed rate roll rate sing roll sing");
@@ -110,6 +115,7 @@ public class Team20PositionalFlushTest {
         assertEquals(expectedPositions, segment.getPositions());
     }
 
+    /* Check if postings and position lists are correctly stored and retrieved for more than one segments*/
     @Test
     public void check_auto_flush_call_twice() {
         Document d1 = new Document("rate roll rate rate roll");
