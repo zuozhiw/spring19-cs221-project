@@ -1,5 +1,6 @@
 package edu.uci.ics.cs221.index.positional;
 
+import edu.uci.ics.cs221.index.inverted.Compressor;
 import edu.uci.ics.cs221.index.inverted.DeltaVarLenCompressor;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,13 +9,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 
 public class Team2CompressorTest {
 
-    private DeltaVarLenCompressor compressor;
+    private Compressor compressor;
 
     @Before
     public void init() {
@@ -23,13 +23,13 @@ public class Team2CompressorTest {
     }
 
     public void fullTest(List<Integer> ints, byte[] bytes) {
-        assertEquals(compressor.encode(ints), bytes); // To test encode function
-        assertEquals(compressor.decode(bytes), ints); // To test decode function with offset 0 and full length of input
+        assertArrayEquals(bytes, compressor.encode(ints)); // To test encode function
+        assertEquals(ints, compressor.decode(bytes)); // To test decode function with offset 0 and full length of input
     }
 
     /**
      * In the following test,
-     * we test if the compressor works fine when the encoded and decoded subject are empty.
+     * we test if the compressor works fine when the encoded and decoded subjects are empty.
      */
     @Test
     public void emptyTest() {
@@ -93,10 +93,10 @@ public class Team2CompressorTest {
         List<Integer> expected3 = Arrays.asList(127, 130);
         List<Integer> expected4 = Arrays.asList(127, 130, 261);
 
-        assertEquals(result1, expected1);
-        assertEquals(result2, expected2);
-        assertEquals(result3, expected3);
-        assertEquals(result4, expected4);
+        assertEquals(expected1, result1);
+        assertEquals(expected2, result2);
+        assertEquals(expected3, result3);
+        assertEquals(expected4, result4);
     }
 
 }
