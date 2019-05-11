@@ -64,7 +64,8 @@ public class Team20PositionalFlushTest {
     }
 
     /* When the dictionary, posting list and the position list go beyond one page, check if the postings lists
-     * and the position lists are rightly stored and retrieved.
+     * and the position lists are rightly stored and retrieved. We change the PageFileChannel.PAGE_SIZE to 8 so that we write
+     * more than a page when creating a dictionary file or a posting file or a position list file. We reset it back after the test.
      */
     @Test
     public void test_more_than_a_page_listings() {
