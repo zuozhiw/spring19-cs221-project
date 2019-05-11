@@ -41,8 +41,8 @@ public class Team20PositionalFlushTest {
         expectedDocStore.put(0, d1);
         expectedDocStore.put(1, d2);
 
-        Table<String, Integer, List<Integer>> expectedPositions = TreeBasedTable.create(); //TODO need to check if TreeBasedTable is needed
-        expectedPositions.put("rate", 0, Arrays.asList(0, 2);
+        Table<String, Integer, List<Integer>> expectedPositions = TreeBasedTable.create();
+        expectedPositions.put("rate", 0, Arrays.asList(0, 2));
         expectedPositions.put("roll", 0, Arrays.asList(1, 4));
         expectedPositions.put("sing", 0, Arrays.asList(3) );
         expectedPositions.put("rate", 1, Arrays.asList(0, 2, 3) );
@@ -64,7 +64,7 @@ public class Team20PositionalFlushTest {
     }
 
     /* When the dictionary, posting list and the position list go beyond one page, check if the postings lists
-     * and and the position lists are rightly stored and retrieved.
+     * and the position lists are rightly stored and retrieved.
      */
     @Test
     public void test_more_than_a_page_listings() {
@@ -75,7 +75,7 @@ public class Team20PositionalFlushTest {
         expectedPostingList.put("bled", Arrays.asList(0, 1));
         expectedPostingList.put("cat", Arrays.asList(0));
         expectedPostingList.put("dog", Arrays.asList(0));
-        expectedPostingList.put("feed", Arrays.asList(1));
+        expectedPostingList.put("feed", Arrays.asList(0));
         expectedPostingList.put("rat", Arrays.asList(1));
         expectedPostingList.put("rate", Arrays.asList(0, 1));
         expectedPostingList.put("roll", Arrays.asList(0));
@@ -86,8 +86,8 @@ public class Team20PositionalFlushTest {
         expectedDocStore.put(0, d1);
         expectedDocStore.put(1, d2);
 
-        Table<String, Integer, List<Integer>> expectedPositions = TreeBasedTable.create(); //TODO need to check if TreeBasedTable is needed
-        expectedPositions.put("bled", 0, Arrays.asList(0, 4);
+        Table<String, Integer, List<Integer>> expectedPositions = TreeBasedTable.create();
+        expectedPositions.put("bled", 0, Arrays.asList(0, 4));
         expectedPositions.put("cat", 0, Arrays.asList(1));
         expectedPositions.put("dog", 0, Arrays.asList(2));
         expectedPositions.put("feed", 0, Arrays.asList(3, 5));
