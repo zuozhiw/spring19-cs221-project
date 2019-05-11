@@ -124,7 +124,7 @@ public class Team19PositionalFlushTest {
     // after testing flush() functionality, this tests if the inverted list and the positional list are correct
     // in a sample segment
     @Test
-    public void test1() {
+    public void testPositionalFlush4() {
         String target = "cat";
         iim.addDocument(d1);
         iim.addDocument(d2);
@@ -146,7 +146,7 @@ public class Team19PositionalFlushTest {
 
     // tests flush() functionality, also tests two sample segments and their credibility
     @Test
-    public void test2() {
+    public void testPositionalFlush4() {
         iim.addDocument(d1);
         iim.addDocument(d2);
         iim.flush();
