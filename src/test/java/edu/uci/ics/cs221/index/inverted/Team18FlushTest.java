@@ -1,4 +1,4 @@
-package index.inverted;
+package edu.uci.ics.cs221.index.inverted;
 
 import edu.uci.ics.cs221.analysis.*;
 import edu.uci.ics.cs221.index.inverted.InvertedIndexManager;
@@ -53,7 +53,7 @@ public class Team18FlushTest {
         Collections.sort(invertedList);
         assertEquals(expectedInvertedList, invertedList);
 
-        clear();
+        
 
     }
 
@@ -64,16 +64,7 @@ public class Team18FlushTest {
     @Test
     public void test2(){
         manager.flush();
-        int expectedNumSegments = 0;
-        assertEquals(expectedNumSegments, manager.getNumSegments());
-
-        InvertedIndexSegmentForTest iiTestSegment = manager.getIndexSegment(0);
-        Map<String, List<Integer>> invertedLists = iiTestSegment.getInvertedLists();
-        Map<Integer, Document> documents = iiTestSegment.getDocuments();
-        assertEquals(0, invertedLists.size());
-        assertEquals(0, documents.size());
-
-        clear();
+        assertEquals(null, manager.getIndexSegment(0));
     }
 
 
@@ -107,9 +98,10 @@ public class Team18FlushTest {
             assertEquals(doc1, documents.get(i));
         }
 
-        clear();
+
     }
 
+    @After
     public void clear(){
         File dir = new File("./index/Team18FlushTest");
         for (File file: dir.listFiles()){
@@ -117,6 +109,7 @@ public class Team18FlushTest {
                 file.delete();
             }
         }
+        dir.delete();
     }
 
 
