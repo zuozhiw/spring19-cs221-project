@@ -185,6 +185,7 @@ public class Team22PositionalMergeTest {
     @Test
     public void test2(){
         // change default mergethreshold
+        im.DEFAULT_FLUSH_THRESHOLD = 1;
         im.DEFAULT_MERGE_THRESHOLD = 4;
 
         Document[] documents = new Document[] {
