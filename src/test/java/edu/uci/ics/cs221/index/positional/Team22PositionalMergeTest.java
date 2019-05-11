@@ -79,8 +79,6 @@ public class Team22PositionalMergeTest {
         Document doc4 = new Document("A general theory of information retrieval");
         im.flush();
 
-
-
         im.mergeAllSegments();
 
         List<Document> seg1Docs = new ArrayList<>();
@@ -92,8 +90,7 @@ public class Team22PositionalMergeTest {
         assertEquals(1, im.getNumSegments()); // there is only one segment after merge
 
         imt = im.getIndexSegmentPositional(0);
-
-
+        
         checkSegment(0, seg1Docs);
         checkPositional(0, seg1Docs);
 
@@ -112,7 +109,7 @@ public class Team22PositionalMergeTest {
                 if (table.get(tokens.get(i), docID) == null){
                     table.put(tokens.get(i), docID, new ArrayList<>());
                 }
-                table.get(tokens.get(i), docID).add(i);
+                table.get(tokens.get(i), docID).add(i+1);
             }
             docID++;
         }
