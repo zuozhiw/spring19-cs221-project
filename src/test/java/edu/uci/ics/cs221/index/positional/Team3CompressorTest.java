@@ -49,7 +49,7 @@ public class Team3CompressorTest {
         List<Integer> expected1 = Arrays.asList(1, 2, 3, 4, 5, 6); //after delta encoding 1,1,1,1,1,1
         byte[] bytes1 = {(byte) 0x01, (byte) 0x01, (byte) 0x01, (byte) 0x01, (byte) 0x01, (byte) 0x01};
         List<Integer> actual1 = deltaVarLenCompressor.decode(bytes1);
-        assertEquals(actual1.size(),expected1.size());
+        assertEquals(expected1.size(),actual1.size());
         for(int i=0;i<expected1.size();i++){
             assertEquals(expected1.get(i),actual1.get(i));
         }
@@ -61,7 +61,7 @@ public class Team3CompressorTest {
         byte[] bytes2 = {(byte) 0x81, (byte) 0x00, (byte) 0x82, (byte) 0x00, (byte) 0x84, (byte) 0x00, (byte) 0x88, (byte) 0x00,
                 (byte) 0x90, (byte) 0x00};
         List<Integer> actual2 = deltaVarLenCompressor.decode(bytes2);
-        assertEquals(actual2.size(),expected2.size());
+        assertEquals(expected2.size(),actual2.size());
         for(int i=0;i<expected2.size();i++){
             assertEquals(expected2.get(i),actual2.get(i));
         }
@@ -71,7 +71,7 @@ public class Team3CompressorTest {
         List<Integer> expected3 = Arrays.asList(Integer.MAX_VALUE);
         byte[] bytes3 = {(byte)0x87,(byte)0xff,(byte)0xff,(byte)0xff,(byte)0x7f};
         List<Integer> actual3 = deltaVarLenCompressor.decode(bytes3);
-        assertEquals(actual3.size(),expected3.size());
+        assertEquals(expected3.size(),actual3.size());
         for(int i=0;i<expected3.size();i++){
             assertEquals(expected3.get(i),actual3.get(i));
         }
@@ -79,11 +79,10 @@ public class Team3CompressorTest {
     //Test decoding of some of the bytes
     @Test
     public void test7() {
-        List<Integer> original = Arrays.asList(1, 2, 3, 4, 5, 6); //after delta encoding 1,1,1,1,1,1
         byte[] bytes1 = {(byte) 0x01, (byte) 0x01, (byte) 0x01, (byte) 0x01, (byte) 0x01, (byte) 0x01};
         List<Integer> actual1 = deltaVarLenCompressor.decode(bytes1,4,2);
-        List<Integer> expected1 = Arrays.asList(5,6);
-        assertEquals(actual1.size(),expected1.size());
+        List<Integer> expected1 = Arrays.asList(1,2);
+        assertEquals(expected1.size(),actual1.size());
         for(int i=0;i<expected1.size();i++){
             assertEquals(expected1.get(i),actual1.get(i));
         }
@@ -91,12 +90,11 @@ public class Team3CompressorTest {
 
     @Test
     public void test8() {
-        List<Integer> original = Arrays.asList(128, 384, 896, 1920, 3968);//after delta encoding 128,256,512,1024,2048
         byte[] bytes2 = {(byte) 0x81, (byte) 0x00, (byte) 0x82, (byte) 0x00, (byte) 0x84, (byte) 0x00, (byte) 0x88, (byte) 0x00,
                 (byte) 0x90, (byte) 0x00};
         List<Integer> actual2 = deltaVarLenCompressor.decode(bytes2,4,6);
-        List<Integer> expected2 = Arrays.asList(896,1920,3968);
-        assertEquals(actual2.size(),expected2.size());
+        List<Integer> expected2 = Arrays.asList(512,1536,3584);
+        assertEquals(expected2.size(),actual2.size());
         for(int i=0;i<expected2.size();i++){
             assertEquals(expected2.get(i),actual2.get(i));
         }
