@@ -1,52 +1,116 @@
 package edu.uci.ics.cs221.index.inverted;
 
 import edu.uci.ics.cs221.analysis.ComposableAnalyzer;
-import edu.uci.ics.cs221.analysis.NaiveAnalyzer;
 import edu.uci.ics.cs221.analysis.PorterStemmer;
 import edu.uci.ics.cs221.analysis.PunctuationTokenizer;
 import edu.uci.ics.cs221.storage.Document;
-import edu.uci.ics.cs221.storage.DocumentStore;
-import edu.uci.ics.cs221.storage.MapdbDocStore;
-import javafx.util.Pair;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.swing.*;
+import java.io.File;
+import java.util.Collections;
 
 import static junit.framework.TestCase.assertTrue;
 
 public class Team4IndexCompressionTest {
-    String base = "./index";
-    Document doc1 = new Document("cat dog");
-    Document doc2 = new Document("cat dog bird cat cat dog dog");
-    Document doc3 = new Document("cats running in the rain, birds chirping to keep away from cat.");
+
+    Document doc1 = new Document("dog");
+    Document doc2 = new Document(String.join(" ", Collections.nCopies(4096, "cat")));
+
+    private static final String indexFolder = "./index/IndexCompressionTest/";
+
+    NaiveCompressor naiveCompressor = null;
+    DeltaVarLenCompressor deltaVarLenCompressor = null;
+    InvertedIndexManager naiveIndexManager = null;
+    InvertedIndexManager dvlIndexManager = null;
+
 
     @Before
     public void init(){
+        this.naiveCompressor = new NaiveCompressor();
+        this.deltaVarLenCompressor = new DeltaVarLenCompressor();
+
+        this.naiveIndexManager = InvertedIndexManager.createOrOpenPositional(indexFolder, new ComposableAnalyzer(new PunctuationTokenizer(),new PorterStemmer()),naiveCompressor);
+        this.dvlIndexManager = InvertedIndexManager.createOrOpenPositional(indexFolder, new ComposableAnalyzer(new PunctuationTokenizer(),new PorterStemmer()),deltaVarLenCompressor);
 
     }
-    @Test
-    public void tes1(){
-        NaiveCompressor naiveCompressor = new NaiveCompressor();
-        DeltaVarLenCompressor deltaVarLenCompressor = new DeltaVarLenCompressor();
 
-        InvertedIndexManager naiveIndexManager = InvertedIndexManager.createOrOpenPositional("./index", new ComposableAnalyzer(new PunctuationTokenizer(),new PorterStemmer()),naiveCompressor);
-        InvertedIndexManager dvlIndexManager = InvertedIndexManager.createOrOpenPositional("./index", new ComposableAnalyzer(new PunctuationTokenizer(),new PorterStemmer()),deltaVarLenCompressor);
+    /**
+     * Test 1
+     * Add 4096 docs to see if inverted list becomes smaller.
+     *
+     * InvertedList File:
+     *      before: "dog" -> DocId [0, 1, 2, 3, 4, 5,...., 1000] with pointers  (4 + 4)B * 4096
+     *      after: "dog" -> DocId [0, 1, 1, 1, 1, 1, 1, 1, ...1]with pointers,  (1 + 4)B * 4096
+     * Positional List:
+     *      before: 0 -> [0]
+     *              1 -> [0]
+     *              ...     4096 position lists
+     *     after: same contents. but var length changed.
+     */
+    @Test
+    public void test1(){
+
+        // make sure the info are stored in q file
+        this.naiveIndexManager.DEFAULT_FLUSH_THRESHOLD = 4096;
+        this.dvlIndexManager.DEFAULT_FLUSH_THRESHOLD = 4096;
 
         PageFileChannel.resetCounters();
-        naiveIndexManager.addDocument(doc1);
-        naiveIndexManager.addDocument(doc2);
-        naiveIndexManager.addDocument(doc3);
-        naiveIndexManager.flush();
+        for(int i = 0; i < 4096; i++)
+            this.naiveIndexManager.addDocument(doc1);
+        this.naiveIndexManager.flush();
         int naiveCount = PageFileChannel.writeCounter;
 
         PageFileChannel.resetCounters();
-        dvlIndexManager.addDocument(doc1);
-        dvlIndexManager.addDocument(doc2);
-        dvlIndexManager.addDocument(doc3);
-        dvlIndexManager.flush();
+        for(int i = 0; i < 4096; i++)
+            this.dvlIndexManager.addDocument(doc1);
+        this.dvlIndexManager.flush();
         int dvlCount = PageFileChannel.writeCounter;
 
-        assertTrue(naiveCount <= dvlCount);
+        assertTrue(naiveCount/(double)dvlCount > 2);
     }
+
+    /** Test 2
+     * Add a document with 4096 "cat", test if posting
+     *
+     * InvertedList file:
+     *      1 word("cat") with 1 docID(0)
+     *         - write page are same for each compressor: 1 page word + 1 page posting list.
+     * PositionList compression:
+     *      1 list of 4096 integers, gap and length are all compressed.
+     *         - naive posting list: [0, 1, 2, ... 4095] -> 4B * 4096 -> 4 pages
+     *         - compressed posting list: [0, 1, 1, 1, .... 1] ->  1B * 4096 -> 1 page
+     */
+    @Test
+    public void test2(){
+        // Naive Compressor
+        PageFileChannel.resetCounters();
+        this.naiveIndexManager.addDocument(doc2);
+        this.naiveIndexManager.flush();
+        int naiveCount = PageFileChannel.writeCounter;
+
+        // DeltaVarLen Compressor
+        PageFileChannel.resetCounters();
+        this.dvlIndexManager.addDocument(doc2);
+        this.dvlIndexManager.flush();
+        int dvlCount = PageFileChannel.writeCounter;
+
+        assertTrue(naiveCount/(double)dvlCount > 2);
+    }
+
+    @After
+    public void after(){
+        File cacheFolder = new File(indexFolder);
+        for (File file : cacheFolder.listFiles()) {
+            try {
+                file.delete();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        cacheFolder.delete();
+
+    }
+
 }
