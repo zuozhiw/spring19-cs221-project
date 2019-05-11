@@ -43,21 +43,21 @@ public class Team9PositionalStressTest {
         try {
             test1();
         } catch (Throwable e) {
-            System.out.println("Team3StressTest test1 FAILED");
+            System.out.println("Team9StressTest test1 FAILED");
             e.printStackTrace();
         }
 
         try {
             test2();
         } catch (Throwable e) {
-            System.out.println("Team3StressTest test2 FAILED");
+            System.out.println("Team9StressTest test2 FAILED");
             e.printStackTrace();
         }
 
         try {
             test3();
         } catch (Throwable e) {
-            System.out.println("Team3StressTest test3 FAILED");
+            System.out.println("Team9StressTest test3 FAILED");
             e.printStackTrace();
         }
 
@@ -67,14 +67,11 @@ public class Team9PositionalStressTest {
     // In this test, we will test the correctness of the size of document size and position list size
     public void test1(){
         PageFileChannel.resetCounters();
-
         PositionalIndexSegmentForTest segment = invertedIndex.getIndexSegmentPositional(0);
         Map<Integer, Document> docs = segment.getDocuments();
         Table<String, Integer, List<Integer>> positions = segment.getPositions();
         List<Integer> posList = positions.get("h", 0);
-
-
-
+        
         Assert.assertEquals(docs.size(), TOTALNUM);
         Assert.assertEquals(invertedIndex.getNumSegments(), InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD/2);
         Assert.assertEquals(posList.size(), 1530);
@@ -83,7 +80,7 @@ public class Team9PositionalStressTest {
     }
 
 
-    // test searchPhraseQuery() function. Search phrase "BIG BIRD"
+    // test searchPhraseQuery() function. Search a long list of phrase
     // result should contain TOTALNUM document
 
     public void test2(){
