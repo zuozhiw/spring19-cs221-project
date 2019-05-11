@@ -5,39 +5,43 @@ import edu.uci.ics.cs221.analysis.ComposableAnalyzer;
 import edu.uci.ics.cs221.analysis.PorterStemmer;
 import edu.uci.ics.cs221.analysis.PunctuationTokenizer;
 import edu.uci.ics.cs221.index.inverted.InvertedIndexManager;
-import edu.uci.ics.cs221.index.inverted.InvertedIndexSegmentForTest;
+import edu.uci.ics.cs221.index.inverted.Compressor;
+import edu.uci.ics.cs221.index.inverted.DeltaVarLenCompressor;
 import edu.uci.ics.cs221.storage.Document;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.List;
 import java.io.File;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
 
 public class Team11PhraseSearchTest {
-
     String indexPath = "./index/Team11PhraseSearchTest";
 
     Document[] documents = new Document[] {
-            new Document("import edu uci ics cs221 analysis  Analyzer"),
-            new Document("import edu uci ics cs221 analysis  ComposableAnalyzer"),
-            new Document("import edu uci ics cs221 analysis  PorterStemmer"),
-            new Document("import edu uci ics cs221 analysis  PunctuationTokenizer"),
-            new Document("import edu uci ics cs221 index     inverted            InvertedIndexManager"),
-            new Document("import edu uci ics cs221 storage   Document")
+            new Document("That sounds like a good idea. Maybe we should go out to eat beforehand."),
+            new Document("Let’s meet at Summer Pizza House. I have not gone there for a long time."),
+            new Document("Good idea again. I heard they just came up with a new pizza."),
+            new Document("We can meet at Summer Pizza House at noon. That will give us plenty of time to enjoy our pizza."),
+            new Document("She graduated last June, and she will start her teaching career next week when the new school term begins."),
+            new Document("The kids might even look forward to going to school since they have so many friends to play with."),
+            new Document("I am always amazed by the things kindergarten teachers do so it's a good idea to let her join us.")
     };
 
     Analyzer analyzer;
     InvertedIndexManager index;
+    Compressor compressor;
 
     @Before
     public void before() {
         analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
-        index = InvertedIndexManager.createOrOpen(indexPath, analyzer);
+        compressor = new DeltaVarLenCompressor();
+        index = InvertedIndexManager.createOrOpenPositional(indexPath, analyzer, compressor);
     }
 
     @After
@@ -46,8 +50,6 @@ public class Team11PhraseSearchTest {
         InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 8;
 
         try {
-            // When deleting a folder in Java, all the files inside the folder needs to be deleted already
-            // Reference: https://stackoverflow.com/questions/20281835/how-to-delete-a-folder-with-files-using-java
             File folder = new File(indexPath);
             String[] entries = folder.list();
             for(String s: entries) {
@@ -65,53 +67,67 @@ public class Team11PhraseSearchTest {
         }
     }
 
-    /* Test an easy case of flush threshold=1 and merge threshold=2,
-     * after we add 2 documents, the number of segments after merging
-     * should be 1
-     */
+    /*
+    * Test1 tests an easy case with only 1 segment and it has 1 document. We test if it
+    * can get the right result.
+    **/
     @Test
-    public void mergeSearchTest1() {
+    public void PhraseSearchTest1(){
         InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1;
-        InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 2;
-
         index.addDocument(documents[0]);
-        index.addDocument(documents[1]);
-        int expectedNumSegments = 1;
-        assertEquals(expectedNumSegments, index.getNumSegments());
-    }
-
-    @Test
-    public void mergeSearchTest2() {
-        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1;
-
-        for (int i = 0; i < 4 ; i++){
-            index.addDocument(documents[i]);
+        Iterator<Document> itr = index.searchPhraseQuery(Arrays.asList("eat", "beforehand"));
+        while (itr.hasNext()){
+            assertEquals(itr.next(), documents[0]);
         }
-        index.mergeAllSegments();
-        int expectedNumSegments = 2;
-        assertEquals(expectedNumSegments, index.getNumSegments());
     }
 
-
-    /* Test when the flush and merge thresholds are 1 and 4 respectively,
-     * after merging the number of segments should be 3 and we also check
-     * the detailed docIDs of the keywords
-     */
+    /*
+     * Test2 tests if we can get the right result of phrase query with more segments and phrase
+     * is a name of restaurant.
+     **/
     @Test
-    public void mergeSearchTest3() {
+    public void PhraseSearchTest2(){
         InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1;
-        InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 4;
-
-        for (Document doc : documents) {
+        for (Document doc : documents){
             index.addDocument(doc);
         }
-
-        int expectedNumSegments = 2;
-        assertEquals(expectedNumSegments, index.getNumSegments());
-        InvertedIndexSegmentForTest it = index.getIndexSegment(0);
-        Map<String, List<Integer>> invertedLists = it.getInvertedLists();
-        List<Integer> docIds = invertedLists.get("import");
-        List<Integer> expectedDocIds = Arrays.asList(0, 1, 2, 3);
-        assertEquals(expectedDocIds, docIds);
+        int i = 0;
+        List<Document> expectedDocuments = Arrays.asList(documents[1], documents[3]);
+        Iterator<Document> itr = index.searchPhraseQuery(Arrays.asList("Summer", "Pizza", "House"));
+        while (itr.hasNext()){
+            assertEquals(itr.next(), expectedDocuments.get(i++));
+        }
     }
+
+    /*
+     * Test3 tests if we can get the right result of phrase query after the segments merge.
+     **/
+    @Test
+    public void PhraseSearchTest3(){
+        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1;
+        InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 4;
+        for (Document doc : documents){
+            index.addDocument(doc);
+        }
+        int i = 0;
+        List<Document> expectedDocuments = Arrays.asList(documents[0], documents[2], documents[6]);
+        Iterator<Document> itr = index.searchPhraseQuery(Arrays.asList("good", "idea"));
+        while (itr.hasNext()){
+            assertEquals(itr.next(), expectedDocuments.get(i++));
+        }
+    }
+
+    /*
+     * Test4 tests if the result is null when the phrase is not in all of the documents.
+     **/
+    @Test
+    public void PhraseSearchTest4(){
+        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1;
+        for (Document doc : documents){
+            index.addDocument(doc);
+        }
+        Iterator<Document> itr = index.searchPhraseQuery(Arrays.asList("start", "sporting", "career"));
+        assertFalse(itr.hasNext());
+    }
+
 }
