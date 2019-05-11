@@ -47,6 +47,8 @@ public class Team5IndexCompressionTest {
         InvertedIndexManager.createOrOpenPositional(path2, analyzer, compressor);
   }
 
+  //test simple documents with same text, each key word show only one time each document
+  //mainly test inverted list since inverted list is long but positional list is short
   @Test
   public void Test1() {
     Assert.assertEquals(0, PageFileChannel.readCounter);
