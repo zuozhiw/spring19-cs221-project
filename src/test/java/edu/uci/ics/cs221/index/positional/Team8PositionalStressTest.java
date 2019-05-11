@@ -35,9 +35,6 @@ public class Team8PositionalStressTest {
         InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 12;
 
         List<String> textContent = getContent(textUrl);
-        System.out.println(textContent.size());
-        System.out.println(textContent.get(0));
-        
         invertedIndexManager = InvertedIndexManager.createOrOpenPositional(pathName, analyzer, compressor);
         PageFileChannel.resetCounters();
 
