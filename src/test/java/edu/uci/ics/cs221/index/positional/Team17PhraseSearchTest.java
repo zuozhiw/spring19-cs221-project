@@ -23,6 +23,7 @@ public class Team17PhraseSearchTest {
     private Document doc1 = new Document("too young, very simple, sometimes naive");
     private Document doc2 = new Document("I'm angry!");
     private Document doc3 = new Document("The West Virginia Central Junction is a place in United States of America");
+    private Document doc4 = new Document("Los Ranchos de Albuquerque is the name of a place");
 
     @Before
     public void init(){
@@ -60,6 +61,33 @@ public class Team17PhraseSearchTest {
         InvertedIndexManager iim;
         iim = InvertedIndexManager.createOrOpen(path, new ComposableAnalyzer( new PunctuationTokenizer(), new PorterStemmer()));
         Iterator<Document> iter = iim.searchPhraseQuery(new ArrayList<String>());
+    }
+
+    /**
+     *  Tests if popular phrases in the dictionary is handled properly
+     */
+    @Test
+    public void testPopularPhrases(){
+        InvertedIndexManager iim;
+        iim = InvertedIndexManager.createOrOpenPositional(path, new ComposableAnalyzer( new PunctuationTokenizer(), new PorterStemmer()), new NaiveCompressor());
+        for(int i=0; i<InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD+1; i++){
+            iim.addDocument(doc3);
+            iim.addDocument(doc4);
+        }
+        List<String> phrases = new ArrayList<>();
+        phrases.add("west");
+        phrases.add("virginia");
+        phrases.add("central");
+        phrases.add("junction");
+        Iterator<Document> iter = iim.searchPhraseQuery(phrases);
+        int count = 0;
+        while(iter.hasNext()){
+            iter.hasNext();
+            Document nextDoc = iter.next();
+            assertEquals(doc3, nextDoc);
+            count++;
+        }
+        assertEquals(InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD, count);
     }
 
     /**
@@ -124,30 +152,6 @@ public class Team17PhraseSearchTest {
         Iterator<Document> iter2 = iim.searchPhraseQuery(phrases);
         assertEquals(false, iter2.hasNext());
     }
-    /**
-     *  Tests if popular phrases in the dictionary is handled properly
-     */
-    @Test
-    public void testPopularPhrases(){
-        InvertedIndexManager iim;
-        iim = InvertedIndexManager.createOrOpenPositional(path, new ComposableAnalyzer( new PunctuationTokenizer(), new PorterStemmer()), new NaiveCompressor());
-        for(int i=0; i<InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD; i++){
-            iim.addDocument(doc3);
-        }
-        List<String> phrases = new ArrayList<>();
-        phrases.add("west");
-        phrases.add("virginia");
-        phrases.add("central");
-        phrases.add("junction");
-        Iterator<Document> iter = iim.searchPhraseQuery(phrases);
-        int count = 0;
-        while(iter.hasNext()){
-            iter.hasNext();
-            Document nextDoc = iter.next();
-            assertEquals(doc3, nextDoc);
-            count++;
-        }
-        assertEquals(InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD, count);
-    }
+
 
 }
