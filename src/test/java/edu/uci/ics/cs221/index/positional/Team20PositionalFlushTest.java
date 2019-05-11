@@ -185,8 +185,6 @@ public class Team20PositionalFlushTest {
         assertEquals(expectedPositions1, segment1.getPositions());
     }
 
-    // TODO different kind of words ? to test if correctly maintained eg. air-conditioned
-
     @After
     public void deleteFiles() {
         PageFileChannel.PAGE_SIZE = 4096;
