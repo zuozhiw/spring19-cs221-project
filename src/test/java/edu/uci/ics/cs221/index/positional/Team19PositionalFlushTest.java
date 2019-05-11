@@ -1,3 +1,4 @@
+
 package edu.uci.ics.cs221.index.positional;
 
 import com.google.common.collect.Table;
@@ -16,6 +17,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.io.IOException;
 
 import edu.uci.ics.cs221.analysis.Analyzer;
 import edu.uci.ics.cs221.storage.Document;
@@ -25,9 +27,18 @@ public class Team19PositionalFlushTest {
     Compressor cp = new NaiveCompressor();
     InvertedIndexManager iim;
     String file = "./index/Team19PositionalFlushTest/";
+    
+    private Document d1 = new Document("cat dog bird");
+    private Document d2 = new Document("dog wolf tiger");
+    private Document d3 = new Document("cat bird elephant");
+    private Document d4 = new Document("wolf tiger mouse");
+    private Document d5 = new Document("cat puma mouse");
+    private Document d6 = new Document("elephant cat puma");
 
     @Before
     public void setup() throws Exception {
+        Path path = Paths.get(file);
+        Files.deleteIfExists(path);
         iim = iim.createOrOpenPositional(file, an, cp);
         iim.DEFAULT_FLUSH_THRESHOLD = 3;
     }
@@ -92,5 +103,71 @@ public class Team19PositionalFlushTest {
         iim.flush();
         assertEquals(0, iim.getNumSegments());
         assertEquals(null, iim.getIndexSegmentPositional(0));
+    }
+    
+    // test flush() functionality as well as correct list of documnets in a sample segment
+    @Test
+    public void testPositionalFlush3() {
+        assertEquals(0, iim.getNumSegments());
+        iim.addDocument(d1);
+        iim.addDocument(d2);
+        iim.flush();
+        assertEquals(1, iim.getNumSegments());
+        PositionalIndexSegmentForTest inCase = iim.getIndexSegmentPositional(0);
+        Map<Integer, Document> docs = inCase.getDocuments();
+        assertFalse(docs.isEmpty());
+        assertTrue(docs.containsKey(0) && docs.containsKey(1));
+        assertTrue(docs.containsValue(d1) && docs.containsValue(d2));
+        assertFalse(docs.size() > 2);
+    }
+
+    // after testing flush() functionality, this tests if the inverted list and the positional list are correct
+    // in a sample segment
+    @Test
+    public void test1() {
+        String target = "cat";
+        iim.addDocument(d1);
+        iim.addDocument(d2);
+        iim.flush();
+        iim.addDocument(d3);
+        iim.addDocument(d4);
+        iim.flush();
+        assertEquals(2, iim.getNumSegments());
+        PositionalIndexSegmentForTest inCase = iim.getIndexSegmentPositional(1);
+        List<Integer> list = inCase.getInvertedLists().get(target);
+        assertFalse(list.isEmpty());
+        assertFalse(list.size() > 1);
+        assertEquals(0, (int) list.get(0));
+        list = inCase.getPositions().get(target, 0);
+        assertFalse(list.isEmpty());
+        assertFalse(list.size() > 1);
+        assertEquals(0, (int) list.get(0));
+    }
+
+    // tests flush() functionality, also tests two sample segments and their credibility
+    @Test
+    public void test2() {
+        iim.addDocument(d1);
+        iim.addDocument(d2);
+        iim.flush();
+        iim.addDocument(d3);
+        iim.addDocument(d4);
+        iim.flush();
+        iim.addDocument(d5);
+        iim.addDocument(d6);
+        iim.flush();
+        assertEquals(3, iim.getNumSegments());
+        PositionalIndexSegmentForTest inCase = iim.getIndexSegmentPositional(2);
+        Collection<Document> docs = inCase.getDocuments().values();
+        assertTrue(docs.contains(d5) && docs.contains(d6));
+        String target = "cat";
+        List<Integer> list = inCase.getPositions().get(target, 0);
+        assertFalse(list.isEmpty());
+        assertFalse(list.size() > 1);
+        assertTrue(list.contains(0));
+        list = inCase.getPositions().get(target, 1);
+        assertFalse(list.isEmpty());
+        assertFalse(list.size() > 1);
+        assertTrue(list.contains(1));
     }
 }
