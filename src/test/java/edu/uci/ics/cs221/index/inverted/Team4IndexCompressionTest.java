@@ -31,8 +31,8 @@ public class Team4IndexCompressionTest {
         this.naiveCompressor = new NaiveCompressor();
         this.deltaVarLenCompressor = new DeltaVarLenCompressor();
 
-        this.naiveIndexManager = InvertedIndexManager.createOrOpenPositional(indexFolder, new ComposableAnalyzer(new PunctuationTokenizer(),new PorterStemmer()),naiveCompressor);
-        this.dvlIndexManager = InvertedIndexManager.createOrOpenPositional(indexFolder, new ComposableAnalyzer(new PunctuationTokenizer(),new PorterStemmer()),deltaVarLenCompressor);
+        this.naiveIndexManager = InvertedIndexManager.createOrOpenPositional(indexFolder +"naive/", new ComposableAnalyzer(new PunctuationTokenizer(),new PorterStemmer()),naiveCompressor);
+        this.dvlIndexManager = InvertedIndexManager.createOrOpenPositional(indexFolder +"dvl/", new ComposableAnalyzer(new PunctuationTokenizer(),new PorterStemmer()),deltaVarLenCompressor);
 
     }
 
@@ -52,9 +52,8 @@ public class Team4IndexCompressionTest {
     @Test
     public void test1(){
 
-        // make sure the info are stored in q file
-        this.naiveIndexManager.DEFAULT_FLUSH_THRESHOLD = 4096;
-        this.dvlIndexManager.DEFAULT_FLUSH_THRESHOLD = 4096;
+        // make sure the data are stored in one file
+        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 4096;
 
         PageFileChannel.resetCounters();
         for(int i = 0; i < 4096; i++)
@@ -102,7 +101,9 @@ public class Team4IndexCompressionTest {
 
     @After
     public void after(){
-        File cacheFolder = new File(indexFolder);
+        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1000;
+
+        File cacheFolder = new File(indexFolder + "naive/");
         for (File file : cacheFolder.listFiles()) {
             try {
                 file.delete();
@@ -112,6 +113,15 @@ public class Team4IndexCompressionTest {
         }
         cacheFolder.delete();
 
+        cacheFolder = new File(indexFolder + "dvl/");
+        for (File file : cacheFolder.listFiles()) {
+            try {
+                file.delete();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        cacheFolder.delete();
     }
 
 }
