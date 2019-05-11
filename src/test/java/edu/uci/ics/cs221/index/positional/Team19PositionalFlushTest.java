@@ -11,13 +11,15 @@ import edu.uci.ics.cs221.index.inverted.NaiveCompressor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.io.IOException;
 
 import edu.uci.ics.cs221.analysis.Analyzer;
 import edu.uci.ics.cs221.storage.Document;
@@ -146,7 +148,7 @@ public class Team19PositionalFlushTest {
 
     // tests flush() functionality, also tests two sample segments and their credibility
     @Test
-    public void testPositionalFlush4() {
+    public void testPositionalFlush5() {
         iim.addDocument(d1);
         iim.addDocument(d2);
         iim.flush();
