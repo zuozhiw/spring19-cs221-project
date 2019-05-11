@@ -25,7 +25,7 @@ public class Team10PositionalStressTest {
 
     @Test(timeout = 1500000)
     public void init(){
-        invertedmanager = InvertedIndexManager.createOrOpenPositional(path,new NaiveAnalyzer(),new NaiveCompressor());
+        invertedmanager = InvertedIndexManager.createOrOpenPositional(path,new ComposableAnalyzer(new PunctuationTokenizer(),new PorterStemmer()),new NaiveCompressor());
         invertedmanager.DEFAULT_FLUSH_THRESHOLD = 1000;
         invertedmanager.DEFAULT_MERGE_THRESHOLD = 10;
         docs = new ArrayList<>();
@@ -80,7 +80,7 @@ public class Team10PositionalStressTest {
     public void test3(){
         PositionalIndexSegmentForTest result = invertedmanager.getIndexSegmentPositional(0);
         Table<String, Integer, List<Integer>> position = result.getPositions();
-        assertEquals(new ArrayList<>(Arrays.asList(1)),position.get("eBook",2));
+        assertEquals(new ArrayList<>(Arrays.asList(3)),position.get("ebook",0));
 
     }
 
