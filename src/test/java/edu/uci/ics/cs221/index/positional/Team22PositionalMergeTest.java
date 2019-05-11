@@ -36,14 +36,15 @@ public class Team22PositionalMergeTest {
 
     @Before
     public void setup() throws Exception {
-
+        Tokenizer tokenizer = new PunctuationTokenizer();
+        Stemmer stemmer = new PorterStemmer();
+        analyzer = new ComposableAnalyzer(tokenizer, stemmer); // create composable analyzer for documents tokenization
+        compressor = new NaiveCompressor();
+        im = InvertedIndexManager.createOrOpenPositional(folder,analyzer, compressor );
     }
 
     @After
     public void cleanup() throws Exception {
-
-
-
         try{
             File index = new File(folder);
             String[] f = index.list();
@@ -56,49 +57,7 @@ public class Team22PositionalMergeTest {
             e.printStackTrace();
         }
         Files.deleteIfExists(Paths.get(folder));
-
     }
-
-    @Test
-    public void test1(){
-        Tokenizer tokenizer = new PunctuationTokenizer();
-        Stemmer stemmer = new PorterStemmer();
-        analyzer = new ComposableAnalyzer(tokenizer, stemmer); // create composable analyzer for documents tokenization
-        compressor = new NaiveCompressor();
-        im = InvertedIndexManager.createOrOpenPositional(folder,analyzer, compressor );
-
-
-        Document doc1 = new Document("Information retrieval");
-        Document doc2 = new Document("There is no easy way");
-
-        im.addDocument(doc1);
-        im.addDocument(doc2);
-        im.flush();
-
-        Document doc3 = new Document("vector space and Boolean queries");
-        Document doc4 = new Document("A general theory of information retrieval");
-        im.flush();
-
-
-
-        im.mergeAllSegments();
-
-        List<Document> seg1Docs = new ArrayList<>();
-        seg1Docs.add(doc1);
-        seg1Docs.add(doc2);
-        seg1Docs.add(doc3);
-        seg1Docs.add(doc4);
-
-        assertEquals(1, im.getNumSegments()); // there is only one segment after merge
-
-        imt = im.getIndexSegmentPositional(0);
-
-
-        checkSegment(0, seg1Docs);
-        checkPositional(0, seg1Docs);
-
-    }
-
 
     /*
     create positional table
@@ -117,16 +76,18 @@ public class Team22PositionalMergeTest {
             docID++;
         }
         return table;
-
     }
 
+    /*
+    This function check the correctness of positional list
+     */
     private void checkPositional(int segmentNum, List<Document> docs){
         // get corresponding segment
         imt = im.getIndexSegmentPositional(segmentNum);
         Table<String, Integer, List<Integer>> ptable = imt.getPositions(), groundTruth = createPositional(docs);
 
         for (Cell<String, Integer, List<Integer>> cell: groundTruth.cellSet()){
-            System.out.println(cell.getRowKey()+" "+cell.getColumnKey()+" "+cell.getValue());
+            System.out.println(cell.getRowKey() + " " + cell.getColumnKey() + " " + cell.getValue());
             List<Integer> l = ptable.get(cell.getRowKey(), cell.getColumnKey());
 
             assertTrue(l != null); // check list contain in ptable
@@ -135,15 +96,12 @@ public class Team22PositionalMergeTest {
             for(int pos: cell.getValue()){
                 assertTrue(pSet.contains(pos)); // check all ground truth position index in target list
             }
-
         }
-
     }
 
     /*
     This function create the ground truth only about inverted index of "one segments" of given documents lists
      */
-
     private HashMap<String, HashSet<Document>> createInvertedIndex2Doc(List<Document> docs){
 
         // to use the output,
@@ -193,5 +151,72 @@ public class Team22PositionalMergeTest {
             assertTrue(segDoc.containsValue(d));
         }
 
+    }
+
+    @Test
+    public void test1(){
+        Document doc1 = new Document("Information retrieval");
+        Document doc2 = new Document("There is no easy way");
+
+        im.addDocument(doc1);
+        im.addDocument(doc2);
+        im.flush();
+
+        Document doc3 = new Document("vector space and Boolean queries");
+        Document doc4 = new Document("A general theory of information retrieval");
+        im.flush();
+
+
+        im.mergeAllSegments();
+
+        List<Document> seg1Docs = new ArrayList<>();
+        seg1Docs.add(doc1);
+        seg1Docs.add(doc2);
+        seg1Docs.add(doc3);
+        seg1Docs.add(doc4);
+
+        assertEquals(1, im.getNumSegments()); // there is only one segment after merge
+
+        checkSegment(0, seg1Docs);
+        checkPositional(0, seg1Docs);
+
+    }
+
+    @Test
+    public void test2(){
+        // change default mergethreshold
+        im.DEFAULT_MERGE_THRESHOLD = 4;
+
+        Document[] documents = new Document[] {
+            new Document("In this project"),
+            new Document("you'll be implementing a disk-based inverted index and the search operations."),
+            new Document("At a high level, inverted index stores a mapping from keywords to the ids of documents they appear in."),
+            new Document("A simple in-memory structure could be"),
+            new Document("where each key is a keyword token"),
+            new Document("and each value is a list of document IDs"),
+            new Document("In this project, the disk-based index structure is based on the idea of LSM"),
+            new Document("Its main idea is the following")
+        }
+
+        // define ground truth segment docs
+        List<Document> seg1docs = new ArrayList<>();
+        List<Document> seg2docs = new ArrayList<>();
+        for (int i = 0; i < documents.size(); i++){
+            im.addDocument(documents[i]);
+            if (i != documents.size()-1) {
+                seg1docs.add(documents[i]);
+            } else {
+                seg2docs.add(documents[i]);
+            }
+        }
+
+        // check number of segments
+        assertEquals(2, im.getNumSegments());
+
+        // check correctness
+        checkSegment(0, seg1docs);
+        checkSegment(1, seg2docs);
+        checkPositional(0, seg1docs);
+        checkPositional(1, seg2docs);
     }
 }
