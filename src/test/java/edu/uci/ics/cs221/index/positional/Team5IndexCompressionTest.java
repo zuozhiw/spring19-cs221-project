@@ -33,6 +33,7 @@ public class Team5IndexCompressionTest {
 
   @Before
   public void setup() {
+    //    InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 10001;
     File directory1 = new File(path1);
     if (!directory1.exists()) {
       directory1.mkdirs();
@@ -140,19 +141,17 @@ public class Team5IndexCompressionTest {
     Assert.assertEquals(0, PageFileChannel.writeCounter);
     for (int i = 0; i < 3000; i++) {
       positional_list_naive_compressor.addDocument(
-          new Document("cat" + " cat" + " cat" + " and dog" + " dog" + i + " dog" + i));
+          new Document("cat" + " cat" + " cat" + " and dog" + " dog" + " dog"));
       positional_list_naive_compressor.addDocument(
-          new Document("pepsi" + " pepsi" + " pepsi" + " or coke" + i + " coke" + " coke"));
+          new Document("pepsi" + " pepsi" + " pepsi" + " or coke" + " coke" + " coke"));
       positional_list_naive_compressor.addDocument(
           new Document(
               "microsoft"
-                  + i
                   + " microsoft"
                   + i
                   + " microsoft"
                   + " vs apple"
                   + " apple"
-                  + i
                   + " apple"
                   + i));
     }
@@ -166,19 +165,17 @@ public class Team5IndexCompressionTest {
 
     for (int i = 0; i < 3000; i++) {
       positional_list_compressor.addDocument(
-          new Document("cat" + " cat" + " cat" + " and dog" + " dog" + i + " dog" + i));
+          new Document("cat" + " cat" + " cat" + " and dog" + " dog" + " dog"));
       positional_list_compressor.addDocument(
-          new Document("pepsi" + " pepsi" + " pepsi" + " or coke" + i + " coke" + " coke"));
+          new Document("pepsi" + " pepsi" + " pepsi" + " or coke" + " coke" + " coke"));
       positional_list_compressor.addDocument(
           new Document(
               "microsoft"
-                  + i
                   + " microsoft"
                   + i
                   + " microsoft"
                   + " vs apple"
                   + " apple"
-                  + i
                   + " apple"
                   + i));
     }
@@ -188,9 +185,19 @@ public class Team5IndexCompressionTest {
     }
     int compress_wc = PageFileChannel.writeCounter;
     int compress_rc = PageFileChannel.readCounter;
+    Assert.assertTrue(
+        "naive write counter > 1.5 delta compress write count  \n Actual  naive write: "
+            + naive_wc
+            + " delta write count: "
+            + compress_wc,
+        naive_wc > 1.5 * compress_wc);
+    Assert.assertTrue(
+        "naive write counter > 1.5 delta compress read count, \n Actual naive write: "
+            + naive_rc
+            + " delta write count: "
+            + compress_rc,
+        naive_rc > 1.5 * compress_rc);
 
-    Assert.assertTrue(naive_rc > 1.5 * compress_rc);
-    Assert.assertTrue(naive_wc > 1.5 * compress_wc);
     System.out.println("\033[0;32m");
     System.out.println("Naive compress write: " + naive_wc + " pages");
     System.out.println("Naive compress read: " + naive_rc + " pages");
