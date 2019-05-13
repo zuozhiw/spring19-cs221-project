@@ -75,7 +75,6 @@ public class Team14PhraseSearchTest {
 
     @Before public void build() {
         index = InvertedIndexManager.createOrOpenPositional(path, analyzer, compressor);
-        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1;
     }
 
     @After public void tear() {
