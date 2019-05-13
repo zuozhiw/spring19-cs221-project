@@ -5,6 +5,7 @@ import edu.uci.ics.cs221.analysis.Analyzer;
 import edu.uci.ics.cs221.analysis.ComposableAnalyzer;
 import edu.uci.ics.cs221.analysis.PorterStemmer;
 import edu.uci.ics.cs221.analysis.PunctuationTokenizer;
+import edu.uci.ics.cs221.index.inverted.DeltaVarLenCompressor;
 import edu.uci.ics.cs221.index.inverted.InvertedIndexManager;
 import edu.uci.ics.cs221.index.inverted.PositionalIndexSegmentForTest;
 import edu.uci.ics.cs221.storage.Document;
@@ -35,7 +36,7 @@ public class Team18PhraseSearchTest {
 
     @Before
     public void initialize(){
-        manager = InvertedIndexManager.createOrOpen(folderPath, new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer()));
+        manager = InvertedIndexManager.createOrOpenPositional(folderPath, new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer()), new DeltaVarLenCompressor());
 
     }
 
