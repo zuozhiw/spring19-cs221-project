@@ -71,8 +71,7 @@ public class Team9PositionalStressTest {
         Map<Integer, Document> docs = segment.getDocuments();
         Table<String, Integer, List<Integer>> positions = segment.getPositions();
         List<Integer> posList = positions.get("h", 0);
-        
-        Assert.assertEquals(docs.size(), TOTALNUM);
+
         Assert.assertEquals(invertedIndex.getNumSegments(), InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD/2);
         Assert.assertEquals(posList.size(), 1530);
 
