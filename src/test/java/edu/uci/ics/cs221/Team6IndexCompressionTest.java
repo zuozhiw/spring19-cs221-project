@@ -84,7 +84,7 @@ public class Team6IndexCompressionTest {
         compressWriteCounter = PageFileChannel.writeCounter;
         PageFileChannel.resetCounters();
 
-        assertEquals(true, compressWriteCounter/nonCompressWriteCounter < 2/3);
+        assertEquals(true, compressWriteCounter/nonCompressWriteCounter < (double)2/3);
     }
 
     /**
@@ -110,7 +110,7 @@ public class Team6IndexCompressionTest {
         compressReadCounter = PageFileChannel.readCounter;
         PageFileChannel.resetCounters();
 
-        assertEquals(true, compressReadCounter/nonCompressReadCounter < 2/3);
+        assertEquals(true, compressReadCounter/nonCompressReadCounter < (double)2/3);
     }
 
 
@@ -133,9 +133,9 @@ public class Team6IndexCompressionTest {
             directory.mkdirs();
         }
         if(ifCompress)
-            return new InvertedIndexManager.createOrOpenPositional(path, analyzer, new DeltaVarLenCompressor());
+            return InvertedIndexManager.createOrOpenPositional(path, analyzer, new DeltaVarLenCompressor());
         else
-            return new InvertedIndexManager.createOrOpenPositional(path, analyzer, new NaiveCompressor());
+            return InvertedIndexManager.createOrOpenPositional(path, analyzer, new NaiveCompressor());
     }
 
     /**
