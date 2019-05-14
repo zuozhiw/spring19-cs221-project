@@ -93,7 +93,7 @@ public class Team7IndexCompressionTest {
         }
         int count_compress = PageFileChannel.readCounter+PageFileChannel.writeCounter;
 
-        assertTrue(count_no_compress>count_compress);
+        assertTrue(count_no_compress>1.4*count_compress);
     }
 
 
@@ -113,7 +113,7 @@ public class Team7IndexCompressionTest {
         }
         int count_compress = PageFileChannel.readCounter+PageFileChannel.writeCounter;
 
-        assertTrue(count_no_compress>count_compress);
+        assertTrue(count_no_compress>1.4*count_compress);
     }
 
 
