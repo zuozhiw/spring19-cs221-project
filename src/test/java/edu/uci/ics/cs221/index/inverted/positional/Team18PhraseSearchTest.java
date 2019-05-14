@@ -52,7 +52,6 @@ public class Team18PhraseSearchTest {
     }
 
     // test if the basic phrase query has been implemented successfully
-    // test if there is a "," between two consecutive words of one phrase in a document, the document will not be chosen as a search result
     // test if there are stop words between two consecutive words of one phrase in a document, the document will be chosen as a search result
     // test by comparing result with the correct document
     @Test
@@ -66,9 +65,10 @@ public class Team18PhraseSearchTest {
         while(it.hasNext()){
             res.add(it.next());
         }
-        assertEquals(2, res.size());
+        assertEquals(3, res.size());
         assertTrue(documents1[0].getText().equals(res.get(0).getText()));
-        assertTrue(documents1[3].getText().equals(res.get(1).getText()));
+        assertTrue(documents1[1].getText().equals(res.get(1).getText()));
+        assertTrue(documents1[3].getText().equals(res.get(2).getText()));
     }
 
     // test if phrase search applies to cases with more or equal than 3 words in a single phrase
@@ -99,6 +99,7 @@ public class Team18PhraseSearchTest {
         Iterator<Document> it = manager.searchPhraseQuery(Arrays.asList("test", "case"));
         List<Document> expectedResult = new LinkedList<>();
         expectedResult.add(documents1[0]);
+        expectedResult.add(documents1[1]);
         expectedResult.add(documents1[3]);
         List<Document> result = new LinkedList<>();
         while(it.hasNext()){
