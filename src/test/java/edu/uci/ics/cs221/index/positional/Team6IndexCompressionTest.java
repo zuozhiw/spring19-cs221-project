@@ -48,6 +48,7 @@ public class Team6IndexCompressionTest {
     private InvertedIndexManager compressManager = null;
     private Analyzer analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
     Document sampleDoc = generateDoc();
+    Document emptyDoc = new Document(" ");
 
     //initialize a set of counters to record IO performance
     double nonCompressReadCounter = 0;
@@ -65,6 +66,8 @@ public class Team6IndexCompressionTest {
 
     /**
      *  input documents 10 times into each manager, compare the reader counters
+     *  We assume the compressed one will be 2/3 smaller than non-compressed one
+     *  search the phase and compare read counters
      *  We assume the compressed one will be 2/3 smaller than non-compressed one
     * */
 
@@ -84,16 +87,6 @@ public class Team6IndexCompressionTest {
         compressWriteCounter = PageFileChannel.writeCounter;
         PageFileChannel.resetCounters();
 
-        assertEquals(true, compressWriteCounter/nonCompressWriteCounter < (double)2/3);
-    }
-
-    /**
-     *  search the phase and compare read counters
-     *  We assume the compressed one will be 2/3 smaller than non-compressed one
-     * */
-
-    @Test
-    public void test2() {
         //search for phase, test the differences between read counters
         List<String> keywords = new ArrayList<>();
         keywords.add("Pride ");
@@ -111,6 +104,32 @@ public class Team6IndexCompressionTest {
         PageFileChannel.resetCounters();
 
         assertEquals(true, compressReadCounter/nonCompressReadCounter < (double)2/3);
+
+        assertEquals(true, compressWriteCounter/nonCompressWriteCounter < (double)2/3);
+
+
+    }
+
+    /**
+    This testcase is to test the empty input document. The write counter of
+     compressed and non-compressed should be the same number.
+     * */
+
+    @Test
+    public void test2() {
+        nonCompressManager.addDocument(emptyDoc);
+        nonCompressManager.flush();
+        nonCompressWriteCounter = PageFileChannel.writeCounter;
+        PageFileChannel.resetCounters();
+
+        //Compress manager add documents
+        compressManager.addDocument(emptyDoc);
+        compressManager.flush();
+        compressWriteCounter = PageFileChannel.writeCounter;
+        PageFileChannel.resetCounters();
+
+        assertEquals(true,compressWriteCounter == nonCompressWriteCounter);
+
     }
 
 
