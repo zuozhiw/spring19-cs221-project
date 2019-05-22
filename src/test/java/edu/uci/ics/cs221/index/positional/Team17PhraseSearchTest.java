@@ -70,7 +70,7 @@ public class Team17PhraseSearchTest {
     public void testPopularPhrases(){
         InvertedIndexManager iim;
         iim = InvertedIndexManager.createOrOpenPositional(path, new ComposableAnalyzer( new PunctuationTokenizer(), new PorterStemmer()), new NaiveCompressor());
-        for(int i=0; i<InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD+1; i++){
+        for(int i=0; i<InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD; i++){
             iim.addDocument(doc3);
             iim.addDocument(doc4);
         }
