@@ -111,10 +111,7 @@ public class Team14searchTfIdf {
 
     /*
 
-        For this test we check if the number of documents is the same at the end of all the merges as what we inserted
-        we also check to see if the number of occurrences of someone of the key words is the same as what we counted
-        by hand. Rather than checking the number of segments this test is really trying to test the content of the
-        final segment.
+        For this test case we check to see that if topK is set to zero the iterator has no next item.
      */
 
         @Test public void test2() {
