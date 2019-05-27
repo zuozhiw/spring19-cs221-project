@@ -22,6 +22,7 @@ public class Team3TfIdfTest {
     private  static InvertedIndexManager iim;
     private static String path = "./index/Team3TfIdfTest/";
     private  static Document[] documents;
+    private final static int frequencyNum = 20;
     @BeforeClass
     public static void init(){
         iim = InvertedIndexManager.createOrOpenPositional(path,
@@ -40,23 +41,33 @@ public class Team3TfIdfTest {
     }
 
     @Test
-    public void test(){
+    public void testFrequencyGet(){
         for(int i=0;i<documents.length;i++){
-            for(int j = 0; j<20;j++){
+            for(int j = 0; j<frequencyNum;j++){
                 iim.addDocument(documents[i]);
             }
             iim.flush();
         }
 
-        assertEquals(iim.getDocumentFrequency(0,"winter"),20);
-        assertEquals(iim.getDocumentFrequency(1,"snow"),20);
-        assertEquals(iim.getDocumentFrequency(2,"lion"),20);
-        assertEquals(iim.getDocumentFrequency(3,"plai"),20);
-        assertEquals(iim.getDocumentFrequency(4,"pai"),20);
-        assertEquals(iim.getDocumentFrequency(5,"men"),20);
-        assertEquals(iim.getDocumentFrequency(6,"death"),20);
+        assertEquals(frequencyNum,iim.getDocumentFrequency(0,"winter"));
+        assertEquals(frequencyNum,iim.getDocumentFrequency(1,"snow"));
+        assertEquals(frequencyNum,iim.getDocumentFrequency(2,"lion"));
+        assertEquals(frequencyNum,iim.getDocumentFrequency(3,"plai"));
+        assertEquals(frequencyNum,iim.getDocumentFrequency(4,"pai"));
+        assertEquals(frequencyNum,iim.getDocumentFrequency(5,"men"));
+        assertEquals(frequencyNum,iim.getDocumentFrequency(6,"death"));
 
     }
+
+    @Test
+    public void testNoResult(){
+        for(int i=0;i<documents.length;i++){
+            iim.addDocument(documents[i]);
+        }
+        iim.flush();
+        assertEquals(0,iim.getDocumentFrequency(0,"cs221"));
+    }
+
     @After
     public void clean() {
 
