@@ -42,13 +42,13 @@ public class Team3TfIdfTest {
 
     @Test
     public void testFrequencyGet(){
-        for(int i=0;i<documents.length;i++){
-            for(int j = 0; j<frequencyNum;j++){
-                iim.addDocument(documents[i]);
+        for(int i=0;i<documents.length;i++){ //for each document in the document array
+            for(int j = 0; j<frequencyNum;j++){  //Set a frequencyNum
+                iim.addDocument(documents[i]);   //add documents which have same string into a segment
             }
             iim.flush();
         }
-
+        //test if the number of frequency match the frequency number we previously set
         assertEquals(frequencyNum,iim.getDocumentFrequency(0,"winter"));
         assertEquals(frequencyNum,iim.getDocumentFrequency(1,"snow"));
         assertEquals(frequencyNum,iim.getDocumentFrequency(2,"lion"));
@@ -65,6 +65,7 @@ public class Team3TfIdfTest {
             iim.addDocument(documents[i]);
         }
         iim.flush();
+        //test one non-exist word in our documents
         assertEquals(0,iim.getDocumentFrequency(0,"cs221"));
     }
 
