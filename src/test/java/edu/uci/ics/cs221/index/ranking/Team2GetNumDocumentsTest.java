@@ -7,10 +7,8 @@ import edu.uci.ics.cs221.analysis.PunctuationTokenizer;
 import edu.uci.ics.cs221.index.inverted.Compressor;
 import edu.uci.ics.cs221.index.inverted.DeltaVarLenCompressor;
 import edu.uci.ics.cs221.index.inverted.InvertedIndexManager;
-import edu.uci.ics.cs221.index.inverted.PageFileChannel;
 import edu.uci.ics.cs221.storage.Document;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
