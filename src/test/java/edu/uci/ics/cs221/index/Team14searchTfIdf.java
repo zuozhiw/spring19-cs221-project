@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -119,9 +120,9 @@ public class Team14searchTfIdf {
         assert counter == documents2.length;
     }
 
-    private int getItfDocument(Document doc, String keyword){
+    private int getTfDocument(Document doc, String keyword){
         int count = 0;
-        String key = analyzer.analyze(keyword).get(0);
+        String key = keyword;
         List<String> docWords = analyzer.analyze(doc.getText());
         for(String s : docWords){
             if(s.equals(key)){
@@ -134,7 +135,7 @@ public class Team14searchTfIdf {
     private double getIdfDocuments(Document[] docs, String keyword){
         int fw = 0;
         for(Document d : docs){
-            if(getItfDocument(d, keyword) > 0){
+            if(getTfDocument(d, keyword) > 0){
                 fw++;
             }
         }
@@ -152,4 +153,19 @@ public class Team14searchTfIdf {
         return top / bottom;
     }
 
+    private ArrayList<Pair <Document, Double>>  findValue(String keyword)
+    {
+        ArrayList<Pair <Document, Double>> result = new ArrayList<>();
+        keyword = analyzer.analyze(keyword).get(0);
+        double idf = getIdfDocuments(documents2, keyword );
+        double query_tf_idf[] = {idf};
+        for( Document doc : documents2)
+        {
+            double tf = getTfDocument(doc,keyword);
+            double tf_idf[] =  {tf * idf};
+           double similarity_value = similarity(tf_idf, query_tf_idf);
+           result.add(new Pair<>(doc,similarity_value));
+        }
+        return result;
+    }
 }
