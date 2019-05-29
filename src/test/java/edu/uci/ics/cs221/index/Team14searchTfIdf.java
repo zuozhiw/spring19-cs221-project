@@ -12,9 +12,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -85,7 +86,6 @@ public class Team14searchTfIdf {
         InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 8;
     }
 
-
     /*
      *  For this test case we check to see that if topK is set to zero the iterator has no next item. This is used to
      *  test the edge case where topK is zero. This is a valid instance of the iterator however it should not have any
@@ -111,7 +111,8 @@ public class Team14searchTfIdf {
         for (Document d : documents2) {
             index.addDocument(d);
         }
-        Iterator<Pair<Document, Double>> iter = index.searchTfIdf(Arrays.asList("pineapples", "theater"), documents2.length);
+        Iterator<Pair<Document, Double>> iter =
+                index.searchTfIdf(Arrays.asList("pineapples", "theater"), documents2.length);
         int counter = 0;
         while (iter.hasNext()) {
             iter.next();
@@ -120,52 +121,51 @@ public class Team14searchTfIdf {
         assert counter == documents2.length;
     }
 
-    private int getTfDocument(Document doc, String keyword){
+    private int getTfDocument(Document doc, String keyword) {
         int count = 0;
-        String key = keyword;
         List<String> docWords = analyzer.analyze(doc.getText());
-        for(String s : docWords){
-            if(s.equals(key)){
+        for (String s : docWords) {
+            if (s.equals(keyword)) {
                 count++;
             }
         }
         return count;
     }
 
-    private double getIdfDocuments(Document[] docs, String keyword){
+    private double getIdfDocuments(Document[] docs, String keyword) {
         int fw = 0;
-        for(Document d : docs){
-            if(getTfDocument(d, keyword) > 0){
+        for (Document d : docs) {
+            if (getTfDocument(d, keyword) > 0) {
                 fw++;
             }
         }
-        return Math.log(docs.length / fw) / Math.log(10);
+        return Math.log((double)docs.length / fw) / Math.log(10);
     }
 
-    private double similarity(double[] document, double[] query){
+    private double similarity(double[] document, double[] query) {
         double top = 0;
         double bottom = 0;
-        for(int i = 0; i < document.length; i++){
+        for (int i = 0; i < document.length; i++) {
             top += document[i] * query[i];
             bottom += Math.pow(document[i], 2);
         }
         bottom = Math.sqrt(bottom);
-        return top / bottom;
+        return top / (bottom == 0 ? 1 : bottom);
     }
 
-    private ArrayList<Pair <Document, Double>>  findValue(String keyword)
-    {
-        ArrayList<Pair <Document, Double>> result = new ArrayList<>();
+    private ArrayList<Pair<Document, Double>> findValues(Document[] documents, String keyword) {
+        ArrayList<Pair<Document, Double>> result = new ArrayList<>();
         keyword = analyzer.analyze(keyword).get(0);
-        double idf = getIdfDocuments(documents2, keyword );
-        double query_tf_idf[] = {idf};
-        for( Document doc : documents2)
-        {
-            double tf = getTfDocument(doc,keyword);
-            double tf_idf[] =  {tf * idf};
-           double similarity_value = similarity(tf_idf, query_tf_idf);
-           result.add(new Pair<>(doc,similarity_value));
+        double idf = getIdfDocuments(documents, keyword);
+        double[] query_tf_idf = { idf };
+        for (Document doc : documents) {
+            double tf = getTfDocument(doc, keyword);
+            double[] tf_idf = { tf * idf };
+            double similarity_value = similarity(tf_idf, query_tf_idf);
+            result.add(new Pair<>(doc, similarity_value));
         }
+        result.sort(Comparator.comparingDouble(Pair::getRight));
+        Collections.reverse(result);
         return result;
     }
 }
