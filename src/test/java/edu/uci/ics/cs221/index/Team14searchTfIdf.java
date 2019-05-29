@@ -141,4 +141,15 @@ public class Team14searchTfIdf {
         return Math.log(docs.length / fw) / Math.log(10);
     }
 
+    private double similarity(double[] document, double[] query){
+        double top = 0;
+        double bottom = 0;
+        for(int i = 0; i < document.length; i++){
+            top += document[i] * query[i];
+            bottom += Math.pow(document[i], 2);
+        }
+        bottom = Math.sqrt(bottom);
+        return top / bottom;
+    }
+
 }
