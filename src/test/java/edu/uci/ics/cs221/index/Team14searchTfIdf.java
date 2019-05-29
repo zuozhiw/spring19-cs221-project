@@ -5,6 +5,7 @@ import edu.uci.ics.cs221.analysis.ComposableAnalyzer;
 import edu.uci.ics.cs221.analysis.PorterStemmer;
 import edu.uci.ics.cs221.analysis.PunctuationTokenizer;
 import edu.uci.ics.cs221.index.inverted.InvertedIndexManager;
+import edu.uci.ics.cs221.index.inverted.Pair;
 import edu.uci.ics.cs221.storage.Document;
 import org.junit.After;
 import org.junit.Before;
@@ -81,23 +82,11 @@ public class Team14searchTfIdf {
         InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 8;
     }
 
-    /*
-     * For the first test we are checking to make sure that when the merge threshold is 2 we always only have
-     * a single segment. The reason for this is that after the first segment is entered every time an additional segment
-     * is inserted we will merge the two segments resulting in there only being one segment present.
-     */
-    @Test public void test1() {
-        InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 2;
-        for (Document d : documents1) {
-            index.addDocument(d);
-            assert index.getNumSegments() == 1;
-        }
-    }
 
     /*
      *  For this test case we check to see that if topK is set to zero the iterator has no next item.
      */
-    @Test public void test2() {
+    @Test public void test1() {
         InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 4;
         for (Document d : documents2) {
             index.addDocument(d);
@@ -105,19 +94,19 @@ public class Team14searchTfIdf {
         while (index.getNumSegments() != 1) {
             index.mergeAllSegments();
         }
-        Iterator<Document> iter = index.searchTfIdf(Arrays.asList("movie", "theater"), 0);
+        Iterator<Pair<Document, Double>> iter = index.searchTfIdf(Arrays.asList("movie", "theater"), 0);
         assert !iter.hasNext();
     }
 
     /*
      * Query with topK set to the size of the documents
      */
-    @Test public void test3() {
+    @Test public void test2() {
         InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 4;
         for (Document d : documents2) {
             index.addDocument(d);
         }
-        Iterator<Document> iter = index.searchTfIdf(Arrays.asList("pineapples", "theater"), documents2.length);
+        Iterator<Pair<Document, Double>> iter = index.searchTfIdf(Arrays.asList("pineapples", "theater"), documents2.length);
         int counter = 0;
         while (iter.hasNext()) {
             iter.next();
