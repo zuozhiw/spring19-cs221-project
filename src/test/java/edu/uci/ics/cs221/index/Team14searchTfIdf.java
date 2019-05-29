@@ -84,7 +84,9 @@ public class Team14searchTfIdf {
 
 
     /*
-     *  For this test case we check to see that if topK is set to zero the iterator has no next item.
+     *  For this test case we check to see that if topK is set to zero the iterator has no next item. This is used to
+     *  test the edge case where topK is zero. This is a valid instance of the iterator however it should not have any
+     *  items to return.
      */
     @Test public void test1() {
         InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 4;
