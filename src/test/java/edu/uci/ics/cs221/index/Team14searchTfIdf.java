@@ -49,7 +49,7 @@ public class Team14searchTfIdf {
             new Document("Two jobs to make ends meet, means we need to less eggs."),
             new Document("As a camel do you have one or two humps?") };
 
-    Document[] documents2 = new Document[] { new Document("Hello"), new Document("I like to eat pineapples."),
+    Document[] documents2 = new Document[] { new Document("Hello"), new Document("I like to eat pineapples pineapples."),
             new Document("Last week I took the express train to San Diego."),
             new Document("Pineapple Express was a great movie."),
             new Document("Mother always said to eat my vegetables, but I never listened."),
@@ -60,14 +60,14 @@ public class Team14searchTfIdf {
             new Document("I ate a lot of pineapples in San Diego."),
             new Document("I can't believe mother keeps eating all of my chocolate."),
             new Document("I live for chocolate and pineapples"),
-            new Document("My favorite activity is watching a movie and eating pineapples at the same time"),
-            new Document("Last Friday I ate my pineapples diced"),
-            new Document("Next week I will try eating my pineapple raw"),
+            new Document("My favorite activity is watching pineapples pineapples pineapples pineapples a movie and eating pineapples at the same time"),
+            new Document("Last Friday pineapples I ate my pineapples diced"),
+            new Document("Next week I will pineapples try pineapples eating my pineapple raw"),
             new Document("I wonder if next week I will take the express back to San Diego"),
-            new Document("Don't tell mother but I stole her credit card and used it to buy pineapples"),
-            new Document("I predict the new Avengers movie will be worthy of a diced pineapples"),
+            new Document("Don't tell mother but pineapples I stole her credit card and used it to buy pineapples"),
+            new Document("I predict the new Avengers pineapples movie will be worthy of a diced pineapples"),
             new Document("Unfortudently, the movie theater doesn't sell diced pineapples"),
-            new Document("I'm going to have to find a way to get my diced pineapples into the movie theater") };
+            new Document("I'm going to pineapples have to pineapples find a pineapples way to get my diced pineapples into the movie theater") };
 
     @Before public void build() {
         index = InvertedIndexManager.createOrOpen(path, analyzer);
@@ -111,14 +111,16 @@ public class Team14searchTfIdf {
         for (Document d : documents2) {
             index.addDocument(d);
         }
+        ArrayList<Pair<Document, Double>> values = findValues(documents2, "pineapples");
+
         Iterator<Pair<Document, Double>> iter =
-                index.searchTfIdf(Arrays.asList("pineapples", "theater"), documents2.length);
+                index.searchTfIdf(Arrays.asList("pineapples"), 12);
         int counter = 0;
         while (iter.hasNext()) {
-            iter.next();
+            assert iter.next() == values.get(counter);
             counter++;
         }
-        assert counter == documents2.length;
+
     }
 
     private int getTfDocument(Document doc, String keyword) {
