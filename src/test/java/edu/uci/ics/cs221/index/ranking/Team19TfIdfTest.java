@@ -4,6 +4,7 @@ import edu.uci.ics.cs221.analysis.NaiveAnalyzer;
 import edu.uci.ics.cs221.index.inverted.Compressor;
 import edu.uci.ics.cs221.index.inverted.InvertedIndexManager;
 import edu.uci.ics.cs221.index.inverted.NaiveCompressor;
+import edu.uci.ics.cs221.index.inverted.Pair;
 import org.junit.After;
 import org.junit.Before;
 import static org.junit.Assert.assertFalse;
@@ -61,10 +62,10 @@ public class Team19TfIdfTest {
         iim.addDocument(d4);
         iim.flush();
 
-        Iterator<Document> actual = iim.searchTfIdf(query, 3);
-        assertEquals(d4, actual.next());
-        assertEquals(d1, actual.next());
-        assertEquals(d3, actual.next());
+        Iterator<Pair<Document, Double>> actual = iim.searchTfIdf(query, 3);
+        assertEquals(d4, actual.next().getLeft());
+        assertEquals(d1, actual.next().getLeft());
+        assertEquals(d3, actual.next().getLeft());
         assertFalse(actual.hasNext());
     }
 }
