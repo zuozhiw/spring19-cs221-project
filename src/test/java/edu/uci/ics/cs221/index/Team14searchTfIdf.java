@@ -12,8 +12,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 public class Team14searchTfIdf {
 
@@ -115,6 +117,28 @@ public class Team14searchTfIdf {
             counter++;
         }
         assert counter == documents2.length;
+    }
+
+    private int getItfDocument(Document doc, String keyword){
+        int count = 0;
+        String key = analyzer.analyze(keyword).get(0);
+        List<String> docWords = analyzer.analyze(doc.getText());
+        for(String s : docWords){
+            if(s.equals(key)){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private double getIdfDocuments(Document[] docs, String keyword){
+        int fw = 0;
+        for(Document d : docs){
+            if(getItfDocument(d, keyword) > 0){
+                fw++;
+            }
+        }
+        return Math.log(docs.length / fw) / Math.log(10);
     }
 
 }
