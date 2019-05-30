@@ -49,9 +49,9 @@ public class Team10TfIdfTest {
         assertEquals(res1.getLeft(), doc1);
 
         // check if the scores are calculated correctly
-        // similarity of doc2 and doc1 are 0.176 and 0.508 respectively
-        assertTrue(0.18 - res0.getRight() < 0.01);
-        assertTrue(0.51 - res1.getRight() < 0.01);
+        // similarity of doc2 and doc1 are 0.508 and 0.176 respectively
+        assertTrue(0.51 - res0.getRight() < 0.01);
+        assertTrue(0.18 - res1.getRight() < 0.01);
     }
 
     @After
