@@ -104,7 +104,10 @@ public class Team14searchTfIdf {
     }
 
     /*
-     * Query with topK set to the size of the documents
+     * Get the tf-idf value for all the documents in the document2 array. See checks to see if the tf-idf values are
+     * order correctly. In order to check the tf-idf value we have implemented a quick way to calculate the value below.
+     * We didn't check the order of the documents since we expect some of the documents will have identical tf-idf values
+     * so instead we compare the values
      */
     @Test public void test2() {
         InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 4;
@@ -114,10 +117,10 @@ public class Team14searchTfIdf {
         ArrayList<Pair<Document, Double>> values = findValues(documents2, "pineapples");
 
         Iterator<Pair<Document, Double>> iter =
-                index.searchTfIdf(Arrays.asList("pineapples"), 12);
+                index.searchTfIdf(Arrays.asList("pineapples"), documents2.length);
         int counter = 0;
         while (iter.hasNext()) {
-            assert iter.next() == values.get(counter);
+            assert iter.next().getRight() == values.get(counter).getRight();
             counter++;
         }
 
