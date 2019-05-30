@@ -1,4 +1,4 @@
-package edu.uci.ics.cs221.index;
+package edu.uci.ics.cs221.index.ranking;
 
 import edu.uci.ics.cs221.analysis.Analyzer;
 import edu.uci.ics.cs221.analysis.ComposableAnalyzer;
@@ -19,7 +19,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-public class Team14searchTfIdf {
+public class Team14SearchTfIdf {
 
     InvertedIndexManager index;
     Analyzer analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
