@@ -15,9 +15,9 @@ import java.io.File;
 
 import static org.junit.Assert.assertEquals;
 
-public class Team2GetNumDocumentsTest {
+public class Team2TfIdfTest {
     InvertedIndexManager invertedIndexManager;
-    String folderPath = "./ranking/Team2GetNumDocumentsTest";
+    String folderPath = "./ranking/Team2TfIdfTest";
     private Analyzer analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
     private Compressor compressor = new DeltaVarLenCompressor();
 
@@ -33,7 +33,7 @@ public class Team2GetNumDocumentsTest {
 
     @After
     public void clear(){
-        File dir = new File("./ranking/Team2GetNumDocumentsTest");
+        File dir = new File("./ranking/Team2TfIdfTest");
         for (File file: dir.listFiles()){
             if (!file.isDirectory()){
                 file.delete();
