@@ -48,7 +48,7 @@ public class Team8TfIdfTest {
     }
 
     /**
-     Test if searchTfIdf function works well
+     Test if searchTfIdf function works well with topK == null
      **/
     @Test
     public void test1(){
@@ -61,7 +61,10 @@ public class Team8TfIdfTest {
         }
         assertEquals(counter,4);
     }
-
+    
+    /**
+     Test if searchTfIdf function works well with normal topK 
+     **/
     @Test
     public void test2(){
         List<String> keywords = Arrays.asList("apple", "apple", "rotten");
