@@ -5,6 +5,7 @@ import edu.uci.ics.cs221.analysis.PorterStemmer;
 import edu.uci.ics.cs221.analysis.PunctuationTokenizer;
 import edu.uci.ics.cs221.index.inverted.DeltaVarLenCompressor;
 import edu.uci.ics.cs221.index.inverted.InvertedIndexManager;
+import edu.uci.ics.cs221.index.inverted.Pair;
 import edu.uci.ics.cs221.storage.Document;
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -19,7 +20,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class Team8TfIdfTest {
     private  static InvertedIndexManager indexmanger;
@@ -38,6 +39,12 @@ public class Team8TfIdfTest {
                 new Document("Throw away the apple because of the core")
 
         };
+
+        //add documents
+        for(int i=0;i<documents.length;i++){
+            indexmanger.addDocument(documents[i]);
+            indexmanger.flush();
+        }
     }
 
     /**
@@ -45,28 +52,29 @@ public class Team8TfIdfTest {
      **/
     @Test
     public void test1(){
-        //add documents
-        for(int i=0;i<documents.length;i++){
-            indexmanger.addDocument(documents[i]);
-            indexmanger.flush();
-        }
         List<String> keywords = Arrays.asList("apple", "apple", "rotten");
-        Iterator<Document> res = indexmanger.searchTfIdf(keywords,4);
+        Iterator<Pair<Document, Double>> res = indexmanger.searchTfIdf(keywords,null);
         List<Document> resDoc = Arrays.asList(documents[1],documents[2],documents[0],documents[4]);
         int counter = 0;
         while(res.hasNext()){
-            assertEquals(res.next(),resDoc.get(counter++));
+            assertEquals(res.next().getLeft(),resDoc.get(counter++));
         }
+        assertEquals(counter,4);
     }
 
     @Test
     public void test2(){
-        for(int i=0;i<documents.length;i++){
-            indexmanger.addDocument(documents[i]);
-        }
-        indexmanger.flush();
-        //test one non-exist word in our documents
-        assertEquals(0,indexmanger.getDocumentFrequency(0,"cs221"));
+        List<String> keywords = Arrays.asList("apple", "apple", "rotten");
+        Iterator<Pair<Document, Double>> res = indexmanger.searchTfIdf(keywords,2);
+        List<Document> resDoc = Arrays.asList(documents[1],documents[2]);
+        Pair<Document,Double> res1 = res.next();
+        Pair<Document,Double> res2 = res.next();
+        assertFalse(res.hasNext());
+        assertEquals(res1.getLeft(),documents[1]);
+        assertTrue(res1.getRight()>0.37 && res1.getRight()<0.38);
+        assertEquals(res1.getLeft(),documents[2]);
+        assertTrue(res1.getRight()>0.30 && res1.getRight()<0.31);
+
     }
 
     @After
