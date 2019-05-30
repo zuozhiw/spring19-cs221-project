@@ -43,16 +43,9 @@ public class Team2TfIdfTest {
         InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 8;
     }
 
-    // Test if no document is added, getting segment 0 should throw an exception
-    @Test(expected = UnsupportedOperationException.class)
-    public void test1() {
-        invertedIndexManager = InvertedIndexManager.createOrOpenPositional(folderPath, analyzer, compressor);
-        invertedIndexManager.getNumDocuments(0);
-    }
-
     // Add several documents below the merge threshold. Do a normal test to check whether to documents is calculated correctly
     @Test
-    public void test2() {
+    public void test1() {
         invertedIndexManager = InvertedIndexManager.createOrOpenPositional(folderPath, analyzer, compressor);
         for (Document doc : documents) {
             invertedIndexManager.addDocument(doc);
@@ -63,7 +56,7 @@ public class Team2TfIdfTest {
 
     // Test whether the documents is calculated correctly when merge happens
     @Test
-    public void test3() {
+    public void test2() {
         InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 4;
         invertedIndexManager = InvertedIndexManager.createOrOpenPositional(folderPath, analyzer, compressor);
         for (Document doc : documents) {
