@@ -17,8 +17,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class Team10searchTfIdfTest {
-    private String path = "./index/Team10searchTfIdfTest";
+public class Team10TfIdfTest {
+    private String path = "./index/Team10TfIdfTest";
     private static InvertedIndexManager iim;
     private static List<String> docs;
     @Test
