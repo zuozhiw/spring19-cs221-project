@@ -66,7 +66,7 @@ public class Team7TfIdfTest {
         List<String> keys = Arrays.asList("cat","dog");
         Iterator<Pair<Document, Double>> res = manager.searchTfIdf(keys,2);
         assertEquals(res.next().getLeft(),doc);
-        assertEquals(res.next().getLeft(),doc1);
+        assertEquals(res.next().getLeft(),doc2);
         assertFalse(res.hasNext());
 
     }
