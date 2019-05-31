@@ -28,34 +28,10 @@ public class Team12SearchTfIdf {
     Compressor compressor = new DeltaVarLenCompressor();
 
     /**
-     * tests if the inverted index is not a positional index should throw an UnsupportedOperationException
-     */
-    @Test(expected = UnsupportedOperationException.class)
-    public void test1() {
-        invertedIndex = InvertedIndexManager.createOrOpen(path, analyzer);
-        Document doc1 = new Document("The University of California, Irvine is a public research university located in Irvine, California");
-        Document doc2 = new Document("Irvine University offers 87 undergraduate degrees and 129 graduate and professional degrees");
-        Document doc3 = new Document("Irvine Company earns a lot of money");
-        Document doc4 = new Document("2019 Mercedes-Benz UCI Mountain Bike World Cup");
-        invertedIndex.addDocument(doc1);
-        invertedIndex.addDocument(doc2);
-        invertedIndex.addDocument(doc3);
-        invertedIndex.addDocument(doc4);
-        invertedIndex.flush();
-
-        List<String> phrase = new ArrayList<>();
-        phrase.add("University");
-        phrase.add("of");
-        phrase.add("California");
-        phrase.add("Irvine");
-        Iterator<Pair<Document, Double>> iterate = invertedIndex.searchTfIdf(phrase, 2);
-    }
-
-    /**
      * tests if null is passed for topk then should return all documents
      */
     @Test
-    public void test2() {
+    public void test1() {
         invertedIndex = InvertedIndexManager.createOrOpenPositional(path, analyzer, compressor);
         invertedIndex.addDocument(doc1);
         invertedIndex.addDocument(doc2);
@@ -80,7 +56,7 @@ public class Team12SearchTfIdf {
      * test if the score of documents is in descending order
      */
     @Test
-    public void test3() {
+    public void test2() {
         invertedIndex = InvertedIndexManager.createOrOpenPositional(path, analyzer, compressor);
 
         invertedIndex.addDocument(doc1);
