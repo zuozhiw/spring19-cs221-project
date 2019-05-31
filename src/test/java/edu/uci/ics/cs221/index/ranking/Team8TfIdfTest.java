@@ -54,7 +54,7 @@ public class Team8TfIdfTest {
     public void test1(){
         List<String> keywords = Arrays.asList("apple", "apple", "rotten");
         Iterator<Pair<Document, Double>> res = indexmanger.searchTfIdf(keywords,null);
-        List<Document> resDoc = Arrays.asList(documents[1],documents[2],documents[0],documents[4]);
+        List<Document> resDoc = Arrays.asList(documents[1],documents[2],documents[0],documents[3]);
         int counter = 0;
         while(res.hasNext()){
             assertEquals(res.next().getLeft(),resDoc.get(counter++));
