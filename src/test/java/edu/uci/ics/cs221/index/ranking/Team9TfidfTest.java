@@ -53,6 +53,7 @@ public class Team9TfidfTest {
         localStorageFolder.delete();
     }
 
+    //Test the functions. Check the correctness of the number of results and the order of results.
     @Test
     public void test1() {
         for(int i=0;i<100;i++){
@@ -76,6 +77,8 @@ public class Team9TfidfTest {
 
     }
 
+    //Test the functions. Check the correctness of the number of results and the order of results.
+    //In this test, we have some corner cases. Two documents are very similar, but the score is different.
     @Test
     public void test2() {
         allDocuments = getOnlineTextFile(textUrl2);
