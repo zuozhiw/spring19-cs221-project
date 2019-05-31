@@ -47,6 +47,7 @@ public class Team17searchTfIdfTest {
         iim.addDocument(doc3);
         iim.addDocument(doc4);
         iim.addDocument(doc5);
+        iim.flush();
 
         List<String> searchKeyword = new ArrayList<>(Arrays.asList("life"));
 
@@ -89,6 +90,7 @@ public class Team17searchTfIdfTest {
         iim.addDocument(doc3);
         iim.addDocument(doc4);
         iim.addDocument(doc5);
+        iim.flush();
 
         List<String> searchKeyword = new ArrayList<>(Arrays.asList("The", "purpose", "of", "life", "is"));
 
@@ -141,6 +143,7 @@ public class Team17searchTfIdfTest {
         iim.addDocument(doc3);
         iim.addDocument(doc4);
         iim.addDocument(doc5);
+        iim.flush();
 
         List<String> searchKeyword = new ArrayList<>(Arrays.asList("JCBKiKhudai"));
 
