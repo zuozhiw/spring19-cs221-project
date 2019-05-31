@@ -83,21 +83,11 @@ public class Team8TfIdfTest {
     @After
     public void clean() {
 
-        try {
-            File folder = new File(path);
-            String[] entries = folder.list();
-            for(String s: entries) {
-                File currentFile = new File(folder.getPath(),s);
-                currentFile.delete();
-            }
-
-            if (folder.delete()) {
-                System.out.println("Folder deleted successfully");
-            } else {
-                System.out.println("Failed to delete the folder");
-            }
-        } catch (Exception e) {
-            System.out.println("Something went wrong when deleting file");
+        File f = new File(path);
+        File[] files = f.listFiles();
+        for (File file : files) {
+            file.delete();
         }
+        f.delete();
     }
 }
