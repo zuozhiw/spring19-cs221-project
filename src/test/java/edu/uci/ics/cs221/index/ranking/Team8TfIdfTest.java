@@ -8,6 +8,7 @@ import edu.uci.ics.cs221.index.inverted.InvertedIndexManager;
 import edu.uci.ics.cs221.index.inverted.Pair;
 import edu.uci.ics.cs221.storage.Document;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -23,11 +24,12 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class Team8TfIdfTest {
-    private  static InvertedIndexManager indexmanger;
-    private static String path = "./index/Team8TfIdfTest";
-    private  static Document[] documents;
-    @BeforeClass
-    public static void init(){
+    private String path = "./index/Team8TfIdfTest";
+    private InvertedIndexManager indexmanger;
+    private Document[] documents;
+
+    @Before
+    public void init(){
         indexmanger = InvertedIndexManager.createOrOpenPositional(path,
                 new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer()),
                 new DeltaVarLenCompressor());
@@ -55,7 +57,7 @@ public class Team8TfIdfTest {
         Iterator<Pair<Document, Double>> res = indexmanger.searchTfIdf(keywords,null);
         List<Document> resDoc = Arrays.asList(documents[1],documents[2],documents[0],documents[3]);
         int counter = 0;
-        Double pre = 1.0
+        Double pre = 1.0;
         while(res.hasNext()){
             Double cur = res.next().getRight();
             assertTrue(pre >= cur);
@@ -64,9 +66,9 @@ public class Team8TfIdfTest {
         }
         assertEquals(counter,4);
     }
-    
+
     /**
-     Test if searchTfIdf function works well with normal topK 
+     Test if searchTfIdf function works well with normal topK
      **/
     @Test
     public void test2(){
@@ -90,11 +92,12 @@ public class Team8TfIdfTest {
     @After
     public void clean() {
 
-        File f = new File(path);
-        File[] files = f.listFiles();
-        for (File file : files) {
-            file.delete();
+        File files = new File(path);
+        for (File file: files.listFiles()){
+            if (!file.isDirectory()){
+                file.delete();
+            }
         }
-        f.delete();
+        files.delete();
     }
 }
