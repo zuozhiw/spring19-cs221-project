@@ -39,12 +39,6 @@ public class Team8TfIdfTest {
                 new Document("Throw away the apple because of the core")
 
         };
-
-        //add documents
-        for(int i=0;i<documents.length;i++){
-            indexmanger.addDocument(documents[i]);
-            indexmanger.flush();
-        }
     }
 
     /**
@@ -52,12 +46,20 @@ public class Team8TfIdfTest {
      **/
     @Test
     public void test1(){
+        //add documents
+        for(int i=0;i<documents.length;i++){
+            indexmanger.addDocument(documents[i]);
+            indexmanger.flush();
+        }
         List<String> keywords = Arrays.asList("apple", "apple", "rotten");
         Iterator<Pair<Document, Double>> res = indexmanger.searchTfIdf(keywords,null);
         List<Document> resDoc = Arrays.asList(documents[1],documents[2],documents[0],documents[3]);
         int counter = 0;
         while(res.hasNext()){
-            assertEquals(res.next().getLeft(),resDoc.get(counter++));
+            Double cur = res.next().getRight();
+            assertTrue(pre >= cur);
+            pre = cur;
+            counter++;
         }
         assertEquals(counter,4);
     }
@@ -67,16 +69,20 @@ public class Team8TfIdfTest {
      **/
     @Test
     public void test2(){
+        //add documents
+        for(int i=0;i<documents.length;i++){
+            indexmanger.addDocument(documents[i]);
+            indexmanger.flush();
+        }
         List<String> keywords = Arrays.asList("apple", "apple", "rotten");
         Iterator<Pair<Document, Double>> res = indexmanger.searchTfIdf(keywords,2);
-        List<Document> resDoc = Arrays.asList(documents[1],documents[2]);
         Pair<Document,Double> res1 = res.next();
         Pair<Document,Double> res2 = res.next();
         assertFalse(res.hasNext());
         assertEquals(res1.getLeft(),documents[1]);
         assertTrue(res1.getRight()>0.37 && res1.getRight()<0.38);
-        assertEquals(res1.getLeft(),documents[2]);
-        assertTrue(res1.getRight()>0.30 && res1.getRight()<0.31);
+        assertEquals(res2.getLeft(),documents[2]);
+        assertTrue(res2.getRight()>0.30 && res2.getRight()<0.31);
 
     }
 
