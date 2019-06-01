@@ -129,7 +129,6 @@ public class Team22TfIdfTest {
         dList.add(d5);
         dList.add(d1);
         dList.add(d2);
-        dList.add(d3);
 
         Iterator<Pair<Document, Double>> it = im.searchTfIdf(keywords, null);
         int counter = 0;
@@ -138,6 +137,6 @@ public class Team22TfIdfTest {
             assertEquals(d, dList.get(counter));
             counter++;
         }
-        assertEquals(5, counter);
+        assertEquals(4, counter);
     }
 }
