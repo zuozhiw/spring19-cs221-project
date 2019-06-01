@@ -4,6 +4,8 @@ import edu.uci.ics.cs221.analysis.Analyzer;
 import edu.uci.ics.cs221.analysis.ComposableAnalyzer;
 import edu.uci.ics.cs221.analysis.PorterStemmer;
 import edu.uci.ics.cs221.analysis.PunctuationTokenizer;
+import edu.uci.ics.cs221.index.inverted.Compressor;
+import edu.uci.ics.cs221.index.inverted.DeltaVarLenCompressor;
 import edu.uci.ics.cs221.index.inverted.InvertedIndexManager;
 import edu.uci.ics.cs221.index.inverted.Pair;
 import edu.uci.ics.cs221.storage.Document;
@@ -19,10 +21,11 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-public class Team14SearchTfIdf {
+public class Team14SearchTfIdfTest {
 
     InvertedIndexManager index;
     Analyzer analyzer = new ComposableAnalyzer(new PunctuationTokenizer(), new PorterStemmer());
+    Compressor compressor = new DeltaVarLenCompressor();
     String path = "./index/Team14MergeTest/";
 
     Document[] documents1 = new Document[] { new Document("This morning I ate eggs"),
@@ -70,7 +73,7 @@ public class Team14SearchTfIdf {
             new Document("I'm going to pineapples have to pineapples find a pineapples way to get my diced pineapples into the movie theater") };
 
     @Before public void build() {
-        index = InvertedIndexManager.createOrOpen(path, analyzer);
+        index = InvertedIndexManager.createOrOpenPositional(path, analyzer, compressor);
         InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1;
     }
 
@@ -120,7 +123,7 @@ public class Team14SearchTfIdf {
                 index.searchTfIdf(Arrays.asList("pineapples"), documents2.length);
         int counter = 0;
         while (iter.hasNext()) {
-            assert iter.next().getRight() == values.get(counter).getRight();
+            assert iter.next().getRight().equals(values.get(counter).getRight());
             counter++;
         }
 
