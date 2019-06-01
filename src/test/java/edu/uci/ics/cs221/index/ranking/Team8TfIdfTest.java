@@ -55,6 +55,7 @@ public class Team8TfIdfTest {
         Iterator<Pair<Document, Double>> res = indexmanger.searchTfIdf(keywords,null);
         List<Document> resDoc = Arrays.asList(documents[1],documents[2],documents[0],documents[3]);
         int counter = 0;
+        Double pre = 1.0
         while(res.hasNext()){
             Double cur = res.next().getRight();
             assertTrue(pre >= cur);
