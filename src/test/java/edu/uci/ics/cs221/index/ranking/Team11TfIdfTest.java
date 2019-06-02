@@ -156,6 +156,8 @@ public class Team11TfIdfTest {
             assertEquals(expected.get(i), itr.next().getLeft());
             i++;
         }
+
+        assertEquals(expected.size(), i);
     }
 
 }
