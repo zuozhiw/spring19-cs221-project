@@ -80,7 +80,7 @@ public class Team18SearchTfIdfTest {
     // Test when topK is set to 0, the iterator is null or not
     @Test
     public void test2(){
-        InvertedIndexManager.DEFAULT_MERGE_THRESHOLD = 1;
+        InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD = 1;
         for(int i = 0; i < docs.length; i ++){
             manager.addDocument(docs[i]);
         }
