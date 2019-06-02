@@ -93,8 +93,6 @@ public class Team1TfIdfTest {
      */
     @Test
     public void flushedTest() {
-        assertEquals(0, iim.getNumDocuments(0));
-
         for (int i = 0; i < InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD * 2; i++) {
             iim.addDocument(dummy);
         }
@@ -115,8 +113,6 @@ public class Team1TfIdfTest {
      */
     @Test
     public void mergedTest() {
-        assertEquals(0, iim.getNumDocuments(0));
-
         for (
                 int i = 0;
                 i < InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD
