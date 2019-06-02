@@ -89,19 +89,6 @@ public class Team1TfIdfTest {
     }
 
     /**
-     * Test whether the number of documents in the memory segment is reported correctly
-     */
-    @Test
-    public void inMemoryTest() {
-        assertEquals(0, iim.getNumDocuments(0));
-
-        for (int i = 1; i < InvertedIndexManager.DEFAULT_FLUSH_THRESHOLD; i++) {
-            iim.addDocument(dummy);
-            assertEquals(i, iim.getNumDocuments(0));
-        }
-    }
-
-    /**
      * Test whether the numbers of documents in flushed segments are reported correctly
      */
     @Test
