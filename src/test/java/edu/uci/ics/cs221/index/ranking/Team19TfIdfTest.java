@@ -17,6 +17,7 @@ import java.util.*;
 
 import edu.uci.ics.cs221.analysis.Analyzer;
 import edu.uci.ics.cs221.storage.Document;
+import org.junit.Test;
 
 public class Team19TfIdfTest {
     private Analyzer an = new NaiveAnalyzer();
@@ -54,6 +55,7 @@ public class Team19TfIdfTest {
     }
 
     // test searchTfIdf() returns correct documents with right order, when there are two segments
+    @Test
     public void testTfIdf1() {
         List<String> query = new ArrayList<>(Arrays.asList("cat", "dog", "dog"));
         iim.addDocument(d1);
