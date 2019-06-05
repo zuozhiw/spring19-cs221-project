@@ -198,6 +198,6 @@ public class InvertedIndexManager {
     public PositionalIndexSegmentForTest getIndexSegmentPositional(int segmentNum) {
         throw new UnsupportedOperationException();
     }
-    
-    
+
+
 }
