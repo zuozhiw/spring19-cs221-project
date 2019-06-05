@@ -199,4 +199,5 @@ public class InvertedIndexManager {
         throw new UnsupportedOperationException();
     }
     
+    
 }
